@@ -1,0 +1,23 @@
+<{$bootstrap}>
+<{$jquery}>
+<{$toolbar}>
+
+<{if ($data.ip)}>
+    <form action="index.php"  method='post'>
+    <fieldset>
+    <legend>機器登記</legend>
+    <label>你的IP ： <{ $data.ip }></label>
+    <label>你的網卡序號 ： <{ $data.mac }></label>
+    <label>保管人</label>
+    <input type="text" name='user' placeholder="使用人姓名…">
+    <label>機器地點</label>
+    <input type="text" name='place' placeholder="地點…">	
+    <br/>
+    <input name='ip' type='hidden' value='<{ $data.ip }>' />
+    <input name='mac' type='hidden' value='<{ $data.mac }>' />
+    <button type="submit" class="btn btn-success" name='act_add' value='act_add' >確定</button>
+    </fieldset>
+    </form>
+<{else}>
+<h3>你的機器不在校內網域中！</h3>
+<{/if}>

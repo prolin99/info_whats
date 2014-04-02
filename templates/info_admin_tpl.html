@@ -1,0 +1,217 @@
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+
+<div class="row-fluid">
+
+共 <{$all_rec}> 筆 
+<form id="form1" name="form1" method="post" action="index.php">
+  新MAC<input name="new_mac" type="text" id="new_mac" value="" class="span4" /> 
+  <input type="submit" name="Submit2" value="新增" id="Submit2" />
+
+</form>
+<div class="row-fluid alert  alert-info">
+	<div class="span1"><a href="?sort=kind">處室</a></div>
+	<div class="span2"><a href="?sort=ip_id">IP</a></div>
+	<div class="span2"><a href="?sort=mac">MAC</a></div>
+	<div class="span2"><a href="?sort=comp">name</a></div>
+	<div class="span2"><a href="?sort=id">id</a>動作</div>
+
+	<div class="span3"><a href="?sort=recode_time">時間</a></div>
+</div>
+<{ $ii++ }>
+<{foreach from=$comp_list item=comp key=cid}>
+
+<{if ($comp.now==1 ) }>
+	<{ if ($comp.dhcp) }>
+		<div class="row-fluid alert alert-error" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+	<{else}>
+		<div class="row-fluid alert  alert-success" id="div_<{$comp.id}>" data='<{ $ii }>'  >
+	<{/if}>
+<{elseif ($comp.now==2 )}>
+	<div class="row-fluid alert  alert-info" id="div_<{$comp.id}>" data='<{ $ii }>'  >
+	<{else}>
+	<div class="row-fluid alert" id="div_<{$comp.id}>" data='<{ $ii }>'  >
+<{/if}>
+
+	<div class="span1"><span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
+	<div class="span2"><span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span>
+		<span class="ip" alt="<{$comp.ip_v6}>"><{$comp.ipv6_last}></span>
+	</div>
+	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
+	<div class="span2"><span class="label label-info"><{$comp.comp}> </span><{$comp.ps}></div>
+	<div class="span2"><span class="badge badge-inverse"><{$comp.id}></span>
+	    <span class="edit"><i class="icon-pencil"></i></span>
+	    
+	  </div>
+
+	<div class="span3"><{$comp.recode_time}><span class="del"><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
+
+</div>
+
+<{/foreach}>
+ 
+共 <{$all_rec}> 筆 , 現在開機數 <{$open_mode.now}>  ,  本日開機數<{$open_mode.today}><br />
+  <{foreach from=$err_comp_list item=comp key=cid}>
+  錯誤：<{$comp.ip}> ---<{$comp.cc}> <br/>
+  <{/foreach}>
+<pre>
+       <{$data.ip_rang}>
+</pre>  
+<p>
+空 IP ：<{$empt_count}> 筆 <br />
+<{$empt_list}>
+</p>
+</div>
+<h3>DHCP 分配表</h3>
+<textarea name="dhcp" class="span10" rows="20"  >
+ <{foreach from=$comp_list item=comp key=cid}>
+ <{if ! ($comp.dhcp) }>
+  #<{$comp.id}> ---  
+  host <{$comp.id}>_<{$comp.comp}> {  
+  # <{$comp.comp}> 
+  hardware ethernet <{$comp.mac}>; 
+  fixed-address <{$comp.ip}>; 
+  } 
+  <{/if}>
+ <{/foreach}>
+</textarea>  
+<script>
+$("span.del").bind(
+	"click", function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
+          		var div_id = $(this).parent().parent().attr("id")  ;
+          		ajax_del( div_id) ;  // 刪除動作
+           	//把這個 div 隱藏起來 
+           	//alert(div_id) ;
+           	$(this).parent().parent().hide() ;
+	}
+);
+ 
+function ajax_del(div_id ) {
+	$.ajax({
+		url: 'comp_del.php',
+		type: 'GET',
+		dataType: 'html',
+		data: {del_id: div_id},
+	})
+	.done(function(data) {
+		//alert(div_id + data) ;
+		console.log("success");
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});
+	
+}
+
+
+$(document).on("click", "i.icon-pencil" ,  function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
+          		var div_id = $(this).parent().parent().parent().attr("id")  ;
+          		var div_id_ord = $(this).parent().parent().parent().attr("data")  ;
+          		//alert(div_id) ;
+          		ajax_edit( div_id ,div_id_ord ) ;  // 動作
+	}
+);
+
+
+	
+
+/*
+$("span.edit").bind(
+	"click", function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
+          		var div_id = $(this).parent().parent().attr("id")  ;
+          		alert(div_id) ;
+          		ajax_edit( div_id) ;  // 動作
+	}
+);
+*/
+function ajax_edit(div_id , div_id_ord ) {
+	$.ajax({
+		url: 'comp_edit.php',
+		type: 'GET',
+		dataType: 'html',
+		data: {edit_id: div_id , edit_id_ord: div_id_ord},
+	})
+	.done(function(data) {
+		//alert(div_id + data) ;
+		console.log("success");
+		$('#'+div_id).html(data );
+ 
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});	
+}
+
+
+
+
+$(document).on("click", "span.ed" ,  function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
+          		var form_id = $(this).parent().parent().attr("id")  ;
+          		var div_id = $(this).parent().parent().parent().attr("id")  ;
+          		//$(this).parent().parent().parent().attr("id") 
+          		//alert(div_id + form_id);
+          		ajax_submit( form_id , div_id) ;  // 動作
+	}
+ );
+
+function ajax_submit(form_id , div_id) {
+	$.ajax({
+		url: 'comp_submit.php',
+		type: 'POST',
+		dataType: 'html',
+		data: $('#'+form_id ).serialize() , 
+
+	})
+	.done(function(data) {
+		//alert(div_id + data) ;
+		console.log("success");
+		$('#'+div_id).html(data );
+	}) 
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});	 
+ 
+}
+
+$(document).on("click", "span.ip" ,  function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
+          		var ip = $(this).attr("alt")  ;
+ 		//alert(ip) ;
+          		ajax_ip( ip) ;  // 動作
+	}
+ );
+function ajax_ip(ip) {
+	$.ajax({
+		url: 'comp_ip_search.php',
+		type: 'GET',
+		dataType: 'html',
+		data: {sip: ip},
+	})
+	.done(function(data) {
+		console.log("success");
+		alert(data) ;
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});
+
+}
+
+</script>
