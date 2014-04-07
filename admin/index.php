@@ -126,13 +126,17 @@ if ($_POST['btn_clear'] ) {
 		if ($comp_row['in'] <> true ) {
 			$ip_k = preg_split("/[.]/", $comp_row['ip']);
 			$ip_id = $ip_k[2]*1000 + $ip_k[3] ;
-			$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,mac ,recode_time ,creat_day , ps, ip_id)  
-				               values ('','{$comp_row['ip']}','$mac',now() , now() ,'{$comp_row['ps']}','$ip_id' ) " ;
+			$add_ipv6='' ;
+			if ($ip_id==0) 		// ipv6 
+				$add_ipv6= $comp_row['ip'] ;
+			$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,ip_v6 ,mac ,recode_time ,creat_day , ps, ip_id)  
+				               values ('','{$comp_row['ip']}', '$add_ipv6', '$mac',now() , now() ,'{$comp_row['ps']}','$ip_id' ) " ;
 				               
 			$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 						
 			$add_FG = true ;
 		}	
  	}	
+ 	
  	if ($add_FG) //有新增資料，重整一次
  		redirect_header($_SERVER['PHP_SELF'],3, '資料更新!' );
  	
