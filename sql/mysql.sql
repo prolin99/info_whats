@@ -1,24 +1,29 @@
 CREATE TABLE `mac_info` (
-  `item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_type` varchar(20) DEFAULT NULL,
-  `item` varchar(40) NOT NULL DEFAULT '',
-  `authority` varchar(40) NOT NULL DEFAULT '',
-  `paid_method` varchar(40) NOT NULL DEFAULT '',
-  `announce_note` varchar(40) NOT NULL DEFAULT '',
-  `announce_note2` varchar(40) NOT NULL DEFAULT '',
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
-  `comment` varchar(40) DEFAULT NULL,
-  `creater` varchar(20) DEFAULT NULL,
-  `cooperate` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`item_id`)
+  id int(11) NOT NULL AUTO_INCREMENT,
+  ip varchar(50) NOT NULL,
+  ip_v6 varchar(128) DEFAULT NULL,
+  mac varchar(60) NOT NULL,
+  comp varchar(40) NOT NULL,
+  workgroup varchar(40) DEFAULT NULL,
+  comp_dec varchar(40) DEFAULT NULL,
+  ps varchar(60) DEFAULT NULL,
+  recode_time datetime NOT NULL,
+  creat_day datetime NOT NULL,
+  deny tinyint(4) NOT NULL DEFAULT '0',
+  phid varchar(20) NOT NULL,
+  kind varchar(20) NOT NULL,
+  ip_id int(11) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY mac (mac),
+  KEY ip (ip)
 ) ENGINE=MyISAM ;
 
- CREATE TABLE IF `mac_input` (
+ CREATE TABLE   `mac_input` (
   `id` int(11) DEFAULT NULL AUTO_INCREMENT,
   `ip` varchar(100) NOT NULL,
   `mac` varchar(100) NOT NULL,
   `user` varchar(100) NOT NULL,
   `place` varchar(100) NOT NULL,
-  `uid` int(11) NOT NULL
+  `uid` int(11) NOT NULL ,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  ;
