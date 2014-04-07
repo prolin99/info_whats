@@ -18,6 +18,21 @@ include_once "header.php";
  
 /*-----------執行動作判斷區----------*/
 //$op = empty($_REQUEST['op'])? "":$_REQUEST['op'];
+
+if ($_POST['Submit_add'] ) {
+	//手動加入 mac 
+	$_POST['new_mac']= strtoupper(trim($_POST['new_mac']) ) ;
+	$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,mac ,recode_time ,creat_day ,ip_id)  
+				               values ('','','{$_POST['new_mac']}',now() , now() ,'' ) " ;
+	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
+}	
+
+
+if ($_POST['btn_clear'] ) {
+	//清除登記填報
+	$sql = " TRUNCATE TABLE  " . $xoopsDB->prefix("mac_input")   ;
+	$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 			
+}	
  
  //=======================================================================
  	//取得偏好設定
@@ -35,12 +50,22 @@ include_once "header.php";
  	//echo $dhcp_prefix ;
  
  	
+	//取得登記資料
+	$sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  order by mac "  ;
+ 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
+ 	while($row=$xoopsDB->fetchArray($result)){
+
+		$row["mac"]=strtoupper($row["mac"]) ;
+   		$input_data[$row['mac']] .= $row['user']  .'-' . $row['place'];
+ 	}       	
+ 	
  //取得最近時間 
  	$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by recode_time DESC  " ;
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
  	$date_list=$xoopsDB->fetchArray($result) ;
  	 $last_recode_time = $date_list['recode_time'] ;
  	 
+//排序 	 
 	if ($_POST['sort']) 
 		$_GET['sort'] = $_POST['sort'] ;
 	if ($_GET['sort']) 
@@ -55,6 +80,7 @@ include_once "header.php";
  	while($row=$xoopsDB->fetchArray($result)){
        		$ipv4 = preg_split('/[:-]/' ,$row["mac"] ) ;
        		$row['ipv6'] = ($ipv4[0]^2) .$ipv4[1] .':' . $ipv4[2]  .'ff:fe' .$ipv4[3].':' . $ipv4[4] . $ipv4[5] ;
+       		//統一呈現大寫
        		$row["mac"]=strtoupper($row["mac"]) ;
 
       		if ($dhcp_mac_list[$row["mac"]] ==1) {
@@ -72,6 +98,9 @@ include_once "header.php";
        			$open_mode['today']++ ;
 
    		}
+   		
+   		//填報
+   		$row['input'] = $input_data[$row['mac']]  ;
 
    		//動態 IP 不列入下方文字框
   		if  (substr ($row['ip'],0,10) == $dhcp_prefix )  {
@@ -121,6 +150,8 @@ include_once "header.php";
  
 	}		
 
+	
+ 
 
 
 /*-----------秀出結果區--------------*/
@@ -133,6 +164,8 @@ $xoopsTpl->assign("err_comp_list",$err_comp_list);
 $xoopsTpl->assign("open_mode",$open_mode);
 $xoopsTpl->assign("empt_count",$empt_count);
 $xoopsTpl->assign("empt_list",$empt_list);
+
+$xoopsTpl->assign("input_data",$input_data);
  
 $xoopsTpl->assign("dhcp_List",$dhcp_List);
 //$xoopsTpl->assign("dhcp_mac_no_in_data",$dhcp_mac_no_in_data);

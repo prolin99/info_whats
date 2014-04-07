@@ -97,7 +97,7 @@ $modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE5';
 $modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC5';
 $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="http://www.syps.tn.edu.tw/tmp/nmap.txt" ;
+$modversion['config'][$i]['default'] ="http://你的網址/nmap.txt" ;
 
 $i++ ;
 $modversion['config'][$i]['name'] = 'iw_ip_neigh_url';
@@ -105,7 +105,7 @@ $modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE8';
 $modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC8';
 $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="http://www.syps.tn.edu.tw/tmp/ip-neigh-show.txt" ;
+$modversion['config'][$i]['default'] ="http://你的網址/arp.txt" ;
 
 
 $i++ ;
@@ -122,7 +122,7 @@ $modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE7';
 $modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC7';
 $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="whatsup00" ;
+$modversion['config'][$i]['default'] ="info_whats" ;
 
 
 $i++ ;

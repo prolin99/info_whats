@@ -14,4 +14,11 @@ CREATE TABLE `mac_info` (
   PRIMARY KEY (`item_id`)
 ) ENGINE=MyISAM ;
 
- 
+ CREATE TABLE IF `mac_input` (
+  `id` int(11) DEFAULT NULL AUTO_INCREMENT,
+  `ip` varchar(100) NOT NULL,
+  `mac` varchar(100) NOT NULL,
+  `user` varchar(100) NOT NULL,
+  `place` varchar(100) NOT NULL,
+  `uid` int(11) NOT NULL
+) ENGINE=MyISAM  ;

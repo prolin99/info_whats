@@ -7,31 +7,39 @@
 共 <{$all_rec}> 筆 
 <form id="form1" name="form1" method="post" action="index.php">
   新MAC<input name="new_mac" type="text" id="new_mac" value="" class="span4" /> 
-  <input type="submit" name="Submit2" value="新增" id="Submit2" />
+  <input type="submit" name="Submit_add" value="新增" id="Submit2" />
+  <button type="submit" class="btn btn-danger" name='btn_clear' value='btn_clear' onclick="return confirm('確定要清除嗎?')" >清除登記資料</button>
 
 </form>
-<div class="row-fluid alert  alert-info">
+<div class="alert  alert-info">
+	<div class="row-fluid"> 
 	<div class="span1"><a href="?sort=kind">處室</a></div>
 	<div class="span2"><a href="?sort=ip_id">IP</a></div>
 	<div class="span2"><a href="?sort=mac">MAC</a></div>
 	<div class="span2"><a href="?sort=comp">name</a></div>
-	<div class="span2"><a href="?sort=id">id</a>動作</div>
+	<div class="span1"><a href="?sort=id">id</a></div>
 
-	<div class="span3"><a href="?sort=recode_time">時間</a></div>
+	<div class="span2"><a href="?sort=recode_time">時間</a></div>
+	<div class="span2">填報記錄</div>
+	</div>
 </div>
 <{ $ii++ }>
 <{foreach from=$comp_list item=comp key=cid}>
 
 <{if ($comp.now==1 ) }>
 	<{ if ($comp.dhcp) }>
-		<div class="row-fluid alert alert-error" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+		<div class="alert  alert-error">
+		<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
 	<{else}>
-		<div class="row-fluid alert  alert-success" id="div_<{$comp.id}>" data='<{ $ii }>'  >
+		<div class="alert  alert-success">
+		<div class="row-fluid"    id="div_<{$comp.id}>" data='<{ $ii }>'  >
 	<{/if}>
 <{elseif ($comp.now==2 )}>
-	<div class="row-fluid alert  alert-info" id="div_<{$comp.id}>" data='<{ $ii }>'  >
+	<div class="alert  alert-info">
+	<div class="row-fluid"    id="div_<{$comp.id}>" data='<{ $ii }>'  >
 	<{else}>
-	<div class="row-fluid alert" id="div_<{$comp.id}>" data='<{ $ii }>'  >
+	<div class="alert">
+	<div class="row-fluid " id="div_<{$comp.id}>" data='<{ $ii }>'  >
 <{/if}>
 
 	<div class="span1"><span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
@@ -40,13 +48,13 @@
 	</div>
 	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
 	<div class="span2"><span class="label label-info"><{$comp.comp}> </span><{$comp.ps}></div>
-	<div class="span2"><span class="badge badge-inverse"><{$comp.id}></span>
+	<div class="span1"><span class="badge badge-inverse"><{$comp.id}></span>
 	    <span class="edit"><i class="icon-pencil"></i></span>
-	    
 	  </div>
-
-	<div class="span3"><{$comp.recode_time}><span class="del"><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
-
+	<div class="span2"><{$comp.recode_time}><span class="del"><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
+	<div class="span2"><{$comp.input}></div>
+	
+    </div>
 </div>
 
 <{/foreach}>
@@ -84,7 +92,7 @@ $("span.del").bind(
           		ajax_del( div_id) ;  // 刪除動作
            	//把這個 div 隱藏起來 
            	//alert(div_id) ;
-           	$(this).parent().parent().hide() ;
+           	$(this).parent().parent().parent().hide() ;
 	}
 );
  
@@ -119,18 +127,7 @@ $(document).on("click", "i.icon-pencil" ,  function(){
 );
 
 
-	
-
-/*
-$("span.edit").bind(
-	"click", function(){
-		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
-          		var div_id = $(this).parent().parent().attr("id")  ;
-          		alert(div_id) ;
-          		ajax_edit( div_id) ;  // 動作
-	}
-);
-*/
+ 
 function ajax_edit(div_id , div_id_ord ) {
 	$.ajax({
 		url: 'comp_edit.php',
@@ -186,12 +183,12 @@ function ajax_submit(form_id , div_id) {
 	});	 
  
 }
-
+/*
 $(document).on("click", "span.ip" ,  function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
           		var ip = $(this).attr("alt")  ;
  		//alert(ip) ;
-          		ajax_ip( ip) ;  // 動作
+          	//	ajax_ip( ip) ;  // 動作
 	}
  );
 function ajax_ip(ip) {
@@ -213,5 +210,5 @@ function ajax_ip(ip) {
 	});
 
 }
-
+*/
 </script>

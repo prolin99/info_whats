@@ -63,3 +63,16 @@ function get_mac() {
 	}	
 	return $data ;
 }
+
+
+
+function get_from_data($uid,$ip) {
+	global $xoopsDB;
+	if  ($ip) {
+		$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip' and $uid='$uid'  " ;
+ 		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
+ 		$data_list=$xoopsDB->fetchArray($result) ;
+		
+ 		return $data_list ;
+	}		
+}	

@@ -16,21 +16,47 @@ $xoopsOption['template_main'] = "info_index_tpl.html";
 
 
  
- 
+$uid=$xoopsUser->uid() ;
 /*-----------執行動作判斷區----------*/
 //$op=empty($_REQUEST['op'])?"":$_REQUEST['op'];
- //判別是否在本校 IP 
 
+ 
+if ($_POST['act_add']  and $_POST['user']  ) {
+
+ 
+	$myts =& MyTextSanitizer::getInstance();
+	$_POST['ip']=$myts->addSlashes($_POST['ip']);
+	$_POST['mac']=$myts->addSlashes($_POST['mac']);
+  	$_POST['user']=$myts->addSlashes($_POST['user']);
+  	$_POST['place']=$myts->addSlashes($_POST['place']);
+  	if ($_POST['id'] ) 
+  		$sql = "UPDATE " . $xoopsDB->prefix("mac_input") .  " set  user ='{$_POST['user']}' , place='{$_POST['place']}' where id = '{$_POST['id']}' " ;
+   	else 
+  		$sql = " insert into  " . $xoopsDB->prefix("mac_input") .  "  (id ,ip ,mac ,user,place,uid )  
+				               values ('','{$_POST['ip']}','{$_POST['mac']}','{$_POST['user']}' , '{$_POST['place']}' ,'$uid' ) " ;
+	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
+	
+	$have_input ='記錄已寫入' ;
+	
+}	
+
+
+//--------------------------------------------------------------------------------
  
 $data = get_mac() ;
 
+//取得自已填報資料
+$data_get = get_from_data($uid , $data['ip'] ) ;
 
-
+ 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign( "toolbar" , toolbar_bootstrap($interface_menu)) ;
 $xoopsTpl->assign( "bootstrap" , get_bootstrap()) ;
 $xoopsTpl->assign( "jquery" , get_jquery(true)) ;
 $xoopsTpl->assign( "data" , $data ) ;
+$xoopsTpl->assign( "data_get" , $data_get ) ;
+$xoopsTpl->assign( "have_input" , $have_input ) ;
+$xoopsTpl->assign( "input_mode" , $xoopsModuleConfig['iw_input']) ;
  
 include_once XOOPS_ROOT_PATH.'/footer.php';
 

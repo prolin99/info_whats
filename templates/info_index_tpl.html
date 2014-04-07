@@ -3,19 +3,27 @@
 <{$toolbar}>
 
 <{if ($data.ip)}>
+	<{if $have_input }>
+    		<div class='alert alert-success'><{ $have_input  }></div>
+    	<{/if}>	
     <form action="index.php"  method='post'>
     <fieldset>
     <legend>機器登記</legend>
     <label>你的IP ： <{ $data.ip }></label>
     <label>你的網卡序號 ： <{ $data.mac }></label>
     <label>保管人</label>
-    <input type="text" name='user' placeholder="使用人姓名…">
+    <input type="text" name='user' value='<{ $data_get.user }>' placeholder="使用人姓名…">
     <label>機器地點</label>
-    <input type="text" name='place' placeholder="地點…">	
+    <input type="text" name='place' value='<{ $data_get.place }>' placeholder="地點…">	
     <br/>
+    <{if ($input_mode) }>
     <input name='ip' type='hidden' value='<{ $data.ip }>' />
     <input name='mac' type='hidden' value='<{ $data.mac }>' />
+    <input name='id' type='hidden' value='<{ $data_get.id }>' />
     <button type="submit" class="btn btn-success" name='act_add' value='act_add' >確定</button>
+    <{else}>
+    	<div class='alert alert-error'>現在不開放登記！<div>
+    <{/if}>
     </fieldset>
     </form>
 <{else}>

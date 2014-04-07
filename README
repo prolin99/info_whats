@@ -3,7 +3,8 @@
 學校的網路設備越來越多，而且分散到各個地方。
 使用 nmap 等掃描網段工具，來記錄校內所有的網路設備，並加以記錄。
 這些記錄，可以轉換成動態分配表。
-有些 ipv6 
+
+在前台可以開放教職員登記使用的機器，但最後要再手動編修到主表中。
 
 【環境需求】
 =================================================
@@ -35,11 +36,13 @@
 	#取得 ipv6 資訊
 	#在偏好設定，arp 掃描結果檔   http://網址/arp.txt
 	ping6 -I eth0 -c3 ff02::1 > /dev/null
-	/sbin/ip neigh show > /var/www/html/tmp/arp.txt
+	/sbin/ip neigh show > /var/www/html/arp.txt
 	
 	
-	#其中代碼為偏好設定--定時連線的代號
-	wget -O /dev/null http://你的網址/modules/info_whats/comp.php?do=代號   2> /dev/null
+	#其中代碼為偏好設定--定時連線的代號 (現預設 info_whats )
+	wget -O /dev/null http://你的網址/modules/info_whats/comp.php?do=info_whats   2> /dev/null
+	
+	
 3.偏好設定，要和 ip-scan.sh 做配合。
 4.在後台管理中，可以修改機器名稱，IP，方便你做記錄。在下方會列出	DHCP 分配表，可以方便你再改寫伺服器中的 DHCPD 設定檔。
 5.在前台可以給教職員登記自已使用的機器。這部份會判別是否在校內網域，登錄時會取得 MAC 序號。 在偏好設定中可以指定是否開放登記。

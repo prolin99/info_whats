@@ -23,12 +23,12 @@ if ($_POST['now_id']) {
 	<div class='span2'><span class='ip' alt='{$row['ip']}'>{$row['ip']}</span></div>
 	<div class='span2'>{$row['mac']}</div>
 	<div class='span2'><span class='label label-info'>{$row['comp']} </span>{$row['ps']}</div>
-	<div class='span2'><span class='badge badge-inverse'>{$row['id']}</span>
+	<div class='span1'><span class='badge badge-inverse'>{$row['id']}</span>
 	    <span class='edit'><i class='icon-pencil'></i></span>
 	    
 	  </div>
 
-	<div class='span3'>{$row['recode_time']}
+	<div class='span2'>{$row['recode_time']}
 	<span class='del'><i class='icon-trash'></i>
 	<br /><span class='label'>{$row['creat_day']}</span>
 	</span>   
