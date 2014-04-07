@@ -52,11 +52,14 @@ function get_mac() {
 		if  ($v !== false  )
 		  	$in_school = true  ; 
   	}
+  	//echo "/sbin/ip neigh |grep $remoIP "  ;
 	
   	if  ($in_school) {
 		$data['ip'] =$remoIP ;
+		//$remoIP='192.168.1.5' ;
  		//由 ip neigh 中找相符列，再切開取得 mac 卡號
- 		$ip_list =  exec("ip neigh |grep $remoIP " ) ;
+ 		 
+ 		$ip_list =  exec("/sbin/ip neigh |grep $remoIP " ) ;
  		$ipv6_arr = preg_split('/\s+/' ,$ip_list ) ;
  		$data['mac'] =  $ipv6_arr[4] ;
  

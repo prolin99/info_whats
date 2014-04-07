@@ -56,7 +56,8 @@ if ($_POST['btn_clear'] ) {
  	while($row=$xoopsDB->fetchArray($result)){
 
 		$row["mac"]=strtoupper($row["mac"]) ;
-   		$input_data[$row['mac']] .= $row['user']  .'-' . $row['place'];
+   		$input_data[$row['mac']]['ps'] .= $row['user']  .'-' . $row['place'];
+   		$input_data[$row['mac']]['ip'] .= $row['ip'] ;
  	}       	
  	
  //取得最近時間 
@@ -73,7 +74,9 @@ if ($_POST['btn_clear'] ) {
 	else 
 		$sortby = 'id' ;
 	if (  $sortby=='id' ) $sortby = 'id DESC' ;
- 
+	
+	
+ //取得資料表
   	$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by  $sortby  ,  recode_time DESC " ;
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  
@@ -100,8 +103,10 @@ if ($_POST['btn_clear'] ) {
    		}
    		
    		//填報
-   		$row['input'] = $input_data[$row['mac']]  ;
-
+   		$row['input'] = $input_data[$row['mac']]['ps']  ;
+		$input_data[$row['mac']]['in'] = true ;				//已在資料庫中
+		
+		
    		//動態 IP 不列入下方文字框
   		if  (substr ($row['ip'],0,10) == $dhcp_prefix )  {
 			$ip_k = preg_split("/[.]/", $row['ip']);
@@ -116,7 +121,22 @@ if ($_POST['btn_clear'] ) {
 			
  	} //while
 
- //是否有重覆
+ 	//登記資料，但不在掃描記錄中，加入資料中
+ 	foreach ($input_data as $mac =>$comp_row) {
+		if ($comp_row['in'] <> true ) {
+			$ip_k = preg_split("/[.]/", $comp_row['ip']);
+			$ip_id = $ip_k[2]*1000 + $ip_k[3] ;
+			$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,mac ,recode_time ,creat_day , ps, ip_id)  
+				               values ('','{$comp_row['ip']}','$mac',now() , now() ,'{$comp_row['ps']}','$ip_id' ) " ;
+				               
+			$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 						
+			$add_FG = true ;
+		}	
+ 	}	
+ 	if ($add_FG) //有新增資料，重整一次
+ 		redirect_header($_SERVER['PHP_SELF'],3, '資料更新!' );
+ 	
+ 	//是否有 IP 重覆
  	$sql = " SELECT ip, count( * ) AS cc     FROM " . $xoopsDB->prefix("mac_info") .  
                 	"  GROUP BY ip           HAVING cc >1 " ;
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
@@ -124,6 +144,7 @@ if ($_POST['btn_clear'] ) {
    		$err_comp_list[] = $row ;
  	}                
  
+ 	//總筆數
  	$sql = " select count(*) as cc from " . $xoopsDB->prefix("mac_info")  ;
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  	$date_list=$xoopsDB->fetchArray($result) ;
@@ -131,7 +152,7 @@ if ($_POST['btn_clear'] ) {
  
 
 	
- 	//IPv4
+ 	//IPv4 目前還空的 列表
  	$ip4_array = preg_split('/,/' , $data['ipv4'] ) ;
  	foreach ($ip4_array as $k => $ipv) {
 		//空的 IP 
