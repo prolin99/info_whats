@@ -56,14 +56,31 @@ function get_mac() {
 	
   	if  ($in_school) {
 		$data['ip'] =$remoIP ;
-		//$remoIP='192.168.1.5' ;
- 		//由 ip neigh 中找相符列，再切開取得 mac 卡號
- 		 
- 		$ip_list =  exec("/sbin/ip neigh |grep $remoIP " ) ;
- 		$ipv6_arr = preg_split('/\s+/' ,$ip_list ) ;
- 		$data['mac'] =  $ipv6_arr[4] ;
+
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			$arp=`arp -a $remoIP`;
+			$lines=explode("\n", $arp);
+
+			#look for the output line describing our IP address
+			foreach($lines as $line)		{
+				$cols=preg_split('/\s+/', trim($line));
+				if ($cols[0]==$remoIP)
+				{
+					$data['mac'] =$cols[1];
+				}
+			}
+			
+		}else {	
+			
+			//LINUX 由 ip neigh 中找相符列，再切開取得 mac 卡號
+			
+			$ip_list =  exec("/sbin/ip neigh |grep $remoIP " ) ;
+			$ipv6_arr = preg_split('/\s+/' ,$ip_list ) ;
+			$data['mac'] =  $ipv6_arr[4] ;
+		}
  
 	}	
+
 	return $data ;
 }
 
