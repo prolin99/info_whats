@@ -32,7 +32,7 @@ if ($_GET['edit_id'] ) {
 		</div>	
 		<div class='span3'>
   			<input class='span8' name='txt_comp' type='text' id='txt_comp' value='{$row['comp']}'  placeholder='機器名(限用英數文字)'/><br />
-			<input  class='span8' name='txt_ps' type='text' id='txt_ps' value='{$row['ps']}' placeholder='說明' /> 
+			<input  class='span8' name='txt_ps' type='text' id='txt_ps' value='{$row['ps']}' placeholder='說明(不設固定IP，則略)' /> 
 		</div>	
 		<div class='span3'>
 			

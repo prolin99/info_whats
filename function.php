@@ -89,10 +89,24 @@ function get_mac() {
 function get_from_data($uid,$ip) {
 	global $xoopsDB;
 	if  ($ip) {
-		$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip' and $uid='$uid'  " ;
+		//$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip' and $uid='$uid'  " ;
+		$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip'  order by id DESC  " ;
  		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  		$data_list=$xoopsDB->fetchArray($result) ;
 		
  		return $data_list ;
 	}		
 }	
+
+
+function get_from_rec($uid,$mac) {
+	global $xoopsDB;
+	if  ($mac) {
+		//$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip' and $uid='$uid'  " ;
+		$sql = " select comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where mac ='$mac'   " ;
+ 		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
+ 		$data_list=$xoopsDB->fetchArray($result) ;
+		
+ 		return $data_list ;
+	}		
+}

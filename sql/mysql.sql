@@ -13,6 +13,7 @@ CREATE TABLE `mac_info` (
   phid varchar(20) NOT NULL,
   kind varchar(20) NOT NULL,
   ip_id int(11) NOT NULL,
+  `point` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (id),
   UNIQUE KEY mac (mac),
   KEY ip (ip)

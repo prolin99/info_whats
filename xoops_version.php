@@ -19,8 +19,8 @@ $modversion['dirname'] = basename(dirname(__FILE__));		//模組目錄名稱
 
 //---模組狀態資訊---//
 //$modversion['status_version'] = '0.8';
-$modversion['release_date'] = '2014-04-01';
-$modversion['module_website_url'] = 'http://www.syps.tn.edu.tw';
+$modversion['release_date'] = '2014-04-10';
+$modversion['module_website_url'] = 'https://github.com/prolin99/info_whats';
 $modversion['module_website_name'] = 'prolin';
 $modversion['module_status'] = 'release';
 $modversion['author_website_url'] = 'http://www.syps.tn.edu.tw';

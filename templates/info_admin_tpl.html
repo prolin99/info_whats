@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
 
 <div class="row-fluid">
-
+<{if (! $point) }>
 共 <{$all_rec}> 筆 
 <form id="form1" name="form1" method="post" action="index.php">
   新MAC<input name="new_mac" type="text" id="new_mac" value="" class="span4" /> 
@@ -11,6 +11,7 @@
   <button type="submit" class="btn btn-danger" name='btn_clear' value='btn_clear' onclick="return confirm('確定要清除嗎?')" >清除登記資料</button>
 
 </form>
+<{/if}>
 <div class="alert  alert-info">
 	<div class="row-fluid"> 
 	<div class="span1"><a href="?sort=kind">處室</a></div>
@@ -42,27 +43,36 @@
 	<div class="row-fluid " id="div_<{$comp.id}>" data='<{ $ii }>'  >
 <{/if}>
 
-	<div class="span1"><span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
+	<div class="span1">
+	<{if ($comp.point) }>
+	<!---- 重要標記  -->
+	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_1' title='重要標記'><i class="icon-star"></i></span>
+	<{else}>
+	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_0'  title='重要標記'><i class="icon-star-empty"></i></span>
+	<{/if}>
+	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
 	<div class="span2"><span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span>
 		<span class="ip" alt="<{$comp.ip_v6}>"><{$comp.ipv6_last}></span>
 	</div>
+	<!---- 填報資料也加入  -->
 	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
 	<div class="span2"><span class="label label-info"><{$comp.comp}> </span><{$comp.ps}></div>
 	<div class="span1"><span class="badge badge-inverse"><{$comp.id}></span>
 	    <span class="edit"><i class="icon-pencil"></i></span>
 	  </div>
 	<div class="span2"><{$comp.recode_time}><span class="del"><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
-	<div class="span2"><{$comp.input}></div>
+	<div class="span2"><{if ($comp.input)}><span class='alert alert-error'><{$comp.input}></span><{/if}></div>
 	
     </div>
 </div>
 
 <{/foreach}>
- 
+<{if (! $point) }>
 共 <{$all_rec}> 筆 , 現在開機數 <{$open_mode.now}>  ,  本日開機數<{$open_mode.today}><br />
   <{foreach from=$err_comp_list item=comp key=cid}>
   錯誤：<{$comp.ip}> ---<{$comp.cc}> <br/>
   <{/foreach}>
+ <{/if}>
 <pre>
        <{$data.ip_rang}>
 </pre>  
@@ -70,8 +80,10 @@
 空 IP ：<{$empt_count}> 筆 <br />
 <{$empt_list}>
 </p>
-</div>
-<h3>DHCP 分配表</h3>
+
+
+<!--  動態分配的 IP 不會列在記錄表中  -->
+<h3>DHCP 分配表(注意：只呈現目前所在頁資料)</h3>
 <textarea name="dhcp" class="span10" rows="20"  >
  <{foreach from=$comp_list item=comp key=cid}>
  <{if ! ($comp.dhcp) }>
@@ -84,7 +96,10 @@
   <{/if}>
  <{/foreach}>
 </textarea>  
+</div>
 <script>
+
+//---------------刪除------------------------
 $("span.del").bind(
 	"click", function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
@@ -116,7 +131,7 @@ function ajax_del(div_id ) {
 	
 }
 
-
+//-----------編修--------------------------------
 $(document).on("click", "i.icon-pencil" ,  function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
           		var div_id = $(this).parent().parent().parent().attr("id")  ;
@@ -151,7 +166,7 @@ function ajax_edit(div_id , div_id_ord ) {
 
 
 
-
+//-----------save --------------------------------
 $(document).on("click", "span.ed" ,  function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
           		var form_id = $(this).parent().parent().attr("id")  ;
@@ -184,6 +199,7 @@ function ajax_submit(form_id , div_id) {
  
 }
 /*
+//----------------ip 搜尋登錄記錄
 $(document).on("click", "span.ip" ,  function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
           		var ip = $(this).attr("alt")  ;
@@ -211,4 +227,47 @@ function ajax_ip(ip) {
 
 }
 */
+
+
+
+
+//------- 標記為重要 ，圖示切換---
+$(document).on("click", "span.point" ,  function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
+          	var div_id = $(this).attr("data")  ;
+          	//alert(div_id) ;
+          	var splits = div_id.split('_') ;		//id _ mode
+          	//alert(splits[1]==0) ;
+          	if (splits[1] == 0){
+          		$('#point_'  + splits[0]).attr('data',splits[0] +'_'+'1') ; 
+          		$('#point_'  + splits[0]).html('<i class="icon-star"></i>') ; 	
+          	}else {
+          		$('#point_'  + splits[0]).attr('data',splits[0] +'_'+'0') ; 
+          		$('#point_'  + splits[0]).html('<i class="icon-star-empty"></i>') ; 	
+          	}	
+ 		
+          	ajax_point( div_id) ;  // 動作
+	}
+ );
+function ajax_point(div_id) {
+	$.ajax({
+		url: 'comp_point.php',
+		type: 'GET',
+		dataType: 'html',
+		data: {id: div_id},
+	})
+	.done(function(data) {
+		console.log("success");
+		//alert(data) ;
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});
+
+}
+
+
 </script>

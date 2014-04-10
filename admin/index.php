@@ -75,9 +75,18 @@ if ($_POST['btn_clear'] ) {
 		$sortby = 'id' ;
 	if (  $sortby=='id' ) $sortby = 'id DESC' ;
 	
-	
+
  //取得資料表
   	$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by  $sortby  ,  recode_time DESC " ;
+  	
+  	//重要設備
+	if ($_GET['do']== 'point') 
+		$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where point=1 order by ip_id " ;  	
+	
+	//未登記(在說明中無資料者	
+	if ($_GET['do']== 'mystery') 
+		$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where ps='' or ps is null  order by   recode_time DESC " ;  	
+		
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  
  	while($row=$xoopsDB->fetchArray($result)){
@@ -110,7 +119,7 @@ if ($_POST['btn_clear'] ) {
    		//動態 IP 不列入下方文字框
   		if  (substr ($row['ip'],0,10) == $dhcp_prefix )  {
 			$ip_k = preg_split("/[.]/", $row['ip']);
-			if  ($ip_k[3] >$dhcp_last_beg and  $ip_k[3] <=$dhcp_last_end ) {
+			if  ($ip_k[3] >=$dhcp_last_beg and  $ip_k[3] <=$dhcp_last_end ) {
 	    			$row['dhcp'] = true ; 
 
 			}    
@@ -121,6 +130,7 @@ if ($_POST['btn_clear'] ) {
 			
  	} //while
 
+if (! $_GET['do'])  {
  	//登記資料，但不在掃描記錄中，加入資料中
  	foreach ($input_data as $mac =>$comp_row) {
 		if ($comp_row['in'] <> true ) {
@@ -137,9 +147,12 @@ if ($_POST['btn_clear'] ) {
 		}	
  	}	
  	
+ 	
  	if ($add_FG) //有新增資料，重整一次
  		redirect_header($_SERVER['PHP_SELF'],3, '資料更新!' );
- 	
+}
+	
+	
  	//是否有 IP 重覆
  	$sql = " SELECT ip, count( * ) AS cc     FROM " . $xoopsDB->prefix("mac_info") .  
                 	"  GROUP BY ip           HAVING cc >1 " ;
@@ -155,6 +168,12 @@ if ($_POST['btn_clear'] ) {
  	 $all_rec = $date_list['cc'] ; 	
  
 
+	$sql = " select ip  from " . $xoopsDB->prefix("mac_info") .  " order by  ip " ;
+ 
+	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
+ 	while($row=$xoopsDB->fetchArray($result)){
+   		$comp_list_use[$row['ip']] = true ;
+	}
 	
  	//IPv4 目前還空的 列表
  	$ip4_array = preg_split('/,/' , $data['ipv4'] ) ;
@@ -191,6 +210,7 @@ $xoopsTpl->assign("empt_count",$empt_count);
 $xoopsTpl->assign("empt_list",$empt_list);
 
 $xoopsTpl->assign("input_data",$input_data);
+$xoopsTpl->assign("point",$_GET['do']);
  
 $xoopsTpl->assign("dhcp_List",$dhcp_List);
 //$xoopsTpl->assign("dhcp_mac_no_in_data",$dhcp_mac_no_in_data);
