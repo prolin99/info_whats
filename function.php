@@ -52,11 +52,17 @@ function get_mac() {
 		if  ($v !== false  )
 		  	$in_school = true  ; 
   	}
-  	//echo "/sbin/ip neigh |grep $remoIP "  ;
+  	
+  	//dcs 問題 ：120.116.24.31:33748
+	$remoIP_array = preg_split('/:/' , $remoIP ) ;
+	if  (count($remoIP_array) ==2) 
+	 	$remoIP=$remoIP_array[0] ;
 	
   	if  ($in_school) {
 		$data['ip'] =$remoIP ;
 
+  		//取得  mac ，但得在同一網域中才能
+  		//echo "/sbin/ip neigh |grep $remoIP "  ;		
 		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 			$arp=`arp -a $remoIP`;
 			$lines=explode("\n", $arp);
@@ -65,9 +71,7 @@ function get_mac() {
 			foreach($lines as $line)		{
 				$cols=preg_split('/\s+/', trim($line));
 				if ($cols[0]==$remoIP)
-				{
 					$data['mac'] =$cols[1];
-				}
 			}
 			
 		}else {	
@@ -99,11 +103,11 @@ function get_from_data($uid,$ip) {
 }	
 
 
-function get_from_rec($uid,$mac) {
+function get_from_rec($uid, $ip ,$mac) {
 	global $xoopsDB;
-	if  ($mac) {
+	if  ($ip or $mac) {
 		//$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip' and $uid='$uid'  " ;
-		$sql = " select comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where mac ='$mac'   " ;
+		$sql = " select comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where  ip ='$ip'  or mac ='$mac'   " ;
  		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  		$data_list=$xoopsDB->fetchArray($result) ;
 		

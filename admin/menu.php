@@ -20,7 +20,7 @@ $i++ ;
 $adminmenu[$i]['title'] = '未登記';
 $adminmenu[$i]['link'] = "admin/index.php?do=mystery";
 $adminmenu[$i]['desc'] = '未登記設備' ;
-$adminmenu[$i]['icon'] = 'images/admin/main.png' ;
+$adminmenu[$i]['icon'] = 'images/admin/logadm.png' ;
 
 $i++ ;
 $adminmenu[$i]['title'] = "關於";

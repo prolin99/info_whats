@@ -50,7 +50,7 @@ $data = get_mac() ;
 //取得填報資料
 $data_get = get_from_data($uid , $data['ip'] ) ;
 //已寫入 mac_info 中的資料。
-$data_rec = get_from_rec($uid , $data['mac'] ) ;
+$data_rec = get_from_rec($uid , $data['ip'] , $data['mac'] ) ;
  
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign( "toolbar" , toolbar_bootstrap($interface_menu)) ;

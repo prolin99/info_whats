@@ -33,6 +33,7 @@ $modversion['min_php']= 5.2;
 $modversion['system_menu'] = 1;//---資料表架構---//
 $modversion['sqlfile']['mysql'] = "sql/mysql.sql";
 $modversion['tables'][1] = "mac_info";
+$modversion['tables'][1] = "mac_input";
 
 //---管理介面設定---//
 $modversion['hasAdmin'] = 1;
@@ -62,7 +63,7 @@ $modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE1';
 $modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC1';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="網段分配" ;
+$modversion['config'][$i]['default'] ="網段分配規劃填寫才此" ;
 
 $i++ ;
 $modversion['config'][$i]['name'] = 'iw_ip_v4';
@@ -70,7 +71,7 @@ $modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE2';
 $modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC2';
 $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="120.116.24,120.116.25." ;
+$modversion['config'][$i]['default'] ="120.116.24,120.116.25" ;
 
 $i++ ;
 $modversion['config'][$i]['name'] = 'iw_ip_v6';
@@ -88,7 +89,7 @@ $modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE4';
 $modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC4';
 $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="120.116.25.41~120.116.25.64" ;
+$modversion['config'][$i]['default'] ="120.116.25.42~120.116.25.62" ;
 
 
 $i++ ;

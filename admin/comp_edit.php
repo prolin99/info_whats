@@ -14,7 +14,7 @@ if ($_GET['edit_id'] ) {
  		$row=$xoopsDB->fetchArray($result) ;
 		
 		//取得登記資料
-		$sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  where mac ='{$row['mac']}'  "  ;
+		$sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  where mac ='{$row['mac']}'  or ip='{$row['ip']}' "  ;
  		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  		while($row2=$xoopsDB->fetchArray($result)){
    			$input_data .= $row2['user']  .'-' . $row2['place'];
@@ -39,7 +39,7 @@ if ($_GET['edit_id'] ) {
 			<input name='now_id' type='hidden' value='{$row['id']}' />
 			<input name='ord_id' type='hidden' value='{$_GET['edit_id_ord']}' />
 			<span class='ed'>save</span><br />
-			<div  class='badge badge-info'>$input_data </div>
+			<div  class='alert alert-error'>$input_data </div>
 		</div>
 		</form>
 		" ;	

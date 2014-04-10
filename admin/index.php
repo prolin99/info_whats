@@ -54,17 +54,22 @@ if ($_POST['btn_clear'] ) {
 	$sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  order by mac "  ;
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  	while($row=$xoopsDB->fetchArray($result)){
-
-		$row["mac"]=strtoupper($row["mac"]) ;
-   		$input_data[$row['mac']]['ps'] .= $row['user']  .'-' . $row['place'];
-   		$input_data[$row['mac']]['ip'] .= $row['ip'] ;
+		if ($row["mac"]) {
+			$row["mac"]=strtoupper($row["mac"]) ;
+   			$input_data[$row['mac']]['ps'] .= $row['user']  .'-' . $row['place'];
+   			$input_data[$row['mac']]['ip'] .= $row['ip'] ;
+		}else {
+			$row["mac"]=strtoupper($row["mac"]) ;
+   			$input_data[$row['ip']]['ps'] .= $row['user']  .'-' . $row['place'];
+   			$input_data[$row['ip']]['ip'] .= $row['ip'] ;			
+		}	
  	}       	
  	
  //取得最近時間 
  	$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by recode_time DESC  " ;
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
  	$date_list=$xoopsDB->fetchArray($result) ;
- 	 $last_recode_time = $date_list['recode_time'] ;
+ 	 $last_recode_time = substr($date_list['recode_time'],-3) ;
  	 
 //排序 	 
 	if ($_POST['sort']) 
@@ -102,17 +107,23 @@ if ($_POST['btn_clear'] ) {
         	$row['creat_day'] = substr(  $row['creat_day'] ,2,8) ;
         	$row['ipv6_last'] = substr($row['ip_v6'],-19) ;
         
-   		if ($row['recode_time']   == $last_recode_time) {
+   		if (substr($row['recode_time'],-3)   == $last_recode_time) {
+			//以分計，同時
        			$row['now'] =1 ;
        			$open_mode['now']++ ;
   		 }elseif ( substr($row['recode_time'],0,10)  == substr($last_recode_time,0,10) ) {
+			//以日計，同日
        			$row['now']=2 ;
        			$open_mode['today']++ ;
 
    		}
    		
    		//填報
-   		$row['input'] = $input_data[$row['mac']]['ps']  ;
+   		if  ($input_data[$row['mac']]['ps']  )
+   			$row['input'] = $input_data[$row['mac']]['ps']  ;
+   		else 	
+   			$row['input'] = $input_data[$row['ip']]['ps']  ;
+   			
 		$input_data[$row['mac']]['in'] = true ;				//已在資料庫中
 		
 		
@@ -139,11 +150,13 @@ if (! $_GET['do'])  {
 			$add_ipv6='' ;
 			if ($ip_id==0) 		// ipv6 
 				$add_ipv6= $comp_row['ip'] ;
-			$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,ip_v6 ,mac ,recode_time ,creat_day , ps, ip_id)  
+			if ($comp_row['ip'] <> $mac)	{
+				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,ip_v6 ,mac ,recode_time ,creat_day , ps, ip_id)  
 				               values ('','{$comp_row['ip']}', '$add_ipv6', '$mac',now() , now() ,'{$comp_row['ps']}','$ip_id' ) " ;
 				               
-			$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 						
-			$add_FG = true ;
+				$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 						
+				$add_FG = true ;
+			}
 		}	
  	}	
  	
