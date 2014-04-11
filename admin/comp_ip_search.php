@@ -7,16 +7,9 @@ include "config.php";
 if ($_GET['sip'] ) {
 	echo '查詢 ip : ' . $_GET['sip']   ."\n" ;
  
-	$sqlstr = " select log.*  , teach.name  from login_log_new  log  , teacher_base teach  
-		where   log.ip = '$_GET[sip] '   and log.teacher_sn = teach.teacher_sn
-		ORDER BY  log.`login_time` DESC   LIMIT 0 , 5 " ;
- 	//echo $sqlstr  ;
+	$ip_list =  shell_exec("nmap  --script smb-os-discovery -p 445 -Pn  " .  $_GET['sip']  ) ;
+	echo $ip_list  ;
  
-         	$recordSet = $CONN->Execute($sqlstr);
-         	while ($row = $recordSet->FetchRow() ) {
-               	 echo $row['login_time']    .  $row['name']   ."\n" ;
-
-         	} 
  
  
 }
