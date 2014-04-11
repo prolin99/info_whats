@@ -26,7 +26,7 @@ define("_MI_INFOWHOS_CONFIG_TITLE5","nmap掃描結果檔(配合 ip-scan.sh)");
 define("_MI_INFOWHOS_CONFIG_DESC5","nmap記錄檔，要放在網頁位置，飛蕃雲端使用者，請以 IP 網址。");
 
 define("_MI_INFOWHOS_CONFIG_TITLE6","DHCP記錄檔");
-define("_MI_INFOWHOS_CONFIG_DESC6","需要在同一台機器，暫時無作用");
+define("_MI_INFOWHOS_CONFIG_DESC6","需要在同一台機器，例：/var/lib/dhcpd/dhcpd.leases ");
 
 define("_MI_INFOWHOS_CONFIG_TITLE7","定時連線的代號(配合 ip-scan.sh)");
 define("_MI_INFOWHOS_CONFIG_DESC7","自訂一組代碼，.../modules/comp.php?do=代碼");

@@ -115,7 +115,7 @@ $modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE6';
 $modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC6';
 $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="/var/lib/dhcpd/dhcpd.leases" ;
+$modversion['config'][$i]['default'] ="" ;
 
 $i++ ;
 $modversion['config'][$i]['name'] = 'iw_key';

@@ -40,6 +40,7 @@ if ($_POST['btn_clear'] ) {
  	$data['ipv4'] = $xoopsModuleConfig['iw_ip_v4'] ;						//ipv4 網段
  	$data['ipv6'] = $xoopsModuleConfig['iw_ip_v6'] ;						//ipv6 網段
  	$dhcp_rang = preg_split('/~/',$xoopsModuleConfig['iw_ip_v4_dhcp']) ;	//動態分配區
+ 	$dhcp_log = preg_split('/~/',$xoopsModuleConfig['iw_ip_dhcp_log']) ;	//動態分配區記錄檔
 
  	$dhcp_begin = preg_split('/[\.]/' ,$dhcp_rang[0]) ;
  
@@ -49,8 +50,37 @@ if ($_POST['btn_clear'] ) {
  	$dhcp_last_end= $dhcp_end[3] ; 
  	//echo $dhcp_prefix ;
  
+ 	//----dhcp data mac to name ----------------
+	//"/var/lib/dhcpd/dhcpd.leases" 
+if ($dhcp_log) {	
+	$dhcp_lease = file_get_contents($dhcp_log , FILE_USE_INCLUDE_PATH);
+	$dhcp_arr= preg_split('/;/'  ,$dhcp_lease) ;
+
+	foreach ($dhcp_arr  as $k=>$v) {
+	
+		$dip = substr(stristr($v, 'lease'),6,-1) ;
+		if ($dip ) {
+			$dip_arr = explode(" ", $dip);
+			$gdip= trim($dip_arr[0]) ;
+		}
+
+		$mac = substr(stristr($v, 'hardware ethernet'),-17) ;
+		if ($mac ) {
+			$bmac= strtoupper($mac) ;
+			$dhcp_mac_list[$bmac] = 1;
+			$dhcp_mac_ip[$bmac] =$gdip ;
+		}
+		
+
+		$cl_name = substr(stristr($v, 'client-hostname'),17,-1) ;
+		if ($cl_name )  
+			$dhcp_List[$bmac]= $cl_name  ;
+	
+	}
+	
+}	
  	
-	//取得登記資料
+	//取得登記資料 --------------------------------------
 	$sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  order by mac "  ;
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  	while($row=$xoopsDB->fetchArray($result)){
@@ -81,7 +111,7 @@ if ($_POST['btn_clear'] ) {
 	if (  $sortby=='id' ) $sortby = 'id DESC' ;
 	
 
- //取得資料表
+ 	//取得資料表全部
   	$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by  $sortby  ,  recode_time DESC " ;
   	
   	//重要設備
@@ -99,11 +129,12 @@ if ($_POST['btn_clear'] ) {
        		$row['ipv6'] = ($ipv4[0]^2) .$ipv4[1] .':' . $ipv4[2]  .'ff:fe' .$ipv4[3].':' . $ipv4[4] . $ipv4[5] ;
        		//統一呈現大寫
        		$row["mac"]=strtoupper($row["mac"]) ;
-
+ 		
+       		//dhcp log 記錄中，是否已在資料庫中
       		if ($dhcp_mac_list[$row["mac"]] ==1) {
        			$dhcp_mac_list[$row["mac"]]  =0 ; 
        		}
-
+ 
         	$row['creat_day'] = substr(  $row['creat_day'] ,2,8) ;
         	$row['ipv6_last'] = substr($row['ip_v6'],-19) ;
         
@@ -115,7 +146,6 @@ if ($_POST['btn_clear'] ) {
 			//以日計，同日
        			$row['now']=2 ;
        			$open_mode['today']++ ;
-
    		}
    		
    		//填報
@@ -136,11 +166,14 @@ if ($_POST['btn_clear'] ) {
 			}    
 
   		 }	
+  		 
    		$comp_list[] = $row ;
    		$comp_list_use[$row['ip']] = true ;
 			
  	} //while
 
+ 	
+ 	//--------------------如在重要、未登記時，不處理這部份--------------------------------------------
 if (! $_GET['do'])  {
  	//登記資料，但不在掃描記錄中，加入資料中
  	foreach ($input_data as $mac =>$comp_row) {
@@ -160,7 +193,19 @@ if (! $_GET['do'])  {
 		}	
  	}	
  	
- 	
+ 	if ($dhcp_log) {
+		//dhcp log 尚未放資料庫的 
+		foreach ($dhcp_mac_list as $mac =>$v) {
+			if ($v==1) {
+				$dhcp_mac_no_in_data .= $mac  .' (' .  $dhcp_List[$mac]  .  ");  " ;
+				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  " (id ,ip ,comp , mac  ,workgroup , comp_dec ,recode_time ,creat_day )
+				              values ('','{$dhcp_mac_ip[$mac]}','{$dhcp_List[$mac]}','$mac','','',now() , now() ) " ;
+ 				$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 						
+				$add_FG = true ;
+			}
+		} 	
+	}
+	
  	if ($add_FG) //有新增資料，重整一次
  		redirect_header($_SERVER['PHP_SELF'],3, '資料更新!' );
 }
