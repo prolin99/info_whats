@@ -107,11 +107,13 @@
 $("span.del").bind(
 	"click", function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
-          		var div_id = $(this).parent().parent().attr("id")  ;
+		var div_id = $(this).parent().parent().attr("id")  ;
+		if(confirm('是否確定要刪除？')) {
           		ajax_del( div_id) ;  // 刪除動作
-           	//把這個 div 隱藏起來 
-           	//alert(div_id) ;
-           	$(this).parent().parent().parent().hide() ;
+           		//把這個 div 隱藏起來 
+           		//alert(div_id) ;
+           		$(this).parent().parent().parent().hide() ;
+           	}	
 	}
 );
  
