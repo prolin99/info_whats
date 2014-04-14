@@ -99,7 +99,7 @@ if ($dhcp_log) {
  	$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by recode_time DESC  " ;
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
  	$date_list=$xoopsDB->fetchArray($result) ;
- 	 $last_recode_time = substr($date_list['recode_time'],-3) ;
+ 	$last_recode_time = $date_list['recode_time'] ;  //判別到分
  	 
 //排序 	 
 	if ($_POST['sort']) 
@@ -137,8 +137,9 @@ if ($dhcp_log) {
  
         	$row['creat_day'] = substr(  $row['creat_day'] ,2,8) ;
         	$row['ipv6_last'] = substr($row['ip_v6'],-19) ;
-        
-   		if (substr($row['recode_time'],-3)   == $last_recode_time) {
+        	$row['now'] =0 ;
+   		if (substr($row['recode_time'],0,-3)   == substr( $last_recode_time,0,-3)) {
+			//echo substr($row['recode_time'],0,-3).'   ==' .  substr( $last_recode_time,0,-3)  .'<br>' ;
 			//以分計，同時
        			$row['now'] =1 ;
        			$open_mode['now']++ ;
