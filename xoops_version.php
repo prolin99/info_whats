@@ -33,7 +33,7 @@ $modversion['min_php']= 5.2;
 $modversion['system_menu'] = 1;//---資料表架構---//
 $modversion['sqlfile']['mysql'] = "sql/mysql.sql";
 $modversion['tables'][1] = "mac_info";
-$modversion['tables'][1] = "mac_input";
+$modversion['tables'][2] = "mac_input";
 
 //---管理介面設定---//
 $modversion['hasAdmin'] = 1;
