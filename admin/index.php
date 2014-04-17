@@ -20,6 +20,8 @@ include_once "header.php";
 //$op = empty($_REQUEST['op'])? "":$_REQUEST['op'];
 
 if ($_POST['Submit_add'] ) {
+    $myts =& MyTextSanitizer::getInstance();
+    $_POST['new_mac']=$myts->addSlashes($_POST['new_mac']);
 	//手動加入 mac 
 	$_POST['new_mac']= strtoupper(trim($_POST['new_mac']) ) ;
 	$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,mac ,recode_time ,creat_day ,ip_id)  

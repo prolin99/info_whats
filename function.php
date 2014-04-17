@@ -57,7 +57,8 @@ function get_mac() {
 	$remoIP_array = preg_split('/:/' , $remoIP ) ;
 	if  (count($remoIP_array) ==2) 
 	 	$remoIP=$remoIP_array[0] ;
-	
+
+    $data['mip'] =$remoIP ;
   	if  ($in_school) {
 		$data['ip'] =$remoIP ;
 
