@@ -1,6 +1,5 @@
 <?php 
  include_once "header.php";
-//刪除記錄
 if ($_GET['del_id'] ) {
 	$id_array = preg_split('/_/',$_GET['del_id'] ) ;
 	$id = $id_array[1]  ;

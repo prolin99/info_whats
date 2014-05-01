@@ -13,21 +13,7 @@ include_once TADTOOLS_PATH."/tad_function.php";
 /********************* 自訂函數 *********************/
 
 /********************* 預設函數 *********************/
-//圓角文字框
-function div_3d($title="",$main="",$kind="raised",$style="",$other=""){
-	$main="<table style='width:auto;{$style}'><tr><td>
-	<div class='{$kind}'>
-	<h1>$title</h1>
-	$other
-	<b class='b1'></b><b class='b2'></b><b class='b3'></b><b class='b4'></b>
-	<div class='boxcontent'>
- 	$main
-	</div>
-	<b class='b4b'></b><b class='b3b'></b><b class='b2b'></b><b class='b1b'></b>
-	</div>
-	</td></tr></table>";
-	return $main;
-}
+
 
 function get_mac() {
 	global $xoopsModuleConfig ;
@@ -57,8 +43,7 @@ function get_mac() {
 	$remoIP_array = preg_split('/:/' , $remoIP ) ;
 	if  (count($remoIP_array) ==2) 
 	 	$remoIP=$remoIP_array[0] ;
-
-    $data['mip'] =$remoIP ;
+	
   	if  ($in_school) {
 		$data['ip'] =$remoIP ;
 
@@ -91,11 +76,14 @@ function get_mac() {
 
 
 
-function get_from_data($uid,$ip) {
+function get_from_data($uid,$ip, $mac) {
 	global $xoopsDB;
 	if  ($ip) {
 		//$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip' and $uid='$uid'  " ;
-		$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip'  order by id DESC  " ;
+		if  ($mac)
+			$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where mac ='$mac'  order by id DESC  " ;
+		else 
+			$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip'  order by id DESC  " ;
  		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  		$data_list=$xoopsDB->fetchArray($result) ;
 		
@@ -107,8 +95,10 @@ function get_from_data($uid,$ip) {
 function get_from_rec($uid, $ip ,$mac) {
 	global $xoopsDB;
 	if  ($ip or $mac) {
-		//$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip' and $uid='$uid'  " ;
-		$sql = " select comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where  ip ='$ip'  or mac ='$mac'   " ;
+		if  ($mac) 
+			$sql = " select comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where   mac ='$mac'   " ;
+		else			
+			$sql = " select comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where  ip ='$ip'      " ;
  		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  		$data_list=$xoopsDB->fetchArray($result) ;
 		

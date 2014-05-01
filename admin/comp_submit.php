@@ -1,19 +1,9 @@
 <?php
  include_once "header.php";
- //修改完成，寫入
-if (is_int($_POST['now_id'])) {
-    $myts =& MyTextSanitizer::getInstance();
-    $_POST['txt_ip']=$myts->addSlashes($_POST['txt_ip']);
-    $_POST['txt_phid']=$myts->addSlashes($_POST['txt_phid']);
-    $_POST['txt_kind']=$myts->addSlashes($_POST['txt_kind']);
-    $_POST['txt_comp']=$myts->addSlashes($_POST['txt_comp']);
-
+ 
+if ($_POST['now_id']) {
   	$ip_k = preg_split("/[.]/", $_POST['txt_ip']);
-    //排序用 IP 轉數字
    	$ip_id=$ip_k[2]*1000 + $ip_k[3] ;
-
-
-    //寫入
      	$sql = " update " . $xoopsDB->prefix("mac_info") .  " set  phid ='$_POST[txt_phid]'  ,kind ='$_POST[txt_kind]'  ,  ip ='$_POST[txt_ip]' , comp='$_POST[txt_comp]',  ps='$_POST[txt_ps]'  ,  ip_id ='$ip_id'  where id='$_POST[now_id]' " ; 
 
       	$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 					
@@ -27,9 +17,11 @@ if (is_int($_POST['now_id'])) {
      		$row=$xoopsDB->fetchArray($result) ;
      		//echo $sqlstr  ;
      		$row['creat_day']= substr($row['creat_day'] ,2,8) ;
-    //輸出
+ 
      		echo " 
-	<div class='span1'><span class='badge badge-info'>{$_POST['ord_id']} </span>{$row['kind']}-{$row['phid']}</div>
+	<div class='span1'><!---- 重要標記  -->
+	<span id='point_{$row['id']}' class='point' title='重要標記' data='{$row['id']}_0'> <i class='icon-star-empty'></i></span>
+	<span class='badge badge-info'>{$_POST['ord_id']} </span>{$row['kind']}-{$row['phid']}</div>
 	<div class='span2'><span class='ip' alt='{$row['ip']}'>{$row['ip']}</span></div>
 	<div class='span2'>{$row['mac']}</div>
 	<div class='span2'><span class='label label-info'>{$row['comp']} </span>{$row['ps']}</div>

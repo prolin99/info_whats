@@ -20,8 +20,6 @@ include_once "header.php";
 //$op = empty($_REQUEST['op'])? "":$_REQUEST['op'];
 
 if ($_POST['Submit_add'] ) {
-    $myts =& MyTextSanitizer::getInstance();
-    $_POST['new_mac']=$myts->addSlashes($_POST['new_mac']);
 	//手動加入 mac 
 	$_POST['new_mac']= strtoupper(trim($_POST['new_mac']) ) ;
 	$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,mac ,recode_time ,creat_day ,ip_id)  
@@ -140,6 +138,7 @@ if ($dhcp_log) {
         	$row['creat_day'] = substr(  $row['creat_day'] ,2,8) ;
         	$row['ipv6_last'] = substr($row['ip_v6'],-19) ;
         	$row['now'] =0 ;
+        	$row['recode_time']=substr($row['recode_time'],0,-3)  ;
    		if (substr($row['recode_time'],0,-3)   == substr( $last_recode_time,0,-3)) {
 			//echo substr($row['recode_time'],0,-3).'   ==' .  substr( $last_recode_time,0,-3)  .'<br>' ;
 			//以分計，同時

@@ -12,7 +12,7 @@
     <label>你的IP ： <{ $data.ip }></label>
     <label>你的網卡序號 ： <{ $data.mac }></label>
     <label>已知的舊記錄 ： <{ $data_rec.comp }>- <{ $data_rec.ps }></label>
-    
+    <label>---------------以下填報-------------------</label>
     <label>保管人</label>
     <input type="text" name='user' value='<{ $data_get.user }>' placeholder="使用人姓名…">
     <label>機器地點</label>
@@ -31,5 +31,4 @@
     </form>
 <{else}>
 <h3>你的機器不在校內網域中！</h3>
-你的IP ： <{ $data.mip }>
 <{/if}>

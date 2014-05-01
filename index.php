@@ -6,10 +6,10 @@
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
 
-
+$xoopsOption['template_main'] = "info_index_tpl.html";
 include_once "header.php";
 include_once XOOPS_ROOT_PATH."/header.php";
-$xoopsOption['template_main'] = "info_index_tpl.html";
+
 
 
 /*-----------function區--------------*/
@@ -48,7 +48,7 @@ if ($_POST['act_add']  and $_POST['user']  ) {
 $data = get_mac() ;
 
 //取得填報資料
-$data_get = get_from_data($uid , $data['ip'] ) ;
+$data_get = get_from_data($uid , $data['ip'], $data['mac']  ) ;
 //已寫入 mac_info 中的資料。
 $data_rec = get_from_rec($uid , $data['ip'] , $data['mac'] ) ;
  
