@@ -63,7 +63,7 @@ $modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE1';
 $modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC1';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="網段分配規劃填寫才此" ;
+$modversion['config'][$i]['default'] ="網段分配規劃填寫在此" ;
 
 $i++ ;
 $modversion['config'][$i]['name'] = 'iw_ip_v4';
