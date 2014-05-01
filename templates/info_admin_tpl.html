@@ -30,7 +30,6 @@
 <{if ($comp.now==1 ) }>
 	<!--  現在存活  -->
 	<{ if ($comp.dhcp) }>
-		
 		<div class="alert  alert-error">
 		<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
 	<{else}>
@@ -39,8 +38,10 @@
 	<{/if}>
 <{elseif ($comp.now==2 )}>
 	<!--  本日存活  -->
+
 	<div class="alert  alert-info">
 	<div class="row-fluid"    id="div_<{$comp.id}>" data='<{ $ii }>'  >
+ 
 <{else}>
  	<!--  一日前  -->
 	<div class="alert">

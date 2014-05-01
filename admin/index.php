@@ -17,7 +17,7 @@ include_once "header.php";
 
  
 /*-----------執行動作判斷區----------*/
-//$op = empty($_REQUEST['op'])? "":$_REQUEST['op'];
+
 
 if ($_POST['Submit_add'] ) {
 	//手動加入 mac 
@@ -100,7 +100,7 @@ if ($dhcp_log) {
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
  	$date_list=$xoopsDB->fetchArray($result) ;
  	$last_recode_time = $date_list['recode_time'] ;  //判別到分
- 	 
+ 	// echo $last_recode_time ;
 //排序 	 
 	if ($_POST['sort']) 
 		$_GET['sort'] = $_POST['sort'] ;
@@ -139,8 +139,8 @@ if ($dhcp_log) {
         	$row['ipv6_last'] = substr($row['ip_v6'],-19) ;
         	$row['now'] =0 ;
         	$row['recode_time']=substr($row['recode_time'],0,-3)  ;
-   		if (substr($row['recode_time'],0,-3)   == substr( $last_recode_time,0,-3)) {
-			//echo substr($row['recode_time'],0,-3).'   ==' .  substr( $last_recode_time,0,-3)  .'<br>' ;
+   		if (substr($row['recode_time'],0,16)   == substr( $last_recode_time,0,16)) {
+			//echo  $row['ip']. substr($row['recode_time'],0,16).'   ==' .  substr( $last_recode_time,0,16)  .'<br>' ;
 			//以分計，同時
        			$row['now'] =1 ;
        			$open_mode['now']++ ;
