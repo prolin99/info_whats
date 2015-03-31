@@ -35,7 +35,7 @@ if ($_POST['act_add']  and $_POST['user']  ) {
    	else 
    	*/
   		$sql = " insert into  " . $xoopsDB->prefix("mac_input") .  "  (id ,ip ,mac ,user,place,uid )  
-				               values ('','{$_POST['ip']}','{$_POST['mac']}','{$_POST['user']}' , '{$_POST['place']}' ,'$uid' ) " ;
+				               values ('1','{$_POST['ip']}','{$_POST['mac']}','{$_POST['user']}' , '{$_POST['place']}' ,'$uid' ) " ;
 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
 	
 	$have_input ='記錄已寫入' ;

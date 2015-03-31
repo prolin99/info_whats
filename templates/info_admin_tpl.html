@@ -66,7 +66,7 @@
 	    <span class="edit"><i class="icon-pencil"></i></span>
 	  </div>
 	<div class="span2"><{$comp.recode_time}><span class="del"><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
-	<div class="span2"><{if ($comp.input)}><span class='alert alert-error'><{$comp.input}></span><{/if}></div>
+	<div class="span2"><{if ($comp.input)}><span class='alert alert-error'><{$comp.input}><i class="icon-trash del_input" data_ref="<{$comp.input_id}>"></i></span><{/if}></div>
 	
     </div>
 </div>
@@ -101,7 +101,13 @@
   <{/if}>
  <{/foreach}>
 </textarea>  
+
+<textarea name="dhcp_list" class="span10" rows="20"  >
+<{ include file="/var/lib/dhcpd/dhcpd.leases" }>
+</textarea>  
 </div>
+
+
 <script>
 
 //---------------刪除------------------------
@@ -121,6 +127,40 @@ $("span.del").bind(
 function ajax_del(div_id ) {
 	$.ajax({
 		url: 'comp_del.php',
+		type: 'GET',
+		dataType: 'html',
+		data: {del_id: div_id},
+	})
+	.done(function(data) {
+		//alert(div_id + data) ;
+		console.log("success");
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});
+	
+}
+
+//---------------刪除------------------------
+$("i.del_input").bind(
+	"click", function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
+		var div_id = $(this).attr("data_ref")  ;
+		//if(confirm('是否確定要刪除？')) {
+          		ajax_del_input( div_id) ;  // 刪除動作
+           		//把這個 div 隱藏起來 
+           		//alert(div_id) ;
+           		$(this).parent().hide() ;
+           	 
+	}
+);
+ 
+function ajax_del_input(div_id ) {
+	$.ajax({
+		url: 'ajax_del_input.php',
 		type: 'GET',
 		dataType: 'html',
 		data: {del_id: div_id},

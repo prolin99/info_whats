@@ -64,8 +64,9 @@ function get_mac() {
 		}else {	
 			
 			//LINUX 由 ip neigh 中找相符列，再切開取得 mac 卡號
-			
+			exec("/sbin/ip neigh") ;
 			$ip_list =  exec("/sbin/ip neigh |grep $remoIP " ) ;
+			//echo $remoIP ;
 			$ipv6_arr = preg_split('/\s+/' ,$ip_list ) ;
 			$data['mac'] =  $ipv6_arr[4] ;
 		}
@@ -87,7 +88,7 @@ function get_from_data($uid,$ip, $mac) {
 			$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip'  order by id DESC  " ;
  		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  		$data_list=$xoopsDB->fetchArray($result) ;
-		
+	 
  		return $data_list ;
 	}		
 }	
@@ -102,6 +103,9 @@ function get_from_rec($uid, $ip ,$mac) {
 			$sql = " select comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where  ip ='$ip'      " ;
  		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
  		$data_list=$xoopsDB->fetchArray($result) ;
+ 		// # 後文字不呈現
+ 		$keywords = preg_split("/#/", $data_list['ps'] );
+ 		$data_list['ps'] = $keywords [0] ;
 		
  		return $data_list ;
 	}		

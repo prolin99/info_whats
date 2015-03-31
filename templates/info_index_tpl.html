@@ -5,7 +5,8 @@
 <{if ($data.ip)}>
 	<{if $have_input }>
     		<div class='alert alert-success'><{ $have_input  }></div>
-    	<{/if}>	
+              <{else}>
+    	
     <form action="index.php"  method='post'>
     <fieldset>
     <legend>機器登記</legend>
@@ -29,6 +30,7 @@
     <{/if}>
     </fieldset>
     </form>
+    <{/if}> 
 <{else}>
 <h3>你的機器不在校內網域中！</h3>
 <{/if}>
