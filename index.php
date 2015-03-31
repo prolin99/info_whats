@@ -34,6 +34,8 @@ if ($_POST['act_add']  and $_POST['user']  ) {
   		$sql = "UPDATE " . $xoopsDB->prefix("mac_input") .  " set  user ='{$_POST['user']}' , place='{$_POST['place']}' where id = '{$_POST['id']}' " ;
    	else 
    	*/
+   	$uid = $uid+0 ;
+   	
   		$sql = " insert into  " . $xoopsDB->prefix("mac_input") .  "  (id ,ip ,mac ,user,place,uid )  
 				               values ('1','{$_POST['ip']}','{$_POST['mac']}','{$_POST['user']}' , '{$_POST['place']}' ,'$uid' ) " ;
 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
