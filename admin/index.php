@@ -23,7 +23,7 @@ if ($_POST['Submit_add'] ) {
 	//手動加入 mac 
 	$_POST['new_mac']= strtoupper(trim($_POST['new_mac']) ) ;
 	$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,mac ,recode_time ,creat_day ,ip_id)  
-				               values ('1','','{$_POST['new_mac']}',now() , now() ,'' ) " ;
+				               values ('0','','{$_POST['new_mac']}',now() , now() ,'' ) " ;
 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
 }	
 
@@ -192,7 +192,7 @@ if (! $_GET['do'])  {
 				$add_ipv6= $comp_row['ip'] ;
 			if ($comp_row['ip'] <> $mac)	{
 				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,ip_v6 ,mac ,recode_time ,creat_day , ps, ip_id)  
-				               values ('1','{$comp_row['ip']}', '$add_ipv6', '$mac',now() , now() ,'{$comp_row['ps']}','$ip_id' ) " ;
+				               values ('0','{$comp_row['ip']}', '$add_ipv6', '$mac',now() , now() ,'{$comp_row['ps']}','$ip_id' ) " ;
 				               
 				$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 						
 				$add_FG = true ;
@@ -206,7 +206,7 @@ if (! $_GET['do'])  {
 			if ($v==1) {
 				$dhcp_mac_no_in_data .= $mac  .' (' .  $dhcp_List[$mac]  .  ");  " ;
 				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  " (id ,ip ,comp , mac  ,workgroup , comp_dec ,recode_time ,creat_day )
-				              values ('1','{$dhcp_mac_ip[$mac]}','{$dhcp_List[$mac]}','$mac','','',now() , now() ) " ;
+				              values ('0','{$dhcp_mac_ip[$mac]}','{$dhcp_List[$mac]}','$mac','','',now() , now() ) " ;
  				$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 						
 				$add_FG = true ;
 			}

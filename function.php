@@ -64,11 +64,23 @@ function get_mac() {
 		}else {	
 			
 			//LINUX 由 ip neigh 中找相符列，再切開取得 mac 卡號
-			exec("/sbin/ip neigh") ;
-			$ip_list =  exec("/sbin/ip neigh |grep $remoIP " ) ;
-			//echo $remoIP ;
-			$ipv6_arr = preg_split('/\s+/' ,$ip_list ) ;
-			$data['mac'] =  $ipv6_arr[4] ;
+			//exec("/sbin/ip neigh") ;
+			// $remoIP="120.116.24.12" ;
+			$ip_list =  shell_exec("/sbin/ip neigh |grep $remoIP  " ) ;
+			$ip_list_n = preg_split('/\n+/' ,$ip_list ) ;	//多行時
+			//echo $ip_list."<br />" ;
+			//$ipv6_arr = preg_split('/\s+/' ,$ip_list ) ;
+			
+			foreach ($ip_list_n as $li => $line) {
+				//echo $line."<br />" ;
+				$ipv6_arr = preg_split('/\s+/' ,$line ) ;
+ 
+				if ( $ipv6_arr[0]==$remoIP ){
+					$data['mac'] =  $ipv6_arr[4] ;
+					//echo $data['mac']."<br />" ;
+				}	
+			}		 
+				
 		}
  
 	}	

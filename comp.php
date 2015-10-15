@@ -75,7 +75,7 @@ foreach ($lines as $line_num => $line) {
  
 			if (!$nip ) {
 				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,mac ,recode_time ,creat_day ,ip_id)  
-				               values ('1','$ip','$mac',now() , now() ,'$ip_id' ) " ;
+				               values ('0','$ip','$mac',now() , now() ,'$ip_id' ) " ;
 				$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 		
 				//echo "$sqlstr <br >" ;
 			}	else {
