@@ -20,9 +20,9 @@
     <input type="text" name='place' value='<{ $data_get.place }>' placeholder="地點(多台請加編號)…">	
     <br/>
     <{if ($input_mode) }>
-    <input name='ip' type='hidden' value='<{ $data.ip }>' />
+    <input name='ip' type='hidden' class='form-control' value='<{ $data.ip }>' />
     <input name='mac' type='hidden' value='<{ $data.mac }>' />
-    <input name='id' type='hidden' value='<{ $data_get.id }>' />
+    <input name='id' type='hidden'  class='form-control' value='<{ $data_get.id }>' />
     <button type="submit" class="btn btn-success" name='act_add' value='act_add' >儲存</button>
     <div class='alert alert-info'>如果以上資料不正確，請修改再儲存。</div>
     <{else}>
