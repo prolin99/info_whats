@@ -10,9 +10,9 @@
     <form action="index.php"  method='post'>
     <fieldset>
     <legend>機器登記</legend>
-    <label>你的IP ： <{ $data.ip }></label>
-    <label>你的網卡序號 ： <{ $data.mac }></label>
-    <label>已知的舊記錄 ： <{ $data_rec.comp }>- <{ $data_rec.ps }></label>
+    <label>你的IP ： <{ $data.ip }></label><br/>
+    <label>你的網卡序號 ： <{ $data.mac }></label><br/>
+    <label>已知的舊記錄 ： <{ $data_rec.comp }>- <{ $data_rec.ps }></label><br/>
     <label>---------------以下填報-------------------</label><br/>
     <label>保管人</label>
     <input type="text" name='user' value='<{ $data_get.user }>' placeholder="使用人姓名…"><br/>
