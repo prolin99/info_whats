@@ -39,7 +39,7 @@ $modversion['tables'][2] = "mac_input";
 $modversion['hasAdmin'] = 1;
 $modversion['adminindex'] = "admin/index.php";
 $modversion['adminmenu'] = "admin/menu.php";
- 
+
 //---使用者主選單設定---//
 $modversion['hasMain'] = 1;
 
@@ -52,7 +52,7 @@ $modversion['templates'][$i]['description'] = 'info_admin_tpl.html';
 $i++ ;
 $modversion['templates'][$i]['file'] = 'info_index_tpl.html';
 $modversion['templates'][$i]['description'] = 'info_index_tpl.html';
- 
+
 $i=0 ;
 //偏好設定
 
@@ -133,4 +133,20 @@ $modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC9';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default'] ="1" ;
+
+$i++ ;
+$modversion['config'][$i]['name'] = 'iw_alert';
+$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE11';
+$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC11';
+$modversion['config'][$i]['formtype']    = 'yesno';
+$modversion['config'][$i]['valuetype']   = 'int';
+$modversion['config'][$i]['default'] ="0" ;
+
+$i++ ;
+$modversion['config'][$i]['name'] = 'iw_alert_Email';
+$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE12';
+$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC12';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default'] ="" ;
 ?>

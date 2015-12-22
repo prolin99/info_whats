@@ -4,16 +4,16 @@
 
 <div class="row-fluid">
 <{if (! $point) }>
-共 <{$all_rec}> 筆 
+共 <{$all_rec}> 筆
 <form id="form1" name="form1" method="post" action="index.php">
-  新MAC<input name="new_mac" type="text" id="new_mac" value="" class="span4" /> 
+  新MAC<input name="new_mac" type="text" id="new_mac" value="" class="span4" />
   <input type="submit" name="Submit_add" value="新增" id="Submit2" />
   <button type="submit" class="btn btn-danger" name='btn_clear' value='btn_clear' onclick="return confirm('確定要清除嗎?')" >清除登記資料</button>
 
 </form>
 <{/if}>
 <div class="alert  alert-info">
-	<div class="row-fluid"> 
+	<div class="row-fluid">
 	<div class="span1"><a href="?sort=kind">處室</a></div>
 	<div class="span2"><a href="?sort=ip_id">IP</a></div>
 	<div class="span2"><a href="?sort=mac">MAC</a></div>
@@ -41,7 +41,7 @@
 
 	<div class="alert  alert-info">
 	<div class="row-fluid"    id="div_<{$comp.id}>" data='<{ $ii }>'  >
- 
+
 <{else}>
  	<!--  一日前  -->
 	<div class="alert">
@@ -49,11 +49,16 @@
 <{/if}>
 
 	<div class="span1">
-	<{if ($comp.point) }>
+	<{if ($comp.point==2) }>
 	<!---- 重要標記  -->
-	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_1' title='重要標記'><i class="icon-star"></i></span>
-	<{else}>
-	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_0'  title='重要標記'><i class="icon-star-empty"></i></span>
+	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_2' title='重要標記-離線警告'><i class="icon-bell"></i></span>
+	<{/if }>
+    <{if ($comp.point==1) }>
+	<!---- 重要標記  -->
+	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_1' title='重要標記-離線警告'><i class="icon-star"></i></span>
+	<{/if }>
+    <{if ($comp.point==0) }>
+	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_0'  title='重要標記-離線警告'><i class="icon-star-empty"></i></span>
 	<{/if}>
 	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
 	<div class="span2"><span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span>
@@ -67,7 +72,7 @@
 	  </div>
 	<div class="span2"><{$comp.recode_time}><span class="del"><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
 	<div class="span2"><{if ($comp.input)}><span class='alert alert-error'><{$comp.input}><i class="icon-trash del_input" data_ref="<{$comp.input_id}>"></i></span><{/if}></div>
-	
+
     </div>
 </div>
 
@@ -80,7 +85,7 @@
  <{/if}>
 <pre>
        <{$data.ip_rang}>
-</pre>  
+</pre>
 <p>
 空 IP ：<{$empt_count}> 筆 <br />
 <{$empt_list}>
@@ -92,19 +97,19 @@
 <textarea name="dhcp" class="span10" rows="20"  >
  <{foreach from=$comp_list item=comp key=cid}>
  <{if ! ($comp.dhcp) }>
-  #<{$comp.id}> ---  
-  host <{$comp.id}>_<{$comp.comp}> {  
-  # <{$comp.comp}> 
-  hardware ethernet <{$comp.mac}>; 
-  fixed-address <{$comp.ip}>; 
-  } 
+  #<{$comp.id}> ---
+  host <{$comp.id}>_<{$comp.comp}> {
+  # <{$comp.comp}>
+  hardware ethernet <{$comp.mac}>;
+  fixed-address <{$comp.ip}>;
+  }
   <{/if}>
  <{/foreach}>
-</textarea>  
+</textarea>
 
 <textarea name="dhcp_list" class="span10" rows="20"  >
 <{ include file="/var/lib/dhcpd/dhcpd.leases" }>
-</textarea>  
+</textarea>
 </div>
 
 
@@ -117,13 +122,13 @@ $("span.del").bind(
 		var div_id = $(this).parent().parent().attr("id")  ;
 		if(confirm('是否確定要刪除？')) {
           		ajax_del( div_id) ;  // 刪除動作
-           		//把這個 div 隱藏起來 
+           		//把這個 div 隱藏起來
            		//alert(div_id) ;
            		$(this).parent().parent().parent().hide() ;
-           	}	
+           	}
 	}
 );
- 
+
 function ajax_del(div_id ) {
 	$.ajax({
 		url: 'comp_del.php',
@@ -141,7 +146,7 @@ function ajax_del(div_id ) {
 	.always(function() {
 		console.log("complete");
 	});
-	
+
 }
 
 //---------------刪除------------------------
@@ -151,13 +156,13 @@ $("i.del_input").bind(
 		var div_id = $(this).attr("data_ref")  ;
 		//if(confirm('是否確定要刪除？')) {
           		ajax_del_input( div_id) ;  // 刪除動作
-           		//把這個 div 隱藏起來 
+           		//把這個 div 隱藏起來
            		//alert(div_id) ;
            		$(this).parent().hide() ;
-           	 
+
 	}
 );
- 
+
 function ajax_del_input(div_id ) {
 	$.ajax({
 		url: 'ajax_del_input.php',
@@ -175,7 +180,7 @@ function ajax_del_input(div_id ) {
 	.always(function() {
 		console.log("complete");
 	});
-	
+
 }
 
 //-----------編修--------------------------------
@@ -189,7 +194,7 @@ $(document).on("click", "i.icon-pencil" ,  function(){
 );
 
 
- 
+
 function ajax_edit(div_id , div_id_ord ) {
 	$.ajax({
 		url: 'comp_edit.php',
@@ -201,14 +206,14 @@ function ajax_edit(div_id , div_id_ord ) {
 		//alert(div_id + data) ;
 		console.log("success");
 		$('#'+div_id).html(data );
- 
+
 	})
 	.fail(function() {
 		console.log("error");
 	})
 	.always(function() {
 		console.log("complete");
-	});	
+	});
 }
 
 
@@ -218,7 +223,7 @@ $(document).on("click", "span.ed" ,  function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
           		var form_id = $(this).parent().parent().attr("id")  ;
           		var div_id = $(this).parent().parent().parent().attr("id")  ;
-          		//$(this).parent().parent().parent().attr("id") 
+          		//$(this).parent().parent().parent().attr("id")
           		//alert(div_id + form_id);
           		ajax_submit( form_id , div_id) ;  // 動作
 	}
@@ -229,23 +234,23 @@ function ajax_submit(form_id , div_id) {
 		url: 'comp_submit.php',
 		type: 'POST',
 		dataType: 'html',
-		data: $('#'+form_id ).serialize() , 
+		data: $('#'+form_id ).serialize() ,
 
 	})
 	.done(function(data) {
 		//alert(div_id + data) ;
 		console.log("success");
 		$('#'+div_id).html(data );
-	}) 
+	})
 	.fail(function() {
 		console.log("error");
 	})
 	.always(function() {
 		console.log("complete");
-	});	 
- 
+	});
+
 }
- 
+
 //----------------ip 搜尋登錄記錄
 $(document).on("click", "span.ip" ,  function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
@@ -273,7 +278,7 @@ function ajax_ip(ip) {
 	});
 
 }
- 
+
 
 
 
@@ -286,22 +291,30 @@ $(document).on("click", "span.point" ,  function(){
           	var splits = div_id.split('_') ;		//id _ mode
           	//alert(splits[1]==0) ;
           	if (splits[1] == 0){
-          		$('#point_'  + splits[0]).attr('data',splits[0] +'_'+'1') ; 
-          		$('#point_'  + splits[0]).html('<i class="icon-star"></i>') ; 	
-          	}else {
-          		$('#point_'  + splits[0]).attr('data',splits[0] +'_'+'0') ; 
-          		$('#point_'  + splits[0]).html('<i class="icon-star-empty"></i>') ; 	
-          	}	
- 		
-          	ajax_point( div_id) ;  // 動作
+          		$('#point_'  + splits[0]).attr('data',splits[0] +'_'+'1') ;
+          		$('#point_'  + splits[0]).html('<i class="icon-star"></i>') ;
+                data_val= 1 ;
+          	}
+            if (splits[1] == 1){
+          		$('#point_'  + splits[0]).attr('data',splits[0] +'_'+'2') ;
+          		$('#point_'  + splits[0]).html('<i class="icon-bell"></i>') ;
+                data_val= 2 ;
+          	}
+            if (splits[1] == 2){
+          		$('#point_'  + splits[0]).attr('data',splits[0] +'_'+'0') ;
+          		$('#point_'  + splits[0]).html('<i class="icon-star-empty"></i>') ;
+                data_val= 0 ;
+          	}
+            //alert(data_val) ;
+          	ajax_point( div_id ,data_val) ;  // 動作
 	}
  );
-function ajax_point(div_id) {
+function ajax_point(div_id ,data_val) {
 	$.ajax({
 		url: 'comp_point.php',
 		type: 'GET',
 		dataType: 'html',
-		data: {id: div_id},
+		data: {id: div_id , gv : data_val },
 	})
 	.done(function(data) {
 		console.log("success");
@@ -312,6 +325,7 @@ function ajax_point(div_id) {
 	})
 	.always(function() {
 		console.log("complete");
+        //alert(data) ;
 	});
 
 }

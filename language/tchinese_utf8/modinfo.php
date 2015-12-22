@@ -12,7 +12,7 @@ define("_MI_INFOWHOS_DESC","網路設備記錄");
 
 define("_MI_INFOWHOS_CONFIG_TITLE1","網段分配");
 define("_MI_INFOWHOS_CONFIG_DESC1","網段分配規劃");
- 
+
 define("_MI_INFOWHOS_CONFIG_TITLE2","學校 ipv4");
 define("_MI_INFOWHOS_CONFIG_DESC2","以逗號分隔不同的網段開頭，如 192.168.1,192.168.2");
 
@@ -37,4 +37,10 @@ define("_MI_INFOWHOS_CONFIG_DESC8","arp 記錄檔，要放在網頁位置，飛�
 
 define("_MI_INFOWHOS_CONFIG_TITLE9","是否開放登記");
 define("_MI_INFOWHOS_CONFIG_DESC9","開放用戶登記使用的電腦");
+
+define("_MI_INFOWHOS_CONFIG_TITLE11","未啟動主機是否EMAIL警告");
+define("_MI_INFOWHOS_CONFIG_DESC11","設定為重要且要警告的主機偵測至未開機時，是否要 EMAIL 通知？");
+
+define("_MI_INFOWHOS_CONFIG_TITLE12","通知郵件位置");
+define("_MI_INFOWHOS_CONFIG_DESC12","EMAIL 位置");
 ?>

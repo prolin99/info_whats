@@ -24,34 +24,41 @@
 1.將新模組解壓，把目錄上傳到 modules 下。
 2.進入後台「模組→系統」進行模組安裝。
 
+【更新說明】
+=================================================
+0.4版
+    修正 IP 比對取 MAC 錯誤。
+    增加離線主機 email 通知訊息。
+
+
 【使用方法】
 =================================================
 1.要有一台 linux 系統，需要架有網頁功能，安裝 nmap 套件。
 2.建立定時執行機制 (10分鐘執行一次) ，注意其中需要配合偏好設定中的變數做調整。( 目錄中有 ip-scan.sh 檔案)
-   crontab -e -u root 
+   crontab -e -u root
    */10 * * * * /root/sh/ip-scan.sh
 
    ip-scan.sh  (內容)
 	#!/bin/bash
- 
+
 	PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 	export PATH
-	
+
 	#nmap 掃描網載，產生記錄文字檔，要放在網頁可以存區處 (以下為範例，要修改網域，及要存放的位置)，
 	#在偏好設定，nmap掃描結果檔   http://網址/nmap.txt
 	# 120.116.24.0/24 為新營國小網域，一定要更改
 	/usr/bin/nmap -sP 120.116.24.0/24 > /var/www/html/nmap.txt
-	
+
 	#取得 ipv6 資訊
 	#在偏好設定，arp 掃描結果檔   http://網址/arp.txt
 	ping6 -I eth0 -c3 ff02::1 > /dev/null
 	/sbin/ip neigh show > /var/www/html/arp.txt
-	
-	
+
+
 	#其中代碼為偏好設定--定時連線的代號 (現預設 info_whats )
 	wget -O /dev/null http://你的網址/modules/info_whats/comp.php?do=info_whats   2> /dev/null
-	
-	
+
+
 3.偏好設定，要和 ip-scan.sh 做配合。
 4.如果所在機器，提供 DHCP 伺服器，偏好中修改 DHCP 記錄檔。
 5.在後台管理中，可以修改機器名稱，IP，方便你做記錄。在下方會列出	DHCP 設訂內容，可以方便你再改寫伺服器中的 DHCP 設定檔。
