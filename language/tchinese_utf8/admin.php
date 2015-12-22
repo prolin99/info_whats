@@ -31,6 +31,6 @@ define("_MD_INPUT_VALIDATOR_RANGE","範圍： %s ～ %s");
 define("_MD_INPUT_VALIDATOR_RANGE_MIN","最小： %s");
 define("_MD_INPUT_VALIDATOR_RANGE_MAX","最大： %s");
 define("_MI_MODULE_ADMENU1", "主管理介面");
-define("_MI_MODULE_ADMENU2", "aaa");
+
 
 ?>
