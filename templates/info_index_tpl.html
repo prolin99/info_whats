@@ -6,7 +6,7 @@
 	<{if $have_input }>
     		<div class='alert alert-success'><{ $have_input  }></div>
               <{else}>
-    	
+
     <form action="index.php"  method='post'>
     <fieldset>
     <legend>機器登記</legend>
@@ -15,9 +15,9 @@
     <label>已知的舊記錄 ： <{ $data_rec.comp }>- <{ $data_rec.ps }></label><br/>
     <label>---------------以下填報-------------------</label><br/>
     <label>保管人</label>
-    <input type="text" name='user' value='<{ $data_get.user }>' placeholder="使用人姓名…"><br/>
+    <input type="text" name='user' value='<{ $data_get.user }>' class='form-control'  placeholder="使用人姓名…"><br/>
     <label>機器地點</label>
-    <input type="text" name='place' value='<{ $data_get.place }>' placeholder="地點(多台請加編號)…">	
+    <input type="text" name='place' value='<{ $data_get.place }>' class='form-control'  placeholder="地點(多台請加編號)…">
     <br/>
     <{if ($input_mode) }>
     <input name='ip' type='hidden' class='form-control' value='<{ $data.ip }>' />
@@ -30,7 +30,7 @@
     <{/if}>
     </fieldset>
     </form>
-    <{/if}> 
+    <{/if}>
 <{else}>
 <h3>你的機器不在校內網域中！</h3>
 <{/if}>
