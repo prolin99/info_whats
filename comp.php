@@ -15,7 +15,6 @@ include_once 'header.php';
 $key = $xoopsModuleConfig['iw_key'];
 
 if ($_GET['do'] == $key) {
-
     $nmap_url = $xoopsModuleConfig['iw_ip_scan_url'];
     //echo $nmap_url . '<br >' ;
 
@@ -124,28 +123,25 @@ foreach ($lines as $line_num => $line) {
     }
 
     //------主機離線 EMAIL 通知
-    $alert_fg =   $xoopsModuleConfig['iw_alert'];
-    $email =    $xoopsModuleConfig['iw_alert_Email'];
-
+    $alert_fg = $xoopsModuleConfig['iw_alert'];
+    $email = $xoopsModuleConfig['iw_alert_Email'];
 
     if ($alert_fg and $email) {
-        $title ="主機離線訊息警告" ;
-        //
-        $sql = ' select  *  from   '.$xoopsDB->prefix('mac_info')."  where    recode_time<= now()-30    and  point >=2 ";
-        echo $sql ;
-        $result = $xoopsDB->query($sql) ;
+        $title = '主機離線訊息警告';
+        //和最新記錄差 30 秒，代表離線，但如果一小時以上不再發 EMAIL
+        $sql = ' select  *  from   '.$xoopsDB->prefix('mac_info').'  where    (recode_time<= DATE_SUB(NOW(), INTERVAL 30 second)   )  and  (recode_time>= DATE_SUB(NOW(), INTERVAL 1 hour)   )      and  point >=2 ';
+        //echo $sql ;
+        $result = $xoopsDB->query($sql);
 
-        while ($row=  $xoopsDB->fetchArray($result)) {
-            $content .=" 主機離線 ip: {$row['ip']} -- {$row['ip_v6']} ,mac: {$row['mac']} ( {$row['comp']}  )  {$row['ps']} 最後上線時間: {$row['recode_time']}  <br />";
+        while ($row = $xoopsDB->fetchArray($result)) {
+            $content .= " 主機離線 ip: {$row['ip']} <br> IPv6:{$row['ip_v6']} <br> mac: {$row['mac']} <br>主機：( {$row['comp']}  )  {$row['ps']} <br>最後上線時間: {$row['recode_time']}  <br />";
         }
-        $xoopsMailer                           = &getMailer();
-        $xoopsMailer->multimailer->ContentType = "text/html";
-        $xoopsMailer->addHeaders("MIME-Version: 1.0");
-        $msg .= $xoopsMailer->sendMail($email, $title, $content, $headers)  ;
+        //echo $content ;
+        $xoopsMailer = &getMailer();
+        $xoopsMailer->multimailer->ContentType = 'text/html';
+        $xoopsMailer->addHeaders('MIME-Version: 1.0');
+        $msg .= $xoopsMailer->sendMail($email, $title, $content, $headers);
     }
-
-
-
 
     exit;
 }
