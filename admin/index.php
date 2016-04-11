@@ -40,7 +40,7 @@ if ($_POST['btn_clear'] ) {
  	$data['ipv4'] = $xoopsModuleConfig['iw_ip_v4'] ;						//ipv4 網段
  	$data['ipv6'] = $xoopsModuleConfig['iw_ip_v6'] ;						//ipv6 網段
  	$dhcp_rang = preg_split('/~/',$xoopsModuleConfig['iw_ip_v4_dhcp']) ;	//動態分配區
- 	$dhcp_log = preg_split('/~/',$xoopsModuleConfig['iw_ip_dhcp_log']) ;	//動態分配區記錄檔
+ 	$dhcp_log = $xoopsModuleConfig['iw_ip_dhcp_log'] ;	//動態分配區記錄檔
 
  	$dhcp_begin = preg_split('/[\.]/' ,$dhcp_rang[0]) ;
 
@@ -118,7 +118,7 @@ if ($dhcp_log) {
 
   	//重要設備
 	if ($_GET['do']== 'point')
-		$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where point >=1 order by ip_id " ;  	
+		$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where point >=1 order by ip_id " ;
 
 	//未登記(在說明中無資料者
 	if ($_GET['do']== 'mystery')
@@ -274,6 +274,7 @@ $xoopsTpl->assign("open_mode",$open_mode);
 $xoopsTpl->assign("empt_count",$empt_count);
 $xoopsTpl->assign("empt_list",$empt_list);
 
+$xoopsTpl->assign("dhcp_lease",$dhcp_lease);
 $xoopsTpl->assign("input_data",$input_data);
 $xoopsTpl->assign("point",$_GET['do']);
 
