@@ -8,7 +8,7 @@
 //---基本設定---//
 
 $modversion['name'] ='網路設備記錄';				//模組名稱
-$modversion['version']	= '0.5';				//模組版次
+$modversion['version']	= '0.6';				//模組版次
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';		//模組作者
 $modversion['description'] ='網路設備記錄';			//模組說明
 $modversion['credits']	= 'prolin';				//模組授權者
@@ -19,7 +19,7 @@ $modversion['dirname'] = basename(dirname(__FILE__));		//模組目錄名稱
 
 //---模組狀態資訊---//
 //$modversion['status_version'] = '0.8';
-$modversion['release_date'] = '2014-04-10';
+$modversion['release_date'] = '2016-06-01';
 $modversion['module_website_url'] = 'https://github.com/prolin99/info_whats';
 $modversion['module_website_name'] = 'prolin';
 $modversion['module_status'] = 'release';
