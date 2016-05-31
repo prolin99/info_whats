@@ -22,16 +22,16 @@ include_once "header.php";
 if ($_POST['Submit_add'] ) {
 	//手動加入 mac
 	$_POST['new_mac']= strtoupper(trim($_POST['new_mac']) ) ;
-	$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,mac ,recode_time ,creat_day ,ip_id)
-				               values ('0','','{$_POST['new_mac']}',now() , now() ,'' ) " ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,mac ,recode_time ,creat_day ,ip_id ,comp ,phid ,kind)
+				               values ('0','','{$_POST['new_mac']}',now() , now() , 0 ,'' ,'' ,''  ) " ;
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 }
 
 
 if ($_POST['btn_clear'] ) {
 	//清除登記填報
 	$sql = " TRUNCATE TABLE  " . $xoopsDB->prefix("mac_input")   ;
-	$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
 }
 
  //=======================================================================
@@ -82,7 +82,7 @@ if ($dhcp_log) {
 
 	//取得登記資料 --------------------------------------
 	$sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  order by mac "  ;
- 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+ 	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
  	while($row=$xoopsDB->fetchArray($result)){
 		if ($row["mac"]) {
 			$row["mac"]=strtoupper($row["mac"]) ;
@@ -99,7 +99,7 @@ if ($dhcp_log) {
 
  //取得最近時間
  	$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by recode_time DESC  " ;
- 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+ 	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
  	$date_list=$xoopsDB->fetchArray($result) ;
  	$last_recode_time = $date_list['recode_time'] ;  //判別到分
  	// echo $last_recode_time ;
@@ -124,7 +124,7 @@ if ($dhcp_log) {
 	if ($_GET['do']== 'mystery')
 		$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where ps='' or ps is null  order by   recode_time DESC " ;
 
- 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+ 	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 
  	while($row=$xoopsDB->fetchArray($result)){
        		$ipv4 = preg_split('/[:-]/' ,$row["mac"] ) ;
@@ -191,10 +191,10 @@ if (! $_GET['do'])  {
 			if ($ip_id==0) 		// ipv6
 				$add_ipv6= $comp_row['ip'] ;
 			if ($comp_row['ip'] <> $mac)	{
-				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,ip_v6 ,mac ,recode_time ,creat_day , ps, ip_id)
-				               values ('0','{$comp_row['ip']}', '$add_ipv6', '$mac',now() , now() ,'{$comp_row['ps']}','$ip_id' ) " ;
+				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,ip_v6 ,mac ,recode_time ,creat_day , ps, ip_id ,comp ,phid ,kind)
+				               values ('0','{$comp_row['ip']}', '$add_ipv6', '$mac',now() , now() ,'{$comp_row['ps']}','$ip_id' ,'','','') " ;
 
-				$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error());
+				$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
 				$add_FG = true ;
 			}
 		}
@@ -205,9 +205,9 @@ if (! $_GET['do'])  {
 		foreach ($dhcp_mac_list as $mac =>$v) {
 			if ($v==1) {
 				$dhcp_mac_no_in_data .= $mac  .' (' .  $dhcp_List[$mac]  .  ");  " ;
-				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  " (id ,ip ,comp , mac  ,workgroup , comp_dec ,recode_time ,creat_day )
-				              values ('0','{$dhcp_mac_ip[$mac]}','{$dhcp_List[$mac]}','$mac','','',now() , now() ) " ;
- 				$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error());
+				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  " (id ,ip ,comp , mac  ,workgroup , comp_dec ,recode_time ,creat_day ,ip_id , phid ,kind)
+				              values ('0','{$dhcp_mac_ip[$mac]}','{$dhcp_List[$mac]}','$mac','','',now() , now() ,0,'','') " ;
+ 				$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
 				$add_FG = true ;
 			}
 		}
@@ -221,21 +221,21 @@ if (! $_GET['do'])  {
  	//是否有 IP 重覆
  	$sql = " SELECT ip, count( * ) AS cc     FROM " . $xoopsDB->prefix("mac_info") .
                 	"  GROUP BY ip           HAVING cc >1 " ;
- 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+ 	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
  	while($row=$xoopsDB->fetchArray($result)){
    		$err_comp_list[] = $row ;
  	}
 
  	//總筆數
  	$sql = " select count(*) as cc from " . $xoopsDB->prefix("mac_info")  ;
- 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+ 	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
  	$date_list=$xoopsDB->fetchArray($result) ;
  	 $all_rec = $date_list['cc'] ;
 
 
 	$sql = " select ip  from " . $xoopsDB->prefix("mac_info") .  " order by  ip " ;
 
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
  	while($row=$xoopsDB->fetchArray($result)){
    		$comp_list_use[$row['ip']] = true ;
 	}

@@ -7,7 +7,7 @@ if ($_GET['id'] ) {
 
      	$sql = " update " . $xoopsDB->prefix("mac_info") .  " set  point =  '$v'  where id='{$id_k[0]}' " ;
 
-      	$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error());
+      	$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
 
 echo $sql ;
 }

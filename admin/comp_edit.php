@@ -10,12 +10,12 @@ if ($_GET['edit_id'] ) {
 
 	if ( $id >0 ) {
   		$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where id='$id' " ;
- 		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
+ 		$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error()); 			
  		$row=$xoopsDB->fetchArray($result) ;
 		
 		//取得登記資料
 		$sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  where mac ='{$row['mac']}'  or ip='{$row['ip']}' "  ;
- 		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 		
+ 		$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error()); 		
  		while($row2=$xoopsDB->fetchArray($result)){
    			$input_data .= $row2['user']  .'-' . $row2['place'];
  		}       		

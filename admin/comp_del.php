@@ -5,7 +5,7 @@ if ($_GET['del_id'] ) {
 	$id = $id_array[1]  ;
 	if ( $id >0 ) {
   		$sql = " delete from " . $xoopsDB->prefix("mac_info") .  " where id='$id' " ;
- 		$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 					
+ 		$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error()); 					
  
      		echo "delete $id  " ;
      	}else {

@@ -60,22 +60,22 @@ foreach ($lines as $line_num => $line) {
             $err_comp_list[] = "$ip -- $sqlstr <br >";
             //echo "$ip -- $sqlstr <br >" ;
 
-            $result = $xoopsDB->query($sql) or die($sql.'<br>'.mysql_error());
+            $result = $xoopsDB->query($sql) or die($sql.'<br>'.$xoopsDB->error());
             while ($row = $xoopsDB->fetchArray($result)) {
                 $nip = $row['mac'];
             }
 
             if (!$nip) {
-                $sql = ' insert into  '.$xoopsDB->prefix('mac_info')."  (id ,ip ,mac ,recode_time ,creat_day ,ip_id)
-				               values ('0','$ip','$mac',now() , now() ,'$ip_id' ) ";
-                $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.mysql_error());
+                $sql = ' insert into  '.$xoopsDB->prefix('mac_info')."  (id ,ip ,mac ,recode_time ,creat_day ,ip_id ,comp ,phid ,kind)
+				               values ('0','$ip','$mac',now() , now() ,'$ip_id' ,'','','' ) ";
+                $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
                 //echo "$sqlstr <br >" ;
             } else {
                 //更新
 
                 $sql = ' update '.$xoopsDB->prefix('mac_info')."  set  ip='$ip' ,recode_time=now()  ,ip_id ='$ip_id'  where mac='$mac' ";
 
-                $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.mysql_error());
+                $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
                 //echo "$sqlstr <br >" ;
             }
         }
@@ -117,7 +117,7 @@ foreach ($lines as $line_num => $line) {
                 $sql = ' update  '.$xoopsDB->prefix('mac_info')."  set   recode_time=now()    where mac='$a_mac' ";
             }
 
-            $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.mysql_error());
+            $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
             //echo "$sql <br >" ;
         }
     }
