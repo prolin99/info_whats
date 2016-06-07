@@ -23,8 +23,8 @@ if ($_GET['edit_id'] ) {
      		echo "
      		<form method='post' name='editForm' id='editForm_{$row['id']}' action='comp_submit'  >
      		<div class='span2'>
-     			office:<input class='span8' name='txt_kind' type='text' id='txt_kind' value='{$row['kind']}'  placeholder='單位' /><br/>
-			phon:<input  class='span8' name='txt_phid' type='text' id='txt_phid' value='{$row['phid']}'  placeholder='分機'/>
+     			office:<input class='span8' name='txt_kind' type='text' id='txt_kind' value='{$row['kind']}'  placeholder='單位' title='單位' /><br/>
+			phon:<input  class='span8' name='txt_phid' type='text' id='txt_phid' value='{$row['phid']}'  placeholder='分機'  title='分機號'  />
 		</div>
 		<div class='span3'>
 			ip:<input name='txt_ip' type='text' id='txt_ip' value='{$row['ip']}'  placeholder='ipv4' /><br />
