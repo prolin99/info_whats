@@ -26,7 +26,7 @@
 </div>
 <{ $ii++ }>
 <{foreach from=$comp_list item=comp key=cid}>
-
+<{ if (($point=='input') and ($comp.input)) or ($point<>'input') }>
 <{if ($comp.now==1 ) }>
 	<!--  現在存活  -->
 	<{ if ($comp.dhcp) }>
@@ -75,7 +75,7 @@
 
     </div>
 </div>
-
+<{/if}>
 <{/foreach}>
 <{if (! $point) }>
 共 <{$all_rec}> 筆 , 現在開機數 <{$open_mode.now}>  ,  本日開機數<{$open_mode.today}><br />

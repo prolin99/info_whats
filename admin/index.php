@@ -180,45 +180,45 @@ if ($dhcp_log) {
  	} //while
 
 
- 	//--------------------如在重要、未登記時，不處理這部份--------------------------------------------
-if (! $_GET['do'])  {
- 	//登記資料，但不在掃描記錄中，加入資料中
- 	foreach ($input_data as $mac =>$comp_row) {
-		if ($comp_row['in'] <> true ) {
-			$ip_k = preg_split("/[.]/", $comp_row['ip']);
-			$ip_id = $ip_k[2]*1000 + $ip_k[3] ;
-			$add_ipv6='' ;
-			if ($ip_id==0) 		// ipv6
-				$add_ipv6= $comp_row['ip'] ;
-			if ($comp_row['ip'] <> $mac)	{
-				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,ip_v6 ,mac ,recode_time ,creat_day , ps, ip_id ,comp ,phid ,kind)
-				               values ('0','{$comp_row['ip']}', '$add_ipv6', '$mac',now() , now() ,'{$comp_row['ps']}','$ip_id' ,'','','') " ;
+ 	//------輸入 mac 及 dhcpd release 取資料 --------------如在重要、未登記時，不處理這部份--------------------------------------------
+	if (! $_GET['do'])  {
+	 	//登記資料，但不在掃描記錄中，加入資料中
+	 	foreach ($input_data as $mac =>$comp_row) {
+			if ($comp_row['in'] <> true ) {
+				$ip_k = preg_split("/[.]/", $comp_row['ip']);
+				$ip_id = $ip_k[2]*1000 + $ip_k[3] ;
+				$add_ipv6='' ;
+				if ($ip_id==0) 		// ipv6
+					$add_ipv6= $comp_row['ip'] ;
+				if ($comp_row['ip'] <> $mac)	{
+					$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  "  (id ,ip ,ip_v6 ,mac ,recode_time ,creat_day , ps, ip_id ,comp ,phid ,kind)
+					               values ('0','{$comp_row['ip']}', '$add_ipv6', '$mac',now() , now() ,'{$comp_row['ps']}','$ip_id' ,'','','') " ;
 
-				$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
-				$add_FG = true ;
+					$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
+					$add_FG = true ;
+				}
+			}
+	 	}
+
+	 	if ($dhcp_log) {
+			//dhcp log 尚未放資料庫的
+			foreach ($dhcp_mac_list as $mac =>$v) {
+				if ($v==1) {
+					$dhcp_mac_no_in_data .= $mac  .' (' .  $dhcp_List[$mac]  .  ");  " ;
+					$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  " (id ,ip ,comp , mac  ,workgroup , comp_dec ,recode_time ,creat_day ,ip_id , phid ,kind)
+					              values ('0','{$dhcp_mac_ip[$mac]}','{$dhcp_List[$mac]}','$mac','','',now() , now() ,0,'','') " ;
+	 				$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
+					$add_FG = true ;
+				}
 			}
 		}
- 	}
 
- 	if ($dhcp_log) {
-		//dhcp log 尚未放資料庫的
-		foreach ($dhcp_mac_list as $mac =>$v) {
-			if ($v==1) {
-				$dhcp_mac_no_in_data .= $mac  .' (' .  $dhcp_List[$mac]  .  ");  " ;
-				$sql = " insert into  " . $xoopsDB->prefix("mac_info") .  " (id ,ip ,comp , mac  ,workgroup , comp_dec ,recode_time ,creat_day ,ip_id , phid ,kind)
-				              values ('0','{$dhcp_mac_ip[$mac]}','{$dhcp_List[$mac]}','$mac','','',now() , now() ,0,'','') " ;
- 				$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
-				$add_FG = true ;
-			}
-		}
+	 	if ($add_FG) //有新增資料，重整一次
+	 		redirect_header($_SERVER['PHP_SELF'],3, '資料更新!' );
 	}
 
- 	if ($add_FG) //有新增資料，重整一次
- 		redirect_header($_SERVER['PHP_SELF'],3, '資料更新!' );
-}
 
-
- 	//是否有 IP 重覆
+ 	//檢查 IP 重覆，做提醒
  	$sql = " SELECT ip, count( * ) AS cc     FROM " . $xoopsDB->prefix("mac_info") .
                 	"  GROUP BY ip           HAVING cc >1 " ;
  	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
@@ -230,9 +230,10 @@ if (! $_GET['do'])  {
  	$sql = " select count(*) as cc from " . $xoopsDB->prefix("mac_info")  ;
  	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
  	$date_list=$xoopsDB->fetchArray($result) ;
- 	 $all_rec = $date_list['cc'] ;
+ 	$all_rec = $date_list['cc'] ;
 
 
+	//已使用 IP
 	$sql = " select ip  from " . $xoopsDB->prefix("mac_info") .  " order by  ip " ;
 
 	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
@@ -240,7 +241,7 @@ if (! $_GET['do'])  {
    		$comp_list_use[$row['ip']] = true ;
 	}
 
- 	//IPv4 目前還空的 列表
+ 	// 空的 IPv4   列表
  	$ip4_array = preg_split('/,/' , $data['ipv4'] ) ;
  	foreach ($ip4_array as $k => $ipv) {
 		//空的 IP

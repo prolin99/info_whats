@@ -17,6 +17,12 @@ $adminmenu[$i]['desc'] = '重要設備' ;
 $adminmenu[$i]['icon'] = 'images/admin/main.png' ;
 
 $i++ ;
+$adminmenu[$i]['title'] = '目前填表';
+$adminmenu[$i]['link'] = "admin/index.php?do=input";
+$adminmenu[$i]['desc'] = '目前登記設備' ;
+$adminmenu[$i]['icon'] = 'images/admin/button.png' ;
+
+$i++ ;
 $adminmenu[$i]['title'] = '未登記';
 $adminmenu[$i]['link'] = "admin/index.php?do=mystery";
 $adminmenu[$i]['desc'] = '未登記設備' ;
