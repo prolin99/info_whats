@@ -8,7 +8,7 @@
 //---基本設定---//
 
 $modversion['name'] ='網路設備記錄';				//模組名稱
-$modversion['version']	= '0.7';				//模組版次
+$modversion['version']	= '0.8';				//模組版次
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';		//模組作者
 $modversion['description'] ='網路設備記錄';			//模組說明
 $modversion['credits']	= 'prolin';				//模組授權者
@@ -43,6 +43,8 @@ $modversion['adminmenu'] = "admin/menu.php";
 //---使用者主選單設定---//
 $modversion['hasMain'] = 1;
 
+//---安裝設定---//
+$modversion['onUpdate'] = "include/onUpdate.php";
 
 //---樣板設定---要有指定，才會編譯動作，//
 $modversion['templates'] = array();

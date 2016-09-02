@@ -14,6 +14,7 @@ CREATE TABLE `mac_info` (
   kind varchar(20) DEFAULT NULL,
   ip_id int(11) NOT NULL DEFAULT '0',
   `point` tinyint(1) NOT NULL DEFAULT '0',
+  modify_day datetime  NULL ,
   PRIMARY KEY (id),
   UNIQUE KEY mac (mac),
   KEY ip (ip)
