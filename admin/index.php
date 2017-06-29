@@ -6,10 +6,9 @@
 // ------------------------------------------------------------------------- //
 
 /*-----------引入檔案區--------------*/
-include_once "header_admin.php";
-//樣版
 $xoopsOption['template_main'] = "info_admin_tpl.html";
 include_once "header.php";
+include_once "../function.php";
 
 
 /*-----------function區--------------*/
@@ -36,7 +35,7 @@ if ($_POST['btn_clear'] ) {
 
  //=======================================================================
  	//取得偏好設定
-  	$data['ip_rang'] = $xoopsModuleConfig['iw_ip_rang'] ;					//分配規劃
+  $data['ip_rang'] = $xoopsModuleConfig['iw_ip_rang'] ;					//分配規劃
  	$data['ipv4'] = $xoopsModuleConfig['iw_ip_v4'] ;						//ipv4 網段
  	$data['ipv6'] = $xoopsModuleConfig['iw_ip_v6'] ;						//ipv6 網段
  	$dhcp_rang = preg_split('/~/',$xoopsModuleConfig['iw_ip_v4_dhcp']) ;	//動態分配區
@@ -249,7 +248,7 @@ if ($dhcp_log) {
  		for($i=1 ; $i <=250 ; $i++) {
 
 			$ip = $ipv . '.'  . $i ;
-			if (!$comp_list_use[$ip]) {
+			if (is_null($comp_list_use[$ip])  ) {
           			$empt_list .= $i . ' , ' ;
           			$empt_count ++ ;
 
