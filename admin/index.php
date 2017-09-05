@@ -103,19 +103,28 @@ if ($dhcp_log) {
  	$last_recode_time = $date_list['recode_time'] ;  //判別到分
  	// echo $last_recode_time ;
 //排序
+
 	if ($_POST['sort'])
 		$_GET['sort'] = $_POST['sort'] ;
 	if ($_GET['sort'])
-		$sortby =$_GET['sort'] ;
-	else
-		$sortby = 'id' ;
-	if (  $sortby=='id' ) $sortby = 'id DESC' ;
+		$soid =$_GET['sort'] ;
+
+
+	//排序方式
+  $sort_list= array('kind' ,'ip_id' ,'mac' , 'comp' ,'modify_day DESC' , 'id DESC' ,'recode_time DESC'  ,'creat_day DESC' ) ;
+	if  (($soid <=0) or ( $soid > count($sort_list) ) )
+			$soid=6 ;
+
+	$sortby = $sort_list[$soid-1] ;
+
 
 
  	//取得資料表全部
-  	$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by  $sortby  ,  recode_time DESC " ;
+  $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by  $sortby   ,  recode_time DESC " ;
 
-  	//重要設備
+
+	//分頁
+  //重要設備
 	if ($_GET['do']== 'point')
 		$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where point >=1 order by ip_id " ;
 
