@@ -111,26 +111,21 @@ if ($dhcp_log) {
 
 
 	//排序方式
-  $sort_list= array('kind' ,'ip_id' ,'mac' , 'comp' ,'modify_day DESC' , 'id DESC' ,'recode_time DESC'  ,'creat_day DESC' ) ;
+  $sort_list= array('kind DESC', 'phid DESC' ,'ip_id' ,'mac' , 'comp' ,'modify_day DESC' , 'id DESC' ,'recode_time DESC'  ,'creat_day DESC' ) ;
 	if  (($soid <=0) or ( $soid > count($sort_list) ) )
-			$soid=6 ;
+			$soid=7 ;
 
 	$sortby = $sort_list[$soid-1] ;
 
-
+	$where_list = array('point'=>' where point >=1 ' ,'mystery'=>' where  ps="" or ps is null '  )  ;
+	$sp = $_GET['do'] ;
+  $where_str = $where_list[$sp] ;
 
  	//取得資料表全部
-  $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by  $sortby   ,  recode_time DESC " ;
+  $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " $where_str  order by  $sortby   ,  recode_time DESC " ;
 
 
-	//分頁
-  //重要設備
-	if ($_GET['do']== 'point')
-		$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where point >=1 order by ip_id " ;
-
-	//未登記(在說明中無資料者
-	if ($_GET['do']== 'mystery')
-		$sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where ps='' or ps is null  order by   recode_time DESC " ;
+ 
 
  	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 

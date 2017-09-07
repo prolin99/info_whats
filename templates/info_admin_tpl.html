@@ -14,13 +14,13 @@
 <{/if}>
 <div class="alert  alert-info">
 	<div class="row-fluid">
-	<div class="span1"><a href="?sort=1">處室</a></div>
-	<div class="span2"><a href="?sort=2">IP</a></div>
-	<div class="span2"><a href="?sort=3">MAC</a></div>
-	<div class="span2"><a href="?sort=4">name</a> / <a href="?sort=5">修改日</a></div>
-	<div class="span1"><a href="?sort=6">id</a></div>
+	<div class="span1"><a href="?do=<{$point}>&sort=1">處室</a> / <a href="?do=<{$point}>&sort=2">分機</a></div>
+	<div class="span2"><a href="?do=<{$point}>&sort=3">IP</a></div>
+	<div class="span2"><a href="?do=<{$point}>&sort=4">MAC</a></div>
+	<div class="span2"><a href="?do=<{$point}>&sort=5">name</a> / <a href="?do=<{$point}>&sort=6">修改日</a></div>
+	<div class="span1"><a href="?do=<{$point}>&sort=7">id</a></div>
 
-	<div class="span2"><a href="?sort=7">上線時間</a>/ <a href="?sort=8">建錄日</a></div>
+	<div class="span2"><a href="?do=<{$point}>&sort=8">上線時間</a>/ <a href="?do=<{$point}>&sort=9">建錄日</a></div>
 	<div class="span2">填報記錄</div>
 	</div>
 </div>
@@ -72,10 +72,10 @@
         <apan class="label " title="<{$comp.modify_day}>"><{$comp.modify_day|substr:2:8}></span>
         <{/if}>
     </div>
-	<div class="span1"><span class="badge badge-inverse"><{$comp.id}></span>
+	<div class="span1"><span class="badge badge-inverse">#<{$comp.id}></span>
 	    <span class="edit"><i class="icon-pencil"></i></span>
 	  </div>
-	<div class="span2"><{$comp.recode_time}><span class="del" title='刪除'><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
+	<div class="span2"><{$comp.recode_time}><span class="del"><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
 	<div class="span2"><{if ($comp.input)}><span class='alert alert-error'><{$comp.input}><i class="icon-trash del_input" data_ref="<{$comp.input_id}>"></i></span><{/if}></div>
 
     </div>
