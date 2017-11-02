@@ -12,7 +12,7 @@
     <legend>機器登記</legend>
     <label>你的IP ： <{ $data.ip }></label><br/>
     <label>你的網卡序號 ： <{ $data.mac }></label><br/>
-    <label>已知的舊記錄 ： <{ $data_rec.comp }>- <{ $data_rec.ps }></label><br/>
+    <label ><button type="button" class="btn btn-primary">已知的舊記錄 ： <{ $data_rec.comp }>- <{ $data_rec.ps }></button></label><br/>
 	如果出現 AP 名，代表在無線基地台下，不是實際 IP ，可以不登記。<br/>
     <label>---------------以下填報-------------------</label><br/>
     <label>保管人</label>
@@ -31,6 +31,10 @@
     <{/if}>
     </fieldset>
     </form>
+			<a href="<{$client_file}>"><button type="button" class="btn btn-success">
+			  下載硬體檢查工具</button></a><br />
+				解壓縮後，選擇 setup.bat 點滑鼠右鍵，以系統管理員身份執行。<br>
+				每次開機就會自行檢查，並上傳資料到主機中。
     <{/if}>
 <{else}>
 <h3>你的機器不在校內網域中！</h3>

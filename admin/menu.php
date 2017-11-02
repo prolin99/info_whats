@@ -7,6 +7,9 @@
 $adminmenu = array();
 
 $i=0 ;
+
+
+
 $adminmenu[$i]['title'] = '設備記錄';
 $adminmenu[$i]['link'] = "admin/index.php";
 $adminmenu[$i]['desc'] = '設備記錄' ;
@@ -28,6 +31,18 @@ $i++ ;
 $adminmenu[$i]['title'] = '未登記';
 $adminmenu[$i]['link'] = "admin/index.php?do=mystery";
 $adminmenu[$i]['desc'] = '未登記設備' ;
+$adminmenu[$i]['icon'] = 'images/admin/logadm.png' ;
+
+$i++ ;
+$adminmenu[$i]['title'] = '警示';
+$adminmenu[$i]['link'] = "admin/danger.php";
+$adminmenu[$i]['desc'] = '可能有狀況的設備' ;
+$adminmenu[$i]['icon'] = 'images/admin/logadm.png' ;
+
+$i++ ;
+$adminmenu[$i]['title'] = '開機記錄';
+$adminmenu[$i]['link'] = "admin/hardware.php";
+$adminmenu[$i]['desc'] = '開機上傳記錄' ;
 $adminmenu[$i]['icon'] = 'images/admin/logadm.png' ;
 
 $i++ ;

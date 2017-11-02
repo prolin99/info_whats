@@ -1,0 +1,45 @@
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+
+<h1>Client 開機記錄</h1>
+<div class="row-fluid">
+	<div class="span2"><{$now_comp.comp}></div>
+	<div class="span2"><{$now_comp.workgroup}></div>
+	<div class="span2"><{$now_comp.comp_dec}></div>
+	<div class="span5"><{$now_comp.ps}></div>
+</div>
+
+<div class="row-fluid">
+<{ $ii++ }>
+<{foreach from=$list item=comp key=cid}>
+<div class="row-fluid">
+ <{if (($comp.w==0) or  ($comp.w==6) )}>
+ 	<span class='label label-warning'><{$comp.sysinfo_day}></span>(<{$comp.w}>)
+ <{else}>
+ 	<span class='label label-info'><{$comp.sysinfo_day}></span>(<{$comp.w}>)
+ <{/if}>
+ <span  ><{$comp.uuid}></span>
+ <{if ($comp.dangerFG)}>
+ <span>
+ <i class="icon-exclamation-sign" title="硬體更換警示"></i>
+ </span>
+ <{/if}>
+ <{if ($mode)}>
+ 	<a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
+  <i class="icon-zoom-in" ></i>
+  <span class='label label-info'><{$comp.comp}></span>
+	<span ><{$comp.workgroup}></span>
+	<span ><{$comp.comp_dec}></span>
+	<dispanv ><{$comp.ps}></span>
+	</a>
+ <{/if}>
+</div>
+<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+	<div class='span3'><{$comp.bios}></div>
+	<div class='span3'><{$comp.cpu}></div>
+	<div class='span1'><{$comp.dhcpserver}></div>
+	<div class='span5'><{$comp.ipaddress}></div>
+</div>
+<{/foreach}>
+</div>

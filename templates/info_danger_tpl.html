@@ -1,0 +1,70 @@
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+
+<h1>硬體不相配</h1>
+<div class="row-fluid">
+<{ $ii++ }>
+<{foreach from=$danger_list item=comp key=cid}>
+
+<div class="alert  alert-error">
+<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+
+	<div class="span1">
+	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
+	<div class="span2"><span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span>
+		<span class="ip" alt="<{$comp.ip_v6}>"><{$comp.ipv6_last}></span>
+	</div>
+	<!-- 填報資料也加入  -->
+	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
+	<div class="span2">
+        <span class="label label-info"><{$comp.comp}> </span><{$comp.ps}>
+        <{if ($comp.modify_day) }>
+        <apan class="label " title="<{$comp.modify_day}>"><{$comp.modify_day|substr:2:8}></span>
+        <{/if}>
+    </div>
+	  <div class="span1"><span class="badge badge-inverse">#<{$comp.id}></span>
+	  </div>
+	  <div class="span2"><{$comp.recode_time}></span> <br /><span class="label"><{$comp.creat_day}></span></div>
+	  <div class="span2">
+      <{if ($comp.input)}><span class='alert alert-error'><{$comp.input}><i class="icon-trash del_input" data_ref="<{$comp.input_id}>"></i></span><{/if}>
+    </div>
+
+    </div>
+</div>
+
+<{/foreach}>
+</div>
+<h1>重要設備未上線(逾一小時)</h1>
+<div class="row-fluid">
+
+<{foreach from=$import_list item=comp key=cid}>
+
+<div class="alert  alert-error">
+<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+
+	<div class="span1">
+	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
+	<div class="span2"><span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span>
+		<span class="ip" alt="<{$comp.ip_v6}>"><{$comp.ipv6_last}></span>
+	</div>
+	<!---- 填報資料也加入  -->
+	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
+	<div class="span2">
+        <span class="label label-info"><{$comp.comp}> </span><{$comp.ps}>
+        <{if ($comp.modify_day) }>
+        <apan class="label " title="<{$comp.modify_day}>"><{$comp.modify_day|substr:2:8}></span>
+        <{/if}>
+    </div>
+	  <div class="span1"><span class="badge badge-inverse">#<{$comp.id}></span>
+	  </div>
+	  <div class="span2"><{$comp.recode_time}></span> <br /><span class="label"><{$comp.creat_day}></span></div>
+	  <div class="span2">
+      <{if ($comp.input)}><span class='alert alert-error'><{$comp.input}><i class="icon-trash del_input" data_ref="<{$comp.input_id}>"></i></span><{/if}>
+    </div>
+
+    </div>
+</div>
+
+<{/foreach}>
+</div>

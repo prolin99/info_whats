@@ -8,7 +8,7 @@
 //---基本設定---//
 
 $modversion['name'] ='網路設備記錄';				//模組名稱
-$modversion['version']	= '1.0';				//模組版次
+$modversion['version']	= '1.1';				//模組版次
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';		//模組作者
 $modversion['description'] ='網路設備記錄';			//模組說明
 $modversion['credits']	= 'prolin';				//模組授權者
@@ -34,6 +34,7 @@ $modversion['system_menu'] = 1;//---資料表架構---//
 $modversion['sqlfile']['mysql'] = "sql/mysql.sql";
 $modversion['tables'][1] = "mac_info";
 $modversion['tables'][2] = "mac_input";
+$modversion['tables'][3] = "mac_up_sysinfo";
 
 //---管理介面設定---//
 $modversion['hasAdmin'] = 1;
@@ -54,6 +55,12 @@ $modversion['templates'][$i]['description'] = 'info_admin_tpl.html';
 $i++ ;
 $modversion['templates'][$i]['file'] = 'info_index_tpl.html';
 $modversion['templates'][$i]['description'] = 'info_index_tpl.html';
+$i++ ;
+$modversion['templates'][$i]['file'] = 'info_danger_tpl.html';
+$modversion['templates'][$i]['description'] = 'info_danger_tpl.html';
+$i++ ;
+$modversion['templates'][$i]['file'] = 'info_hardware_tpl.html';
+$modversion['templates'][$i]['description'] = 'info_hardware_tpl.html';
 
 $i=0 ;
 //偏好設定
@@ -148,6 +155,54 @@ $i++ ;
 $modversion['config'][$i]['name'] = 'iw_alert_Email';
 $modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE12';
 $modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC12';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default'] ="" ;
+
+$i++ ;
+$modversion['config'][$i]['name'] = 'iw_FtpFG';
+$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f01';
+$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f01';
+$modversion['config'][$i]['formtype']    = 'yesno';
+$modversion['config'][$i]['valuetype']   = 'int';
+$modversion['config'][$i]['default'] ="0" ;
+
+$i++ ;
+$modversion['config'][$i]['name'] = 'iw_FtpClient';
+$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f02';
+$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f02';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default'] ="" ;
+
+$i++ ;
+$modversion['config'][$i]['name'] = 'iw_Ftpserver';
+$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f03';
+$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f03';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default'] ="192.168.1.1" ;
+
+$i++ ;
+$modversion['config'][$i]['name'] = 'iw_FtpPath';
+$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f04';
+$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f04';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default'] ="info_txt" ;
+
+$i++ ;
+$modversion['config'][$i]['name'] = 'iw_FtpUser';
+$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f05';
+$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f05';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default'] ="" ;
+
+$i++ ;
+$modversion['config'][$i]['name'] = 'iw_FtpPassWD';
+$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f06';
+$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f06';
 $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default'] ="" ;

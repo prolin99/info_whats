@@ -15,9 +15,20 @@ CREATE TABLE `mac_info` (
   ip_id int(11) NOT NULL DEFAULT '0',
   `point` tinyint(1) NOT NULL DEFAULT '0',
   modify_day datetime  NULL ,
-  PRIMARY KEY (id),
-  UNIQUE KEY mac (mac),
-  KEY ip (ip)
+  `uuid` varchar(64) DEFAULT NULL,
+  `bios` varchar(80) DEFAULT NULL,
+  `cpu` varchar(80) DEFAULT NULL,
+  `memory` bigint(20) NOT NULL,
+  `dhcpserver` varchar(80) DEFAULT NULL,
+  `ipaddress` varchar(100) DEFAULT NULL,
+  `sysinfo_day` datetime DEFAULT NULL,
+  `dangerFG` int(11) NOT NULL DEFAULT '0',
+  ipv4_ext varchar(20) DEFAULT NULL,
+  ipv4_in varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `mac` (`mac`),
+  KEY `ip` (`ip`),
+  KEY `uuid` (`uuid`)
 ) ENGINE=MyISAM ;
 
  CREATE TABLE   `mac_input` (
@@ -29,3 +40,20 @@ CREATE TABLE `mac_info` (
   `uid` int(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  ;
+
+
+CREATE TABLE   `mac_up_sysinfo` (
+  `uid` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL DEFAULT '0',
+  `uuid` varchar(80) NOT NULL,
+  `bios` varchar(80) DEFAULT NULL,
+  `cpu` varchar(80) DEFAULT NULL,
+  `memory` bigint(20) DEFAULT NULL,
+  `dhcpserver` varchar(80) DEFAULT NULL,
+  `ipaddress` varchar(100) DEFAULT NULL,
+  `sysinfo_day` datetime DEFAULT NULL,
+  `dangerFG` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`uid`),
+  KEY `ip` (`id`),
+  KEY `uuid` (`uuid`,`sysinfo_day`)
+)  ENGINE=MyISAM  ;

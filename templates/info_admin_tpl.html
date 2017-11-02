@@ -18,7 +18,7 @@
 	<div class="span2"><a href="?do=<{$point}>&sort=3">IP</a></div>
 	<div class="span2"><a href="?do=<{$point}>&sort=4">MAC</a></div>
 	<div class="span2"><a href="?do=<{$point}>&sort=5">name</a> / <a href="?do=<{$point}>&sort=6">修改日</a></div>
-	<div class="span1"><a href="?do=<{$point}>&sort=7">id</a></div>
+	<div class="span1"><a href="?do=<{$point}>&sort=7">id↑</a> - <a href="?do=<{$point}>&sort=10">id↓</a></div>
 
 	<div class="span2"><a href="?do=<{$point}>&sort=8">上線時間</a>/ <a href="?do=<{$point}>&sort=9">建錄日</a></div>
 	<div class="span2">填報記錄</div>
@@ -61,8 +61,16 @@
 	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_0'  title='重要標記-離線警告'><i class="icon-star-empty"></i></span>
 	<{/if}>
 	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
-	<div class="span2"><span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span>
+	<div class="span2">
+    <span class="ip" alt="<{$comp.ip}>"><{$comp.ip}>
+      <{if ($comp.dhcpserver) }>
+      ├<{$comp.dhcpserver}>
+      <{/if}>
+    </span>
 		<span class="ip" alt="<{$comp.ip_v6}>"><{$comp.ipv6_last}></span>
+    <{if ($comp.ipv4_ext) }>
+    <br>├<{$comp.ipv4_ext}>  ├<{$comp.ipv4_in}>
+    <{/if}>
 	</div>
 	<!---- 填報資料也加入  -->
 	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
@@ -72,11 +80,14 @@
         <apan class="label " title="<{$comp.modify_day}>"><{$comp.modify_day|substr:2:8}></span>
         <{/if}>
     </div>
-	<div class="span1"><span class="badge badge-inverse">#<{$comp.id}></span>
+	  <div class="span1"><a href="hardware.php?id=<{$comp.id}>" title="查看客戶端上傳記錄"><span class="badge badge-inverse">#<{$comp.id}></span></a>
 	    <span class="edit"><i class="icon-pencil"></i></span>
 	  </div>
-	<div class="span2"><{$comp.recode_time}><span class="del"><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
-	<div class="span2"><{if ($comp.input)}><span class='alert alert-error'><{$comp.input}><i class="icon-trash del_input" data_ref="<{$comp.input_id}>"></i></span><{/if}></div>
+	  <div class="span2"><{$comp.recode_time}><span class="del"><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
+	  <div class="span2">
+      <{if ($comp.dangerFG)}><a href="hardware.php?id=<{$comp.id}>"><i class="icon-exclamation-sign" title="硬體更換警示"></i></a><{/if}>
+      <{if ($comp.input)}><span class='alert alert-error'><{$comp.input}><i class="icon-trash del_input" data_ref="<{$comp.input_id}>"></i></span><{/if}>
+    </div>
 
     </div>
 </div>
@@ -112,13 +123,25 @@
  <{/foreach}>
 </textarea>
 
+
 <textarea name="dhcp_list" class="span10" rows="20"  >
 <{$dhcp_lease}>
 </textarea>
+
+
+
+<!--  動態分配的 IP 不會列在記錄表中  -->
+<h3>給 synology    分配表(注意：只呈現目前所在頁資料)</h3>
+<div>/etc/dhcpd/dhcpd-eth0-static.conf</div>
+<textarea name="dhcp" class="span10" rows="20"  >
+<{foreach from=$comp_list item=comp key=cid}>
+<{if ! ($comp.dhcp) }>dhcp-host=<{$comp.mac}>,<{$comp.id}>_<{$comp.comp}>,<{$comp.ip}>,86400
+<{/if}>
+<{/foreach}>
+</textarea>
 </div>
 
-
-<script>
+<script type="text/javascript">
 
 //---------------刪除------------------------
 $("span.del").bind(

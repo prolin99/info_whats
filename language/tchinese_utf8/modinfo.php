@@ -43,4 +43,24 @@ define("_MI_INFOWHOS_CONFIG_DESC11","設定為重要且要警告的主機偵測�
 
 define("_MI_INFOWHOS_CONFIG_TITLE12","通知郵件位置");
 define("_MI_INFOWHOS_CONFIG_DESC12","EMAIL 位置");
+
+define("_MI_INFOWHOS_CONFIG_T_f01","使用 ftp 傳送訊息檔");
+define("_MI_INFOWHOS_CONFIG_D_f01","配合用戶端，開機上傳資料檔，詳看闗於說明");
+
+define("_MI_INFOWHOS_CONFIG_T_f02","用戶端下載的程式名稱");
+define("_MI_INFOWHOS_CONFIG_D_f02","用戶端開機執行檔，請修改成特定名稱以保安全。例： get_info.zip ");
+
+define("_MI_INFOWHOS_CONFIG_T_f03","ftpserver");
+define("_MI_INFOWHOS_CONFIG_D_f03","ftp 伺服器位置 ip ：例 120.116.1.1");
+
+define("_MI_INFOWHOS_CONFIG_T_f04","ftp 中的目錄");
+define("_MI_INFOWHOS_CONFIG_D_f04","檔案使用的目錄名，如 info_txt ");
+
+define("_MI_INFOWHOS_CONFIG_T_f05","登入 ftp 帳號");
+define("_MI_INFOWHOS_CONFIG_D_f05","登入 ftp 帳號名稱");
+
+
+define("_MI_INFOWHOS_CONFIG_T_f06","登入 ftp 密碼");
+define("_MI_INFOWHOS_CONFIG_D_f06","登入 ftp 密碼");
+
 ?>
