@@ -11,10 +11,12 @@
 	<span><{$now_comp.workgroup}></span>
 	<span><{$now_comp.comp_dec}></span>
 	<span><{$now_comp.ps}></span>
+	<{if $now_comp.uuid}>
 	<br />
 	<span><{$now_comp.uuid}></span>
 	<span class="label label-info"><{$now_comp.cpu}></span>
 	<span><{$now_comp.memory}></span>
+	<{/if}>
 </div>
 
 <!--              月曆方式統計                          -->

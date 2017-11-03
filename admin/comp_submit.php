@@ -26,9 +26,13 @@ if ($_POST['now_id']) {
 	<div class='span2'><span class='ip' alt='{$row['ip']}'>{$row['ip']}</span></div>
 	<div class='span2'>{$row['mac']}</div>
 	<div class='span2'><span class='label label-info'>{$row['comp']} </span>{$row['ps']}
-    <apan class='label' title='{$row['modify_day']}'>{$row['modify_day_s']}</span>
+
+    <span class='label' title='{$row['modify_day']}'>{$row['modify_day_s']}</span>
     </div>
-	<div class='span1'><span class='badge badge-inverse'>{$row['id']}</span>
+	<div class='span1'>
+    <a href='hardware.php?id={$row['id']}'
+    <span class='badge badge-inverse'>#{$row['id']}</span>
+    </a>
 	    <span class='edit'><i class='icon-pencil'></i></span>
 
 	  </div>
