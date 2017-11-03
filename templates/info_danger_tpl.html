@@ -23,7 +23,10 @@
         <apan class="label " title="<{$comp.modify_day}>"><{$comp.modify_day|substr:2:8}></span>
         <{/if}>
     </div>
-	  <div class="span1"><span class="badge badge-inverse">#<{$comp.id}></span>
+	  <div class="span1">
+			<a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
+			<span class="badge badge-inverse">#<{$comp.id}></span>
+			</a>
 	  </div>
 	  <div class="span2"><{$comp.recode_time}></span> <br /><span class="label"><{$comp.creat_day}></span></div>
 	  <div class="span2">
@@ -35,6 +38,8 @@
 
 <{/foreach}>
 </div>
+
+
 <h1>重要設備未上線(逾一小時)</h1>
 <div class="row-fluid">
 
@@ -56,7 +61,10 @@
         <apan class="label " title="<{$comp.modify_day}>"><{$comp.modify_day|substr:2:8}></span>
         <{/if}>
     </div>
-	  <div class="span1"><span class="badge badge-inverse">#<{$comp.id}></span>
+	  <div class="span1">
+			<a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
+			<span class="badge badge-inverse">#<{$comp.id}></span>
+			</a>
 	  </div>
 	  <div class="span2"><{$comp.recode_time}></span> <br /><span class="label"><{$comp.creat_day}></span></div>
 	  <div class="span2">
@@ -64,6 +72,41 @@
     </div>
 
     </div>
+</div>
+
+<{/foreach}>
+</div>
+
+
+<h1>假日開機(30天內)</h1>
+<div class="row-fluid">
+
+<{foreach from=$notworkday_list item=comp key=cid}>
+
+<div class="alert  alert-error">
+<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+
+	<div class="span1">
+	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
+	<div class="span2"><span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span>
+		<span class="ip" alt="<{$comp.ip_v6}>"><{$comp.ipv6_last}></span>
+	</div>
+	<!---- 填報資料也加入  -->
+	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
+	<div class="span2">
+        <span class="label label-info"><{$comp.comp}> </span><{$comp.ps}>
+        <{if ($comp.modify_day) }>
+        <apan class="label " title="<{$comp.modify_day}>"><{$comp.modify_day|substr:2:8}></span>
+        <{/if}>
+    </div>
+	  <div class="span1">
+			<a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
+			<span class="badge badge-inverse">#<{$comp.id}></span>
+			</a>
+	  </div>
+	  <div class="span2"><{$comp.sysinfo_day}></span> <br /><span class="label"><{$comp.creat_day}></span>
+		</div>
+</div>
 </div>
 
 <{/foreach}>

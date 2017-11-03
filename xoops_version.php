@@ -35,6 +35,7 @@ $modversion['sqlfile']['mysql'] = "sql/mysql.sql";
 $modversion['tables'][1] = "mac_info";
 $modversion['tables'][2] = "mac_input";
 $modversion['tables'][3] = "mac_up_sysinfo";
+$modversion['tables'][4] = "mac_online";
 
 //---管理介面設定---//
 $modversion['hasAdmin'] = 1;

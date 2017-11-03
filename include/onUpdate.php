@@ -17,9 +17,45 @@ function xoops_module_update_info_whats(&$module, $old_version)
         go_update_add_sysinfo();
     }
 
+    if (!chk_add_online()) {
+        go_update_add_online();
+    }
+
     return true;
 
 }
+//---------------------------------------------------
+
+function chk_add_online()
+{
+    global $xoopsDB;
+    $sql = 'select count(`id`)  from '.$xoopsDB->prefix('mac_online');
+    //echo $sql ;
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return false;
+    }
+
+    return true;
+}
+
+function go_update_add_online()
+{
+    global $xoopsDB;
+
+    $sql ='CREATE TABLE '. $xoopsDB->prefix('mac_online'). "
+    ( `oid` BIGINT NOT NULL AUTO_INCREMENT ,
+    id int(11) NOT NULL DEFAULT '0' ,
+    `online_day` DATETIME NULL ,
+    PRIMARY KEY (`oid` ),
+    KEY ip (id),
+    INDEX   (`id`, `online_day`)
+    )  ENGINE=MyISAM " ;
+
+    //echo $sql ;
+    $xoopsDB->queryF($sql);
+}
+
 //---------------------------------------------------
 
 function chk_add_sysinfo()

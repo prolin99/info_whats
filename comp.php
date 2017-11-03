@@ -58,6 +58,7 @@ echo 'start--' ;
             $up_ip = '';
             $ip_k = preg_split('/[.]/', $ip);
             $ip_id = $ip_k[2] * 1000 + $ip_k[3];
+            $find_id = 0 ;
             if ($mac) {
                 $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '$mac'  ";
                 $err_comp_list[] = "$ip -- $sqlstr <br >";
@@ -65,7 +66,10 @@ echo 'start--' ;
 
                 $result = $xoopsDB->query($sql) or die($sql.'<br>'.$xoopsDB->error());
                 while ($row = $xoopsDB->fetchArray($result)) {
+                    $find_id = $row['id'];
                     $nip = $row['mac'];
+                    //上線中 ，寫入 mac_online
+                    online( $find_id ) ;
                 }
 
                 if (!$nip) {
@@ -73,14 +77,19 @@ echo 'start--' ;
 				               values ('0','$ip','$mac',now() , now() ,'$ip_id' ,'','','' ) ";
                     $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
                     //echo "$sqlstr <br >" ;
+                    $find_id = $xoopsDB->getInsertId();
+                    //上線中 ，寫入 mac_online
+                    online( $find_id ) ;
                 } else {
                     //更新
 
                     $sql = ' update '.$xoopsDB->prefix('mac_info')."  set  ip='$ip' ,recode_time=now()  ,ip_id ='$ip_id'  where mac='$mac' ";
 
                     $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
-                    //echo "$sqlstr <br >" ;
+                     //echo "$sqlstr <br >" ;
                 }
+
+
             }
         }
     } //foreach
@@ -92,6 +101,9 @@ echo 'start--' ;
     linux ------
     ping6 -I eth0 -c3 ff02::1 > /dev/null
     /sbin/ip neigh show > /var/www/html/ip-neigh-show.txt
+    2001:288:752a::6 dev eth0 lladdr 00:1d:d8:b7:1f:18 STALE
+    120.116.25.31 dev eth0 lladdr c0:3f:d5:ff:0a:c7 STALE
+    fe80::3e15:c2ff:fef0:81bf dev eth0 lladdr 3c:15:c2:f0:81:bf router STALE
     */
 
 
@@ -125,6 +137,15 @@ echo 'start--' ;
 
             $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
             //echo "$sql <br >" ;
+
+            //上線中 ，寫入 mac_online
+            $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '$mac'  ";
+            $result = $xoopsDB->query($sql) or die($sql.'<br>'.$xoopsDB->error());
+            while ($row = $xoopsDB->fetchArray($result)) {
+                $find_id = $row['id'];
+                online( $find_id ) ;
+            }
+
         }
     }
 
@@ -179,24 +200,40 @@ echo 'start--' ;
                 $local_file = XOOPS_ROOT_PATH."/uploads/info_whats/"  .$fname ;
                 $handle = fopen($local_file, 'w');
                 if (ftp_fget($conn_id, $handle, $fname, FTP_BINARY, 0)) {
-                    ftp_delete($conn_id, $fname );
+
                     //讀取檔案到資料庫中
                     get_system_info($local_file) ;
                     //刪除下載的檔案
                     unlink($local_file) ;
+                    ftp_delete($conn_id, $fname );
                 } else {
                     echo "下載 $remote_file 到 $local_file 失敗\n";
                 }
                 fclose($handle); // 關閉檔案
             } //.txt
         }//foreach
+        ftp_close($conn_id);
     }
 
 echo 'end --' ;
 
+
+//上線記錄
+function online($id){
+    global $xoopsDB ;
+    $sql = ' insert into  '.$xoopsDB->prefix('mac_online').
+        "(oid ,id ,online_day )
+        values ('0','$id',now()  ) ";
+    $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
+    echo "<p>$id</p>" ;
+
+}
+
 function get_system_info($file)
 {
     global $xoopsModuleConfig ,$xoopsDB ;
+
+    echo "<p>$file</p>" ;
 
     $output = file_get_contents($file, FILE_USE_INCLUDE_PATH);
     //utf 16 to utf8
@@ -368,7 +405,7 @@ function get_system_info($file)
        (id ,ip ,ip_v6 , mac ,recode_time ,creat_day ,ip_id ,comp ,phid ,kind , uuid , bios , cpu , memory , dhcpserver , sysinfo_day ,ipv4_ext ,ipv4_in)
          values ('0','{$info_data['ip_v4']}','{$info_data['ip_v6']}','{$info_data['mac']}',now() , now() ,'0' ,'','','' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}','{$info_data['dhcpserver']}', now() ,'{$info_data['ext_ip']}' ,'{$info_data['ip_v4']}') ";
         $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
-        $id = $xoopsDB->getInsertId();
+        $has_old_id = $xoopsDB->getInsertId();
     }
 
     //開機 info 記錄
@@ -376,4 +413,5 @@ function get_system_info($file)
    (uid,id , uuid , bios , cpu , memory , dhcpserver , ipaddress , sysinfo_day , dangerFG )
      values ('0', '$has_old_id' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}','{$info_data['dhcpserver']}','{$info_data['ip_mac']}', now() ,'$danger_fg') ";
     $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
+
 }
