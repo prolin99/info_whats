@@ -63,13 +63,14 @@ echo 'start--' ;
                 $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '$mac'  ";
                 $err_comp_list[] = "$ip -- $sqlstr <br >";
                 //echo "$ip -- $sqlstr <br >" ;
-
+                echo $mac . '---<br>' ;
                 $result = $xoopsDB->query($sql) or die($sql.'<br>'.$xoopsDB->error());
                 while ($row = $xoopsDB->fetchArray($result)) {
                     $find_id = $row['id'];
                     $nip = $row['mac'];
                     //上線中 ，寫入 mac_online
                     online( $find_id ) ;
+                    //echo $row['mac'] .'<br />' ;
                 }
 
                 if (!$nip) {
@@ -125,7 +126,7 @@ echo 'start--' ;
         $arp_list = preg_split("/[\s]+/", $line);
         $a_ip = $arp_list[0];
 
-        $a_mac = $arp_list[4];
+        $a_mac = strtoupper($arp_list[4]);
 
         if (isset($a_mac)) {
             $pos = stripos($a_ip, $xoopsModuleConfig['iw_ip_v6']);
@@ -138,12 +139,14 @@ echo 'start--' ;
             $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
             //echo "$sql <br >" ;
 
+
             //上線中 ，寫入 mac_online
-            $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '$mac'  ";
+            $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '$a_mac'  ";
             $result = $xoopsDB->query($sql) or die($sql.'<br>'.$xoopsDB->error());
             while ($row = $xoopsDB->fetchArray($result)) {
                 $find_id = $row['id'];
                 online( $find_id ) ;
+                //echo $row['mac'] .'<br />' ;
             }
 
         }
@@ -225,7 +228,7 @@ function online($id){
         "(oid ,id ,online_day )
         values ('0','$id',now()  ) ";
     $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
-    echo "<p>$id</p>" ;
+    //echo "<p>$id</p>" ;
 
 }
 
