@@ -59,11 +59,12 @@ CREATE TABLE   `mac_up_sysinfo` (
 )  ENGINE=MyISAM  ;
 
 
-CREATE TABLE  `mac_online`
-  `oid` BIGINT NOT NULL AUTO_INCREMENT ,
+CREATE TABLE  `mac_online` (
+  `oid` bigint(20) NOT NULL AUTO_INCREMENT ,
   `id` int(11) NOT NULL DEFAULT '0' ,
   `online_day` DATETIME NULL ,
+  `on_day` date NULL ,
   PRIMARY KEY (`oid` ),
   KEY ip (id),
-  INDEX   (`id`, `online_day`)
+  INDEX   (`id`, `on_day`)
 )  ENGINE=MyISAM  ;

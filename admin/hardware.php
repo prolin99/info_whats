@@ -22,6 +22,7 @@ if ($_GET['id']) {
     $sql = " select * from " . $xoopsDB->prefix("mac_up_sysinfo") .
    " where (id = '{$_GET['id']}') and (sysinfo_day >= ( DATE_ADD(now() ,INTERVAL -30 DAY )) )
     order by  sysinfo_day  " ;
+
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
         $row['w']= date('w', strtotime($row['sysinfo_day']))  ;
@@ -36,24 +37,20 @@ if ($_GET['id']) {
 
 
     //上線記錄
-    $sql = " select * from " . $xoopsDB->prefix("mac_online") .
-   " where (id = '{$_GET['id']}') and (online_day >= ( DATE_ADD(now() ,INTERVAL -30 DAY )) )
-    order by  oid     " ;
+    $open_week = get_id_online_rec($dtat_rec['id'] ,30  ) ;
+    /*
+    $sql = " select id, on_day , max(online_day) as max_d ,min(online_day) as min_d  ,  count(*) from  " . $xoopsDB->prefix("mac_online") .
+    " where (id = '{$_GET['id']}') and (online_day >= ( DATE_ADD(now() ,INTERVAL -30 DAY )) )  " .
+    " group by id,on_day "      ;
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
-        $d_of_w = date('w', strtotime($row['online_day']))  ;
-        $week = date('W', strtotime($row['online_day']))  ;
+        $d_of_w = date('w', strtotime($row['on_day']))  ;
+        $week = date('W', strtotime($row['on_day']))  ;
         $open_week[$week][$d_of_w]['on']= 'on' ;
-        $t = substr($row['online_day'],11,5) ;
-
-        if (empty($open_week[$week][$d_of_w]['b']))
-          $open_week[$week][$d_of_w]['b']= $t;
-        if ($t < $open_week[$week][$d_of_w]['b'])
-          $open_week[$week][$d_of_w]['b']= $t;
-        if ($t >$open_week[$week][$d_of_w]['e'])
-          $open_week[$week][$d_of_w]['e']= $t;
-
+        $open_week[$week][$d_of_w]['b'] = substr($row['min_d'],11,5) ;
+        $open_week[$week][$d_of_w]['e'] = substr($row['max_d'],11,5) ;
     }
+    */
 } else {
     //今天開機的記錄
     $sql = " select a.* ,i.comp , i.workgroup  , i.comp_dec , i.ps from " .

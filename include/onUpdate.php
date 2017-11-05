@@ -44,12 +44,13 @@ function go_update_add_online()
     global $xoopsDB;
 
     $sql ='CREATE TABLE '. $xoopsDB->prefix('mac_online'). "
-    ( `oid` BIGINT NOT NULL AUTO_INCREMENT ,
+    ( `oid` bigint(20) NOT NULL AUTO_INCREMENT ,
     id int(11) NOT NULL DEFAULT '0' ,
     `online_day` DATETIME NULL ,
+    `on_day` date NULL ,
     PRIMARY KEY (`oid` ),
     KEY ip (id),
-    INDEX   (`id`, `online_day`)
+    INDEX   (`id`, `on_day`)
     )  ENGINE=MyISAM " ;
 
     //echo $sql ;
@@ -76,7 +77,7 @@ function go_update_add_sysinfo()
     global $xoopsDB;
 
     $sql ='CREATE TABLE '. $xoopsDB->prefix('mac_up_sysinfo'). "
-    ( `uid` BIGINT NOT NULL AUTO_INCREMENT ,
+    ( `uid` bigint(20) NOT NULL AUTO_INCREMENT ,
     id int(11) NOT NULL DEFAULT '0' ,
     `uuid` VARCHAR(80) NOT NULL ,
     `bios` VARCHAR(80) NULL ,

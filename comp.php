@@ -21,6 +21,8 @@ if ($_GET['do'] <> $key) {
 
 echo 'start--' ;
 
+    $this_on_array = array() ;
+
     //-----nmap------------------------------------------
     $nmap_url = $xoopsModuleConfig['iw_ip_scan_url'];
     /*
@@ -43,6 +45,8 @@ echo 'start--' ;
         $ip_0 = '';
         list($mark, $is, $mac, $ifor, $ip1, $ip_0) = preg_split("/[\s]+/", $line);
         if ($mark == 'Nmap') {
+            //Nmap scan report for dns.syps.tn.edu.tw (120.116.24.1)
+            //Nmap scan report for 120.116.24.18
             //echo " $mark , $is,  $mac , $ifor ,  $ip1 , $ip_0 <br />"   ;
             $up_ip = $ip1;
 
@@ -52,6 +56,8 @@ echo 'start--' ;
         }
 
         if (($mark == 'MAC') and ($up_ip != '') and ($mac != 'FF:FF:FF:FF:FF:FF')) {
+            //MAC Address: 00:D0:E9:40:59:C0 (Advantage Century Telecommunication)
+            //MAC Address: EC:A8:6B:A5:F0:85 (Unknown)
             $nip = '';
             $ip = trim($up_ip);
             $mac = trim($mac);
@@ -123,9 +129,11 @@ echo 'start--' ;
     $lines = preg_split('/\n/', $output);
 
     foreach ($lines as $line_num => $line) {
+        //可能要先 ping6 已有的 ipv6 ??
+        //REACHABLE ?
+
         $arp_list = preg_split("/[\s]+/", $line);
         $a_ip = $arp_list[0];
-
         $a_mac = strtoupper($arp_list[4]);
 
         if (isset($a_mac)) {
@@ -223,15 +231,19 @@ echo 'end --' ;
 
 //上線記錄
 function online($id){
-    global $xoopsDB ;
+    global $xoopsDB  , $this_on_array;
+    if ( ($id <=0) and in_array($id, $this_on_array) )
+        return 0 ;
+
     $sql = ' insert into  '.$xoopsDB->prefix('mac_online').
-        "(oid ,id ,online_day )
-        values ('0','$id',now()  ) ";
+        "(oid ,id ,online_day , on_day )
+        values ('0','$id',now() ,now()  ) ";
     $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
     //echo "<p>$id</p>" ;
 
 }
 
+//開機上傳的檔案
 function get_system_info($file)
 {
     global $xoopsModuleConfig ,$xoopsDB ;

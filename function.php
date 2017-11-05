@@ -128,3 +128,27 @@ function get_from_rec($uid, $ip, $mac)
         return $data_list ;
     }
 }
+
+
+//以周陣列 傳回上線時間
+function get_id_online_rec($id , $days=30 ,$prei =10)
+{
+    global $xoopsDB;
+    //上線記錄
+    $days = $days * -1 ;
+    $sql = " select id, on_day , max(online_day) as max_d ,min(online_day) as min_d  ,  count(*) as cc from  " . $xoopsDB->prefix("mac_online") .
+    " where (id = '{$_GET['id']}') and (online_day >= ( DATE_ADD(now() ,INTERVAL $days DAY )) )  " .
+    " group by id,on_day "      ;
+    $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
+    while ($row=$xoopsDB->fetchArray($result)) {
+        $d_of_w = date('w', strtotime($row['on_day']))  ;
+        $week = date('W', strtotime($row['on_day']))  ;
+        $open_week[$week][$d_of_w]['on']= 'on' ;
+        $open_week[$week][$d_of_w]['day']= $row['on_day'] ;
+        $open_week[$week][$d_of_w]['on_hour']= $row['cc'] * $prei / 60 ;
+        $open_week[$week][$d_of_w]['b'] = substr($row['min_d'],11,5) ;
+        $open_week[$week][$d_of_w]['e'] = substr($row['max_d'],11,5) ;
+    }
+    return $open_week ;
+
+}

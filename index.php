@@ -50,16 +50,21 @@ $data = get_mac() ;
 $data_get = get_from_data($uid, $data['ip'], $data['mac']) ;
 //已寫入 mac_info 中的資料。
 $data_rec = get_from_rec($uid, $data['ip'], $data['mac']) ;
+//取得上線記錄 3天，10分 間隔
+$online = get_id_online_rec($dtat_rec['id'] ,3   ) ;
+
 
 /*-----------秀出結果區--------------*/
+
 $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu)) ;
-$xoopsTpl->assign("bootstrap", get_bootstrap()) ;
-$xoopsTpl->assign("jquery", get_jquery(true)) ;
+//$xoopsTpl->assign("bootstrap", get_bootstrap()) ;
+//$xoopsTpl->assign("jquery", get_jquery(true)) ;
 $xoopsTpl->assign("data", $data) ;
 $xoopsTpl->assign("data_get", $data_get) ;
 $xoopsTpl->assign("data_rec", $data_rec) ;
 $xoopsTpl->assign("have_input", $have_input) ;
 $xoopsTpl->assign("input_mode", $xoopsModuleConfig['iw_input']) ;
 $xoopsTpl->assign("client_file", $xoopsModuleConfig['iw_FtpClient']) ;
+$xoopsTpl->assign("online", $online） ;
 
 include_once XOOPS_ROOT_PATH.'/footer.php';

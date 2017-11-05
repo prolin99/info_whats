@@ -28,31 +28,51 @@
 =================================================
 1.要有一台 linux 系統，需要架有網頁功能，安裝 nmap 套件。
 2.建立定時執行機制 (10分鐘執行一次) ，注意其中需要配合偏好設定中的變數做調整。( 目錄中有 ip-scan.sh 檔案)
-   crontab -e -u root 
+   crontab -e -u root
    */10 * * * * /root/sh/ip-scan.sh
 
    ip-scan.sh  (內容)
 	#!/bin/bash
- 
+
 	PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 	export PATH
-	
+
 	#nmap 掃描網載，產生記錄文字檔，要放在網頁可以存區處 (以下為範例，要修改網域，及要存放的位置)，
 	#在偏好設定，nmap掃描結果檔   http://網址/nmap.txt
 	# 120.116.24.0/24 為新營國小網域，一定要更改
-	/usr/bin/nmap -sP 120.116.24.0/24 > /var/www/html/nmap.txt
-	
+	/usr/bin/nmap -sP -T3 120.116.24.0/24 > /var/www/html/nmap.txt
+
 	#取得 ipv6 資訊
 	#在偏好設定，arp 掃描結果檔   http://網址/arp.txt
 	ping6 -I eth0 -c3 ff02::1 > /dev/null
 	/sbin/ip neigh show > /var/www/html/arp.txt
-	
-	
+
+
 	#其中代碼為偏好設定--定時連線的代號 (現預設 info_whats )
 	wget -O /dev/null http://你的網址/modules/info_whats/comp.php?do=info_whats   2> /dev/null
-	
-	
+
+
 3.偏好設定，要和 ip-scan.sh 做配合。
 4.如果所在機器，提供 DHCP 伺服器，偏好中修改 DHCP 記錄檔。
 5.在後台管理中，可以修改機器名稱，IP，方便你做記錄。在下方會列出	DHCP 設訂內容，可以方便你再改寫伺服器中的 DHCP 設定檔。
 6.在前台可以給教職員登記自已使用的機器。這部份會判別是否在校內網域，登錄時會取得 MAC 序號。 在偏好設定中可以指定是否開放登記。
+
+
+
+
+
+
+http://qmaw.pixnet.net/blog/post/240590879-%5B%E9%9B%BB%E8%85%A6%5D%E5%B8%B8%E8%A6%8B%E7%9A%84ipv4-ipv6-multicast-address
+    IPv4 	IPv6
+ All Multicast Hosts  	224.0.0.1 	FF02::1
+ All Routers 	224.0.0.2 	FF02::2
+ All OSPF Routers 	224.0.0.5 	FF02::5
+ All OSPF D Routers 	224.0.0.6 	FF02::6
+ RIP 	224.0.0.9 	FF02::9
+ EIGRP 	224.0.0.10 	FF02::a
+ PIMv2 	224.0.0.13 	FF02::d
+ VRRP 	224.0.0.18 	FF02::2
+ IGMPv3/MLDv2 Report 	224.0.0.22 	FF02::16
+ NTP 	224.0.1.1 	FF0x::101
+All DHCP servers and relay agents on the local network site 	x 	ff02::1:2
+ All DHCP servers on the local network site 	x 	ff05::1:3
