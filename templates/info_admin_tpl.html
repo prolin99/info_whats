@@ -62,14 +62,14 @@
 	<{/if}>
 	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
 	<div class="span2">
-    <span class="ip" alt="<{$comp.ip}>"><{$comp.ip}>
+    <span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span><br />
       <{if ($comp.dhcpserver) }>
-      ├<{$comp.dhcpserver}>
+      ├d:<{$comp.dhcpserver}>
       <{/if}>
-    </span>
+
 		<span class="ip" alt="<{$comp.ip_v6}>"><{$comp.ipv6_last}></span>
-    <{if ($comp.ipv4_ext) }>
-    <br>├<{$comp.ipv4_ext}>  ├<{$comp.ipv4_in}>
+    <{if ($comp.ipv4_ext<>"") }>
+    <br>├e:<{$comp.ipv4_ext}>  ├<{$comp.ipv4_in}>
     <{/if}>
 	</div>
 	<!---- 填報資料也加入  -->

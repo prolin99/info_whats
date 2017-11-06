@@ -7,6 +7,7 @@
 
 <div class="row-fluid alert alert-success">
 	<span class="badge badge-inverse">#<{$now_comp.id}></span>
+	<span><{$now_comp.ip}></span>
 	<span class="label label-info"><{$now_comp.comp}></span>
 	<span><{$now_comp.workgroup}></span>
 	<span><{$now_comp.comp_dec}></span>
@@ -47,7 +48,7 @@
 
 		<i class="icon-off" title="開機<{$week[$d].times}>次"></i>*<{$week[$d].times}>(<{$week[$d].day}> 日)
 		<{/if}>
-		<{if $week[$d].on}><i class="icon-random" title="<{$week[$d].b}> ~ <{$week[$d].e}>"></i><{$week[$d].b}> ~ <{$week[$d].e}><{/if}>
+		<{if $week[$d].on}><i class="icon-random" title="<{$week[$d].b}> ~ <{$week[$d].e}>"></i><{$week[$d].b}> ~ <{$week[$d].e}>(<{$week[$d].on_hour}>h)<{/if}>
 	</td>
 	<{/foreach}>
 	</tr>

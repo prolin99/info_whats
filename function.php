@@ -145,10 +145,30 @@ function get_id_online_rec($id , $days=30 ,$prei =10)
         $week = date('W', strtotime($row['on_day']))  ;
         $open_week[$week][$d_of_w]['on']= 'on' ;
         $open_week[$week][$d_of_w]['day']= $row['on_day'] ;
-        $open_week[$week][$d_of_w]['on_hour']= $row['cc'] * $prei / 60 ;
+        $open_week[$week][$d_of_w]['on_hour']= number_format(($row['cc'] * $prei / 60),1) ;
         $open_week[$week][$d_of_w]['b'] = substr($row['min_d'],11,5) ;
         $open_week[$week][$d_of_w]['e'] = substr($row['max_d'],11,5) ;
     }
+
+
+    //取得客戶端上傳硬體訊息，一個月內
+    $sql = " select id, on_day , count(*) as cc from " . $xoopsDB->prefix("mac_up_sysinfo") .
+   " where (id = '{$_GET['id']}') and (on_day >= ( DATE_ADD(now() ,INTERVAL $days DAY )) ) " .
+   " group by id,on_day "      ;
+
+
+    $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
+    while ($row=$xoopsDB->fetchArray($result)) {
+        //$row['w']= date('w', strtotime($row['on_day']))  ;
+        //$open_list[] = $row ;
+        $d_of_w = date('w', strtotime($row['on_day']))  ;
+        $week = date('W', strtotime($row['on_day']))  ;
+        //$open_week[$week][$d_of_w]['data']= $row ;
+        $open_week[$week][$d_of_w]['boot']= 'boot' ;
+        $open_week[$week][$d_of_w]['times'] = $row['cc'];
+        $open_week[$week][$d_of_w]['day']= substr($row['on_day'],8,2) ;
+    }
+
     return $open_week ;
 
 }

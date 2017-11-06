@@ -425,8 +425,8 @@ function get_system_info($file)
 
     //開機 info 記錄
     $sql = ' insert into  '.$xoopsDB->prefix('mac_up_sysinfo')."
-   (uid,id , uuid , bios , cpu , memory , dhcpserver , ipaddress , sysinfo_day , dangerFG )
-     values ('0', '$has_old_id' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}','{$info_data['dhcpserver']}','{$info_data['ip_mac']}', now() ,'$danger_fg') ";
+   (uid,id , uuid , bios , cpu , memory , dhcpserver , ipaddress , sysinfo_day , dangerFG ,on_day )
+     values ('0', '$has_old_id' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}','{$info_data['dhcpserver']}','{$info_data['ip_mac']}', now() ,'$danger_fg') , now() ";
     $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
 
 }

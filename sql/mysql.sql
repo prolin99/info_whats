@@ -52,10 +52,11 @@ CREATE TABLE   `mac_up_sysinfo` (
   `dhcpserver` varchar(80) DEFAULT NULL,
   `ipaddress` varchar(100) DEFAULT NULL,
   `sysinfo_day` datetime DEFAULT NULL,
+  `on_day` date NULL ,
   `dangerFG` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`uid`),
-  KEY `ip` (`id`),
-  KEY `uuid` (`uuid`,`sysinfo_day`)
+  KEY `id` (`id`),
+  KEY `id_on_day` (`id`,`on_day`)
 )  ENGINE=MyISAM  ;
 
 
@@ -65,6 +66,6 @@ CREATE TABLE  `mac_online` (
   `online_day` DATETIME NULL ,
   `on_day` date NULL ,
   PRIMARY KEY (`oid` ),
-  KEY ip (id),
+  KEY id (id),
   INDEX   (`id`, `on_day`)
 )  ENGINE=MyISAM  ;

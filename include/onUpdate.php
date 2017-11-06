@@ -49,7 +49,7 @@ function go_update_add_online()
     `online_day` DATETIME NULL ,
     `on_day` date NULL ,
     PRIMARY KEY (`oid` ),
-    KEY ip (id),
+    KEY id (id),
     INDEX   (`id`, `on_day`)
     )  ENGINE=MyISAM " ;
 
@@ -86,10 +86,11 @@ function go_update_add_sysinfo()
     `dhcpserver` VARCHAR(80) NULL ,
     `ipaddress` VARCHAR(100) NULL ,
     `sysinfo_day` DATETIME NULL ,
+    `on_day` date NULL ,
     `dangerFG` int(11)  NOT NULL DEFAULT '0' ,
     PRIMARY KEY (`uid` ),
-    KEY ip (id),
-    INDEX   (`uuid`, `sysinfo_day`)
+    KEY id (id),
+    KEY   (`id`,`on_day`)
     )  ENGINE=MyISAM " ;
 
     //echo $sql ;
