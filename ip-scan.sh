@@ -9,8 +9,9 @@
 
 	#取得 ipv6 資訊
 	#在偏好設定，arp 掃描結果檔   http://網址/arp.txt
-	ping6 -I eth0 -c3 ff02::1 > /dev/null
-	/sbin/ip neigh show > /var/www/html/arp.txt
+	#這部份無法正確反應 ipv6 設備是否在上線狀態，移除不用
+	#ping6 -I eth0 -c3 ff02::1 > /dev/null
+	#/sbin/ip -6 neigh show > /var/www/html/arp.txt
 
 
 	#其中代碼為偏好設定--定時連線的代號 (現預設 info_whats )

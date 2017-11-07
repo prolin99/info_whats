@@ -19,7 +19,7 @@ if ($_GET['do'] <> $key) {
     exit() ;
 }
 
-echo 'start--' ;
+echo 'start--'.'<br/>' ;
 
     $this_on_array = array() ;
 
@@ -102,7 +102,7 @@ echo 'start--' ;
     } //foreach
 
 
-    //-------ip-neigh-show----------------------------------------------------------------
+    //-------ip-neigh-show-- (無法反應是否還在上線狀態，不再使用)--------------------------------------------------------------
     /*
     ipv6
     linux ------
@@ -113,9 +113,10 @@ echo 'start--' ;
     fe80::3e15:c2ff:fef0:81bf dev eth0 lladdr 3c:15:c2:f0:81:bf router STALE
     */
 
-
+    //(無法反應是否還在上線狀態，不再使用)
+    /*
     $nmap_url = $xoopsModuleConfig['iw_ip_neigh_url'];
-    //echo $nmap_url . '<br >' ;
+
     $ch = curl_init();
     $options = array(CURLOPT_URL => $nmap_url,
         CURLOPT_HEADER => false,
@@ -159,6 +160,10 @@ echo 'start--' ;
 
         }
     }
+    */
+
+
+
 
     //------主機離線 EMAIL 通知
     $alert_fg = $xoopsModuleConfig['iw_alert'];
@@ -226,20 +231,22 @@ echo 'start--' ;
         ftp_close($conn_id);
     }
 
-echo 'end --' ;
+echo 'end --' .'<br/>'  ;
 
 
 //上線記錄
 function online($id){
     global $xoopsDB  , $this_on_array;
-    if ( ($id <=0) and in_array($id, $this_on_array) )
-        return 0 ;
+    if ( ($id <=0) and in_array($id, $this_on_array) ){
+      return 0 ;
+    }else {
+      $this_on_array[]= $id ;
 
-    $sql = ' insert into  '.$xoopsDB->prefix('mac_online').
-        "(oid ,id ,online_day , on_day )
-        values ('0','$id',now() ,now()  ) ";
-    $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
-    //echo "<p>$id</p>" ;
+      $sql = ' insert into  '.$xoopsDB->prefix('mac_online').
+          "(oid ,id ,online_day , on_day )
+          values ('0','$id',now() ,now()  ) ";
+      $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
+  }
 
 }
 
