@@ -241,6 +241,7 @@ function online($id){
       return 0 ;
     }else {
       $this_on_array[]= $id ;
+      echo "$id , " ;
 
       $sql = ' insert into  '.$xoopsDB->prefix('mac_online').
           "(oid ,id ,online_day , on_day )
@@ -313,10 +314,32 @@ function get_system_info($file)
             $key='' ;
             continue ;
         }
+
+
+
         //非 key 行，前有指定 key ，內容不是空的
         if ((!$keyword_find) and  ($key<>'') and trim($v)) {
-            $info_data[$key]= trim($v) ;
-            $key='' ;
+            //xp 版本
+            if ($key=='ip_mac'){
+              /*
+              $success = preg_match('/^([a-fA-F0-9]{2}[:|\-]){5}[a-fA-F0-9]{2}/', $v);
+              if ($success) {
+                  $info_data['mac'] = strtoupper($v) ;
+              }
+              */
+              $success = preg_match('/^{"(.+)"}(.+) /', $v ,$vpart);
+              if ($success) {
+                  $info_data['ip_v4'] = strtoupper($vpart[1]) ;
+                  $info_data['mac'] = strtoupper($vpart[2]) ;
+                  $info_data['ip_mac'] = strtoupper($vpart[0]) ;
+                  $key='' ;
+              }
+
+            }else {
+              $info_data[$key]= trim($v) ;
+              $key='' ;
+            }
+
         }
     }
 
@@ -332,21 +355,31 @@ function get_system_info($file)
     MaxCapacity
     4194304
     DHCPServer
-
     120.116.24.4
-
-
-
-
-
-
-
-
 
     IPAddress                                                                                                                MACAddress
 
     {"120.116.25.122", "fe80::8999:d1ee:e:f252", "2001:288:752a:0:b52d:6ae5:59df:f48e", "2001:288:752a:0:8999:d1ee:e:f252"}  00:25:11:4F:CC:97
 
+    */
+    /* xp
+    UUID
+FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+BIOSVersion                                                                          Name
+{"ACRSYS - 42302e31", "Phoenix - AwardBIOS v6.00PG", "Phoenix - AwardBIOS v6.00PG"}  Phoenix - AwardBIOS v6.00PG
+Name
+Intel Pentium II 處理器
+MaxCapacity
+4194304
+DHCPServer
+120.116.24.4
+IPAddress           MACAddress
+                  50:50:54:50:30:30
+                  33:50:6F:45:30:30
+                  30:0F:20:52:41:53
+{"120.116.25.134"}  00:1C:25:8A:50:81
+                  00:1C:25:8A:50:81
+YourIp: 120.116.25.134
     */
 
     $ipv6_pre = $xoopsModuleConfig['iw_ip_v6'] ;
@@ -371,6 +404,7 @@ function get_system_info($file)
         if ($success) {
             $info_data['mac'] = strtoupper($v) ;
         }
+
     }
     if ($info_data['ip_v4'] == $info_data['ext_ip'])
       $info_data['ext_ip']='' ;
@@ -433,7 +467,7 @@ function get_system_info($file)
     //開機 info 記錄
     $sql = ' insert into  '.$xoopsDB->prefix('mac_up_sysinfo')."
    (uid,id , uuid , bios , cpu , memory , dhcpserver , ipaddress , sysinfo_day , dangerFG ,on_day )
-     values ('0', '$has_old_id' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}','{$info_data['dhcpserver']}','{$info_data['ip_mac']}', now() ,'$danger_fg') , now() ";
+     values ('0', '$has_old_id' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}','{$info_data['dhcpserver']}','{$info_data['ip_mac']}', now() ,'$danger_fg' , now() )";
     $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
 
 }
