@@ -36,6 +36,48 @@
 				解壓縮後，選擇 setup.bat 點滑鼠右鍵，以系統管理員身份執行。<br>
 				每次開機就會自行檢查，並上傳資料到主機中。
     <{/if}>
+
+
+
+		<!--  上線記錄  -->
+		<h3>此設備連線情形（三天內，時間為推估值）</h3>
+		<table class="table-bordered">
+		<tr>
+			<th class="span1">week</th>
+			<{foreach from=$week_name item=day key=d}>
+			<th class="span1">
+			<{$day}>
+			</th>
+			<{/foreach}>
+		</tr>
+
+
+		<{foreach from=$online item=week key=w}>
+		<{if ($w!="list")}>
+			<tr>
+			<td class="span1"><{$w}></td>
+			<{foreach from=$week_name item=day key=d}>
+
+			<{if ($week[$d].data.dangerFG)}>
+			<td class="span1 alert-danger" title="硬體更換警示" >
+			<{else}>
+			<td class="span1 " >
+			<{/if}>
+
+				<{if $week[$d].boot}>
+
+				<i class="icon-off" title="開機<{$week[$d].times}>次"></i>*<{$week[$d].times}>(<{$week[$d].D}> 日)
+				<{/if}>
+				<{if $week[$d].on}><i class="icon-random" title="<{$week[$d].b}> ~ <{$week[$d].e}>"></i><{$week[$d].b}> ~ <{$week[$d].e}>(<{$week[$d].on_hour}>h)<{/if}>
+			</td>
+			<{/foreach}>
+			</tr>
+		<{/if}>
+		<{/foreach}>
+		</table>
+
+
+
 <{else}>
 <h3>你的機器不在校內網域中！</h3>
 <{/if}>

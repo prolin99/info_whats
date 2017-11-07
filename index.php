@@ -53,7 +53,7 @@ $data_rec = get_from_rec($uid, $data['ip'], $data['mac']) ;
 //取得上線記錄 3天，10分 間隔
 $online = get_id_online_rec($data_rec['id'] ,3   ) ;
 
-
+$week_name=array(1=>'一',2=>'二',3=>'三',4=>'四',5=>'五',6=>'六', 0=>'日') ;
 /*-----------秀出結果區--------------*/
 
 $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu)) ;
@@ -66,5 +66,6 @@ $xoopsTpl->assign("have_input", $have_input) ;
 $xoopsTpl->assign("input_mode", $xoopsModuleConfig['iw_input']) ;
 $xoopsTpl->assign("client_file", $xoopsModuleConfig['iw_FtpClient']) ;
 $xoopsTpl->assign("online", $online) ;
+$xoopsTpl->assign("week_name", $week_name) ;
 
 include_once XOOPS_ROOT_PATH.'/footer.php';

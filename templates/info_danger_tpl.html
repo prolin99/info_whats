@@ -78,12 +78,13 @@
 </div>
 
 
-<h1>假日開機(30天內)</h1>
+<h1>假日非重要設備上線(30天內)</h1>
 <div class="row-fluid">
 
-<{foreach from=$notworkday_list item=comp key=cid}>
+<{foreach from=$notworkday_online_list item=comp key=cid}>
 
 <div class="alert  alert-error">
+<a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
 <div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
 
 	<div class="span1">
@@ -100,14 +101,85 @@
         <{/if}>
     </div>
 	  <div class="span1">
-			<a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
+
 			<span class="badge badge-inverse">#<{$comp.id}></span>
-			</a>
+
 	  </div>
 	  <div class="span2"><{$comp.sysinfo_day}></span> <br /><span class="label"><{$comp.creat_day}></span>
 		</div>
 </div>
+</a>
 </div>
 
 <{/foreach}>
 </div>
+
+
+
+<h1>假日開機(30天內)</h1>
+<div class="row-fluid">
+
+<{foreach from=$notworkday_list item=comp key=cid}>
+
+<div class="alert  alert-error">
+<a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
+<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+
+	<div class="span1">
+	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
+	<div class="span2"><span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span>
+		<span class="ip" alt="<{$comp.ip_v6}>"><{$comp.ipv6_last}></span>
+	</div>
+	<!---- 填報資料也加入  -->
+	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
+	<div class="span2">
+        <span class="label label-info"><{$comp.comp}> </span><{$comp.ps}>
+        <{if ($comp.modify_day) }>
+        <apan class="label " title="<{$comp.modify_day}>"><{$comp.modify_day|substr:2:8}></span>
+        <{/if}>
+    </div>
+	  <div class="span1">
+
+			<span class="badge badge-inverse">#<{$comp.id}></span>
+
+	  </div>
+	  <div class="span2"><{$comp.sysinfo_day}></span> <br /><span class="label"><{$comp.creat_day}></span>
+		</div>
+</div>
+</a>
+</div>
+
+<{/foreach}>
+</div>
+
+<script type="text/javascript">
+
+//----------------ip 搜尋登錄記錄
+$(document).on("click", "span.ip" ,  function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
+          		var ip = $(this).attr("alt")  ;
+ 		//alert(ip) ;
+          		ajax_ip( ip) ;  // 動作
+	}
+ );
+function ajax_ip(ip) {
+	$.ajax({
+		url: 'comp_ip_search.php',
+		type: 'GET',
+		dataType: 'html',
+		data: {sip: ip},
+	})
+	.done(function(data) {
+		console.log("success");
+		alert(data) ;
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});
+
+}
+
+</script>

@@ -78,20 +78,15 @@ if ($dhcp_log) {
     $dhcp_arr= preg_split('/[\n;]/', $dhcp_lease) ;
 
     foreach ($dhcp_arr  as $k=>$v) {
+        //lease 120.116.25.40 {  ，取得 ip
         $success = preg_match('/lease\b.+{/', trim($v));
         if ($success) {
             $keywords = preg_split("/[\s]+/", trim($v));
             $gdip=$keywords[1] ;
             //echo  $gdip ;
         }
-        /*
-        $dip = substr(stristr($v, 'lease'), 6, -1) ;
-        if ($dip) {
-            $dip_arr = explode(" ", $dip);
-            $gdip= trim($dip_arr[0]) ;
-        }
-        */
 
+        // hardware ethernet 74:da:38:cd:4e:40;   取得 mac
         $success = preg_match('/hardware ethernet.+/', trim($v));
         if ($success) {
             $keywords = preg_split("/[\s]+/", trim($v));
@@ -101,14 +96,8 @@ if ($dhcp_log) {
             $dhcp_mac_ip[$mac] =$gdip ;
             //echo   $mac . $gdip  .'<br>' ;
         }
-        /*
-        $mac = substr(stristr($v, 'hardware ethernet'), -17) ;
-        if ($mac) {
-            $bmac= strtoupper($mac) ;
-            $dhcp_mac_list[$bmac] = 1;
-            $dhcp_mac_ip[$bmac] =$gdip ;
-        }
-        */
+
+        //client-hostname "ta103-101";  取得名稱
         $cl_name='' ;
         $success = preg_match('/client-hostname.+/', trim($v));
         if ($success) {
@@ -120,12 +109,14 @@ if ($dhcp_log) {
             $dhcp_List[$mac]= $cl_name  ;
         }
 
-        /*
-        $cl_name = substr(stristr($v, 'client-hostname'), 17, -1) ;
-        if ($cl_name) {
-            $dhcp_List[$bmac]= $cl_name  ;
+        //結束
+        $success = preg_match('/}$/', trim($v));
+        if ($success) {
+          $cl_name='' ;
+          $gdip='' ;
+
         }
-        */
+
     }
 }
 

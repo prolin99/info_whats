@@ -21,10 +21,6 @@ if ($_GET['id']) {
         $now_comp = $row ;
     }
 
-
-
-
-
 } else {
     //今天開機的記錄
     $sql = " select a.* ,i.comp , i.workgroup  , i.comp_dec , i.ps from " .

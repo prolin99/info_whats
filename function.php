@@ -115,9 +115,9 @@ function get_from_rec($uid, $ip, $mac)
     global $xoopsDB;
     if ($ip or $mac) {
         if ($mac) {
-            $sql = " select comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where   mac ='$mac'   " ;
+            $sql = " select id ,comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where   mac ='$mac'   " ;
         } else {
-            $sql = " select comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where  ip ='$ip'      " ;
+            $sql = " select id, comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where  ip ='$ip'      " ;
         }
         $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
         $data_list=$xoopsDB->fetchArray($result) ;
@@ -137,8 +137,9 @@ function get_id_online_rec($id , $days=30 ,$prei =10)
     //上線記錄
     $days = $days * -1 ;
     $sql = " select id, on_day , max(online_day) as max_d ,min(online_day) as min_d  ,  count(*) as cc from  " . $xoopsDB->prefix("mac_online") .
-    " where (id = '{$_GET['id']}') and (online_day >= ( DATE_ADD(now() ,INTERVAL $days DAY )) )  " .
+    " where (id = '$id') and (online_day >= ( DATE_ADD(now() ,INTERVAL $days DAY )) )  " .
     " group by id,on_day "      ;
+ 
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
         $d_of_w = date('w', strtotime($row['on_day']))  ;
@@ -153,22 +154,30 @@ function get_id_online_rec($id , $days=30 ,$prei =10)
 
     //取得客戶端上傳硬體訊息，一個月內
     $sql = " select id, on_day , count(*) as cc from " . $xoopsDB->prefix("mac_up_sysinfo") .
-   " where (id = '{$_GET['id']}') and (on_day >= ( DATE_ADD(now() ,INTERVAL $days DAY )) ) " .
+   " where (id = '$id') and (on_day >= ( DATE_ADD(now() ,INTERVAL $days DAY )) ) " .
    " group by id,on_day "      ;
 
 
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
-        //$row['w']= date('w', strtotime($row['on_day']))  ;
-        //$open_list[] = $row ;
+
         $d_of_w = date('w', strtotime($row['on_day']))  ;
         $week = date('W', strtotime($row['on_day']))  ;
         //$open_week[$week][$d_of_w]['data']= $row ;
         $open_week[$week][$d_of_w]['boot']= 'boot' ;
         $open_week[$week][$d_of_w]['times'] = $row['cc'];
-        $open_week[$week][$d_of_w]['day']= substr($row['on_day'],8,2) ;
+        $open_week[$week][$d_of_w]['D']= substr($row['on_day'],8,2) ;
     }
+    $sql = " select * from " . $xoopsDB->prefix("mac_up_sysinfo") .
+     " where (id = '$id' ) and (on_day >= ( DATE_ADD(now() ,INTERVAL $days DAY )) ) " .
+     " order by sysinfo_day "      ;
+     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
+     while ($row=$xoopsDB->fetchArray($result)) {
+         $row['w']= date('w', strtotime($row['on_day']))  ;
+         $open_list[] = $row ;
+     }
 
+    $open_week['list']=$open_list ;
     return $open_week ;
 
 }

@@ -8,6 +8,7 @@
 <div class="row-fluid alert alert-success">
 	<span class="badge badge-inverse">#<{$now_comp.id}></span>
 	<span><{$now_comp.ip}></span>
+	<span class="label label-success"><{$now_comp.ip_v6}></span>
 	<span class="label label-info"><{$now_comp.comp}></span>
 	<span><{$now_comp.workgroup}></span>
 	<span><{$now_comp.comp_dec}></span>
@@ -34,6 +35,7 @@
 
 
 <{foreach from=$open_week item=week key=w}>
+<{if ($w!="list")}>
 	<tr>
 	<td class="span1"><{$w}></td>
 	<{foreach from=$week_name item=day key=d}>
@@ -46,19 +48,20 @@
 
 		<{if $week[$d].boot}>
 
-		<i class="icon-off" title="開機<{$week[$d].times}>次"></i>*<{$week[$d].times}>(<{$week[$d].day}> 日)
+		<i class="icon-off" title="開機<{$week[$d].times}>次"></i>*<{$week[$d].times}>(<{$week[$d].D}> 日)
 		<{/if}>
 		<{if $week[$d].on}><i class="icon-random" title="<{$week[$d].b}> ~ <{$week[$d].e}>"></i><{$week[$d].b}> ~ <{$week[$d].e}>(<{$week[$d].on_hour}>h)<{/if}>
 	</td>
 	<{/foreach}>
 	</tr>
+<{/if}>
 <{/foreach}>
 </table>
 
 <!--              開機資料                          -->
 <h2>開機資料</h2>
 <div class="row-fluid">
-<{foreach from=$open_list item=comp key=cid}>
+<{foreach from=$open_week.list item=comp key=cid}>
 <{if ($comp.dangerFG)}>
 <span class="row-fluid alert-danger">
 	<{if (($comp.w==0) or  ($comp.w==6) )}>

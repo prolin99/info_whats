@@ -27,8 +27,7 @@ while ($row=$xoopsDB->fetchArray($result)) {
 }
 
 //在星期六、日開機  （一個月內）
-
-$sql = " select u.* , i.* from " . $xoopsDB->prefix("mac_up_sysinfo") . " as  u , " . $xoopsDB->prefix("mac_info") ." as i  " .
+$sql = " select DISTINCT i.* from " . $xoopsDB->prefix("mac_up_sysinfo") . " as  u , " . $xoopsDB->prefix("mac_info") ." as i  " .
 " where u.id= i.id   and (u.on_day >= ( DATE_ADD(now() ,INTERVAL -30 DAY )) )  and  (  (DAYOFWEEK(u.on_day) =1) or (DAYOFWEEK(u.on_day) = 7)  )   order by  u.id     " ;
 //echo $sql;
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
@@ -36,7 +35,14 @@ while ($row=$xoopsDB->fetchArray($result)) {
   $notworkday_list[] = $row ;
 }
 
-
+//非重要設備，在星期六、日上線  （一個月內）
+$sql = " select DISTINCT i.*   from ". $xoopsDB->prefix("mac_info") ." as i  , " .$xoopsDB->prefix("mac_online") . " as  o " .
+" where i.id= o.id  and i.point=0 and (o.on_day >= ( DATE_ADD(now() ,INTERVAL -30 DAY )) )  and  (  (DAYOFWEEK(o.on_day) =1) or (DAYOFWEEK(o.on_day) = 7)  )   order  by  i.id    " ;
+//echo $sql;
+$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
+while ($row=$xoopsDB->fetchArray($result)) {
+  $notworkday_online_list[] = $row ;
+}
 
 
 
@@ -46,5 +52,6 @@ while ($row=$xoopsDB->fetchArray($result)) {
 $xoopsTpl->assign("danger_list", $danger_list);
 $xoopsTpl->assign("import_list", $import_list);
 $xoopsTpl->assign("notworkday_list", $notworkday_list);
+$xoopsTpl->assign("notworkday_online_list", $notworkday_online_list);
 
 include_once 'footer.php';
