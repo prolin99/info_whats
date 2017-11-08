@@ -8,7 +8,7 @@
 <div class="row-fluid alert alert-success">
 	<span class="badge badge-inverse">#<{$now_comp.id}></span>
 
-	<{if ($now_comp.ipv4_in) }>
+	<{if ($now_comp.ipv4_ext!="") }>
 	<span><{$now_comp.ipv4_in}> (<{$now_comp.ipv4_ext}>) </span>
 	<{else}>
 	<span><{$now_comp.ip}></span>

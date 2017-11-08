@@ -249,7 +249,7 @@ function online($id){
       $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
 
       //本身連線更新
-      $sql = ' update '.$xoopsDB->prefix('mac_info')."   recode_time=now()    where id='$id' ";
+      $sql = ' update '.$xoopsDB->prefix('mac_info')." set  recode_time=now()    where id='$id' ";
       $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
 
   }
