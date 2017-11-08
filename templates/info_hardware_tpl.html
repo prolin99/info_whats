@@ -17,7 +17,8 @@
 	<br />
 	<span><{$now_comp.uuid}></span>
 	<span class="label label-info"><{$now_comp.cpu}></span>
-	<span><{$now_comp.memory}></span>
+	<span>max memory:<{$now_comp.memory}>,</span>
+	<span>memory:<{$now_comp.realmemory}></span>
 	<{/if}>
 </div>
 
@@ -64,24 +65,35 @@
 <{if ($comp.dangerFG)}>
 <span class="row-fluid alert-danger">
 	<{if (($comp.w==0) or  ($comp.w==6) )}>
-  	<span class='label label-warning'><{$comp.sysinfo_day}></span>(<{$comp.w}>)
+  	<span class='label label-warning'><{$comp.sysinfo_day}></span>(<{$week_name[$comp.w]}>)
   <{else}>
-  	<span class='label label-info'><{$comp.sysinfo_day}></span>(<{$comp.w}>)
+  	<span class='label label-info'><{$comp.sysinfo_day}></span>(<{$week_name[$comp.w]}>)
   <{/if}>
 	<span>
   <i class="icon-exclamation-sign" title="硬體更換警示"></i>
   </span>
-	<span  ><{$comp.bios}></span>
-	<span  ><{$comp.cpu}></span>
-	<span  ><{$comp.ipaddress}></span>
-	<span  ><{$comp.dhcpserver}></span>
+	<{if ($now_comp.bios!=$comp.bios) }>
+	<span  >bios:<{$comp.bios}></span>
+	<{/if}>
+	<{if ($now_comp.cpu!=$comp.cpu) }>
+	<span  >cpu:<{$comp.cpu}></span>
+	<{/if}>
+	<{if ($now_comp.memory!=$comp.memory) }>
+	<span  >max:<{$comp.memory}></span>
+	<{/if}>
+	<{if ($now_comp.realmemory!=$comp.realmemory) }>
+	<span  >memory:<{$comp.realmemory}></span>
+	<{/if}>
+	<{if ($now_comp.dhcpserver!=$comp.dhcpserver) }>
+	<span  >dhcp:<{$comp.dhcpserver}></span>
+	<{/if}>
 </span>
 <{else}>
 <span class="span3">
 	<{if (($comp.w==0) or  ($comp.w==6) )}>
-  	<span class='label label-warning'><{$comp.sysinfo_day}>(<{$comp.w}>)</span>
+  	<span class='label label-warning'><{$comp.sysinfo_day}>(<{$week_name[$comp.w]}>)</span>
   <{else}>
-  	<span class='label label-info'><{$comp.sysinfo_day}>(<{$comp.w}>)</span>
+  	<span class='label label-info'><{$comp.sysinfo_day}>(<{$week_name[$comp.w]}>)</span>
   <{/if}>
 </span>
 <{/if}>
@@ -104,9 +116,9 @@
 <div class="row-fluid">
  <span class="badge badge-inverse">#<{$comp.id}></span>
  <{if (($comp.w==0) or  ($comp.w==6) )}>
- 	<span class='label label-warning'><{$comp.sysinfo_day}></span>(<{$comp.w}>)
+ 	<span class='label label-warning'><{$comp.sysinfo_day}></span>(<{$week_name[$comp.w]}>)
  <{else}>
- 	<span class='label label-info'><{$comp.sysinfo_day}></span>(<{$comp.w}>)
+ 	<span class='label label-info'><{$comp.sysinfo_day}></span>(<{$week_name[$comp.w]}>)
  <{/if}>
  <span  ><{$comp.uuid}></span>
  <{if ($comp.dangerFG)}>

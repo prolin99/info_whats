@@ -32,7 +32,7 @@ define("_MI_INFOWHOS_CONFIG_TITLE7","定時連線的代號(配合 ip-scan.sh)");
 define("_MI_INFOWHOS_CONFIG_DESC7","自訂一組代碼，.../modules/comp.php?do=代碼");
 
 define("_MI_INFOWHOS_CONFIG_TT7","定時連線的分鐘數");
-define("_MI_INFOWHOS_CONFIG_DD7","幾分鐘做定時連線，如 10 分鐘。");
+define("_MI_INFOWHOS_CONFIG_DD7","幾分鐘做定時連線，讀取 nmap 記錄檔，如 10 分鐘。");
 
 define("_MI_INFOWHOS_CONFIG_TITLE8","arp 掃描結果檔(配合 ip-scan.sh)。");
 define("_MI_INFOWHOS_CONFIG_DESC8","arp 記錄檔，要放在網頁位置，飛蕃雲端使用者，請以 IP 網址。無法查知是否尚在線上，不再使用。");

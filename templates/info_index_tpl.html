@@ -65,10 +65,11 @@
 			<{/if}>
 
 				<{if $week[$d].boot}>
-
-				<i class="icon-off" title="開機<{$week[$d].times}>次"></i>*<{$week[$d].times}>(<{$week[$d].D}> 日)
+				<span class="glyphicon glyphicon-off" title="開機<{$week[$d].times}>次">*<{$week[$d].times}>(<{$week[$d].D}> 日)</span><br/>
 				<{/if}>
-				<{if $week[$d].on}><i class="icon-random" title="<{$week[$d].b}> ~ <{$week[$d].e}>"></i><{$week[$d].b}> ~ <{$week[$d].e}>(<{$week[$d].on_hour}>h)<{/if}>
+				<{if $week[$d].on}>
+				<span class="glyphicon glyphicon-random" title="<{$week[$d].b}> ~ <{$week[$d].e}>"><{$week[$d].b}> ~ <{$week[$d].e}>(<{$week[$d].on_hour}>h)</span>
+				<{/if}>
 			</td>
 			<{/foreach}>
 			</tr>

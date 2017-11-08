@@ -118,14 +118,6 @@ $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default'] ="10" ;
 
-$i++ ;
-$modversion['config'][$i]['name'] = 'iw_ip_neigh_url';
-$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_TITLE8';
-$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_DESC8';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="http://你的網址/arp.txt" ;
-
 
 $i++ ;
 $modversion['config'][$i]['name'] = 'iw_ip_dhcp_log';
