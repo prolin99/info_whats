@@ -237,16 +237,21 @@ echo 'end --' .'<br/>'  ;
 //上線記錄
 function online($id){
     global $xoopsDB  , $this_on_array;
-    if ( ($id <=0) and in_array($id, $this_on_array) ){
+    if ( ($id <=0) or  in_array($id, $this_on_array) ){
       return 0 ;
     }else {
       $this_on_array[]= $id ;
-      echo "$id , " ;
 
+      //上線記錄
       $sql = ' insert into  '.$xoopsDB->prefix('mac_online').
           "(oid ,id ,online_day , on_day )
           values ('0','$id',now() ,now()  ) ";
       $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
+
+      //本身連線更新
+      $sql = ' update '.$xoopsDB->prefix('mac_info')."   recode_time=now()    where id='$id' ";
+      $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
+
   }
 
 }
@@ -477,7 +482,7 @@ YourIp: 120.116.25.134
         $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
         $has_old_id = $xoopsDB->getInsertId();
     }
-
+    online( $has_old_id ) ;
     //開機 info 記錄
     $sql = ' insert into  '.$xoopsDB->prefix('mac_up_sysinfo')."
    (uid,id , uuid , bios , cpu , memory , realmemory,  dhcpserver , ipaddress , sysinfo_day , dangerFG ,on_day )

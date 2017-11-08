@@ -7,7 +7,12 @@
 
 <div class="row-fluid alert alert-success">
 	<span class="badge badge-inverse">#<{$now_comp.id}></span>
+
+	<{if ($now_comp.ipv4_in) }>
+	<span><{$now_comp.ipv4_in}> (<{$now_comp.ipv4_ext}>) </span>
+	<{else}>
 	<span><{$now_comp.ip}></span>
+	<{/if}>
 	<span class="label label-success"><{$now_comp.ip_v6}></span>
 	<span class="label label-info"><{$now_comp.comp}></span>
 	<span><{$now_comp.workgroup}></span>
@@ -17,8 +22,8 @@
 	<br />
 	<span><{$now_comp.uuid}></span>
 	<span class="label label-info"><{$now_comp.cpu}></span>
-	<span>max memory:<{$now_comp.memory}>,</span>
-	<span>memory:<{$now_comp.realmemory}></span>
+	<span>max: <{$now_comp.MaxGB}> GB ,</span>
+	<span class="label label-info">memory: <{$now_comp.GB}> GB</span>
 	<{/if}>
 </div>
 

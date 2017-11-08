@@ -18,6 +18,8 @@ if ($_GET['id']) {
     $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where id = '{$_GET['id']}'  " ;
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
+        $row['MaxGB']=number_format($row['memory']/(1024*1024),0) ;
+        $row['GB']=number_format($row['realmemory']/(1024*1024*1024),0) ;
         $now_comp = $row ;
     }
 

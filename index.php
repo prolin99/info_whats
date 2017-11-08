@@ -51,7 +51,7 @@ $data_get = get_from_data($uid, $data['ip'], $data['mac']) ;
 //已寫入 mac_info 中的資料。
 $data_rec = get_from_rec($uid, $data['ip'], $data['mac']) ;
 //取得上線記錄 3天，10分 間隔
-$online = get_id_online_rec($data_rec['id'] ,3   ) ;
+$online = get_id_online_rec($data_rec['id'] ,7   ) ;
 
 $week_name=array(1=>'一',2=>'二',3=>'三',4=>'四',5=>'五',6=>'六', 0=>'日') ;
 /*-----------秀出結果區--------------*/

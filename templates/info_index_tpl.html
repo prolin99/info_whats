@@ -13,7 +13,7 @@
     <label>你的IP ： <{ $data.ip }></label><br/>
     <label>你的網卡序號 ： <{ $data.mac }></label><br/>
     <label ><button type="button" class="btn btn-primary">已知的舊記錄 ： <{ $data_rec.comp }>- <{ $data_rec.ps }></button></label><br/>
-	如果出現 AP 名，代表在無線基地台下，不是實際 IP ，可以不登記。<br/>
+	如果出現 AP 名，代表在無線基地台下，不是電腦的實際 IP。<br/>
     <label>---------------以下填報-------------------</label><br/>
     <label>保管人</label>
     <input type="text" name='user' value='<{ $data_get.user }>' class='form-control'  placeholder="使用人姓名…"><br/>
@@ -34,13 +34,13 @@
 			<a href="<{$client_file}>"><button type="button" class="btn btn-success">
 			  下載硬體檢查工具</button></a><br />
 				解壓縮後，選擇 setup.bat 點滑鼠右鍵，以系統管理員身份執行。<br>
-				每次開機就會自行檢查，並上傳資料到主機中。
+				以後電腦開機就會自行執行，並上傳資料到主機中。
     <{/if}>
 
 
 
 		<!--  上線記錄  -->
-		<h3>此設備連線情形（三天內，時間為推估值）</h3>
+		<h3>此設備連線情形（七天內，時間為推估值）</h3>
 		<table class="table-bordered">
 		<tr>
 			<th class="span1">week</th>
