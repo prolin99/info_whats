@@ -26,6 +26,7 @@ CREATE TABLE `mac_info` (
   `dangerFG` int(11) NOT NULL DEFAULT '0',
   ipv4_ext varchar(20) DEFAULT NULL,
   ipv4_in varchar(20) DEFAULT NULL,
+  `baseboard` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `mac` (`mac`),
   KEY `ip` (`ip`),
@@ -56,6 +57,7 @@ CREATE TABLE   `mac_up_sysinfo` (
   `sysinfo_day` datetime DEFAULT NULL,
   `on_day` date NULL ,
   `dangerFG` int(11) NOT NULL DEFAULT '0',
+  `baseboard` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`uid`),
   KEY `id` (`id`),
   KEY `id_on_day` (`id`,`on_day`)

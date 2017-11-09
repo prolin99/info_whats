@@ -89,6 +89,7 @@ function go_update_add_sysinfo()
     `sysinfo_day` DATETIME NULL ,
     `on_day` date NULL ,
     `dangerFG` int(11)  NOT NULL DEFAULT '0' ,
+    `baseboard` varchar(80) DEFAULT NULL,
     PRIMARY KEY (`uid` ),
     KEY id (id),
     KEY   (`id`,`on_day`)
@@ -130,6 +131,7 @@ function go_update_add_uuid()
      ADD `dangerFG` int(11)  NOT NULL DEFAULT '0' ,
      ADD `ipv4_ext` varchar(20) DEFAULT NULL,
      ADD `ipv4_in` varchar(20) DEFAULT NULL,
+     ADD `baseboard` varchar(80) DEFAULT NULL,
      ADD INDEX `uuid` (`uuid`); " ;
     $xoopsDB->queryF($sql);
 

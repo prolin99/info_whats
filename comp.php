@@ -238,10 +238,11 @@ echo 'end --' .'<br/>'  ;
 function online($id){
     global $xoopsDB  , $this_on_array;
     if ( ($id <=0) or  in_array($id, $this_on_array) ){
+      echo $id .'****<br>' ;
       return 0 ;
     }else {
       $this_on_array[]= $id ;
-
+      echo $id .'<br>' ;
       //上線記錄
       $sql = ' insert into  '.$xoopsDB->prefix('mac_online').
           "(oid ,id ,online_day , on_day )
@@ -313,6 +314,13 @@ function get_system_info($file)
             continue ;
         }
 
+        $success = preg_match('/Manufacturer/i', trim($v));
+        if ($success) {
+            $key='baseboard' ;
+            $keyword_find = true ;
+            continue ;
+        }
+
         $success = preg_match('/IPAddress/i', trim($v));
         if ($success) {
             $key='ip_mac' ;
@@ -339,13 +347,13 @@ function get_system_info($file)
                   $info_data['mac'] = strtoupper($v) ;
               }
               */
-              $success = preg_match('/^{"(.+)"}(.+) /', $v ,$vpart);
+
+              $success = preg_match('/^{"(.+)"}(.+)/', trim($v) ,$vpart);
               if ($success) {
-                  $info_data['ip_v4'] = strtoupper($vpart[1]) ;
-                  $info_data['mac'] = strtoupper($vpart[2]) ;
-                  $info_data['ip_mac'] = strtoupper($vpart[0]) ;
-                  $key='' ;
+                  $info_data['ip_mac'] = trim($v) ;
+
               }
+
 
             }else {
               $info_data[$key]= trim($v) ;
@@ -452,11 +460,13 @@ YourIp: 120.116.25.134
            ipv4_in='{$info_data['ip_v4']}'  ,
            ip_v6='{$info_data['ip_v6']}'  ,
            ipv4_ext='{$info_data['ext_ip']}'  ,
+           baseboard='{$info_data['baseboard']}'  ,
            dangerFG ='$danger_fg'
            where id='$has_old_id'
            ";
           //  echo $sql ."<br>"  ;
         } else {
+          //第一次取得 client 檔案
             $sql = ' update '.$xoopsDB->prefix('mac_info')."  set
            uuid='{$info_data['uuid']}' ,
            bios='{$info_data['bios']}' ,
@@ -464,6 +474,7 @@ YourIp: 120.116.25.134
            memory='{$info_data['memory']}' ,
            realmemory='{$info_data['realmemory']}' ,
            dhcpserver='{$info_data['dhcpserver']}' ,
+           baseboard='{$info_data['baseboard']}'  ,
            sysinfo_day=now() ,
            ipv4_in='{$info_data['ip_v4']}'  ,
            ip_v6='{$info_data['ip_v6']}'  ,
@@ -477,16 +488,16 @@ YourIp: 120.116.25.134
     } else {
         //放進記錄
         $sql = ' insert into  '.$xoopsDB->prefix('mac_info')."
-       (id ,ip ,ip_v6 , mac ,recode_time ,creat_day ,ip_id ,comp ,phid ,kind , uuid , bios , cpu , memory , dhcpserver , sysinfo_day ,ipv4_ext ,ipv4_in , realmemory)
-         values ('0','{$info_data['ip_v4']}','{$info_data['ip_v6']}','{$info_data['mac']}',now() , now() ,'0' ,'','','' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}','{$info_data['dhcpserver']}', now() ,'{$info_data['ext_ip']}' ,'{$info_data['ip_v4']}' ,'{$info_data['realmemory']}' ) ";
+       (id ,ip ,ip_v6 , mac ,recode_time ,creat_day ,ip_id ,comp ,phid ,kind , uuid , bios , cpu , memory , dhcpserver , sysinfo_day ,ipv4_ext ,ipv4_in , realmemory , baseboard)
+         values ('0','{$info_data['ip_v4']}','{$info_data['ip_v6']}','{$info_data['mac']}',now() , now() ,'0' ,'','','' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}','{$info_data['dhcpserver']}', now() ,'{$info_data['ext_ip']}' ,'{$info_data['ip_v4']}' ,'{$info_data['realmemory']}' ,'{$info_data['baseboard']}' ) ";
         $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
         $has_old_id = $xoopsDB->getInsertId();
     }
     online( $has_old_id ) ;
     //開機 info 記錄
     $sql = ' insert into  '.$xoopsDB->prefix('mac_up_sysinfo')."
-   (uid,id , uuid , bios , cpu , memory , realmemory,  dhcpserver , ipaddress , sysinfo_day , dangerFG ,on_day )
-     values ('0', '$has_old_id' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}' ,'{$info_data['realmemory']}','{$info_data['dhcpserver']}','{$info_data['ip_mac']}', now() ,'$danger_fg' , now() )";
+   (uid,id , uuid , bios , cpu , memory , realmemory,  dhcpserver , ipaddress , sysinfo_day , dangerFG ,on_day , baseboard )
+     values ('0', '$has_old_id' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}' ,'{$info_data['realmemory']}','{$info_data['dhcpserver']}','{$info_data['ip_mac']}', now() ,'$danger_fg' , now() ,'{$info_data['baseboard']}' )";
     $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
 
 }
