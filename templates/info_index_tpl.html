@@ -43,9 +43,9 @@
 		<h3>此設備連線情形（七天內，時間為推估值）</h3>
 		<table class="table-bordered">
 		<tr>
-			<th class="span1">week</th>
+			<th class="col-md-1">week</th>
 			<{foreach from=$week_name item=day key=d}>
-			<th class="span1">
+			<th class="col-md-1">
 			<{$day}>
 			</th>
 			<{/foreach}>
@@ -55,13 +55,13 @@
 		<{foreach from=$online item=week key=w}>
 		<{if ($w!="list")}>
 			<tr>
-			<td class="span1"><{$w}></td>
+			<td class="col-md-1"><{$w}></td>
 			<{foreach from=$week_name item=day key=d}>
 
 			<{if ($week[$d].data.dangerFG)}>
-			<td class="span1 alert-danger" title="硬體更換警示" >
+			<td class="col-md-1 alert-danger" title="硬體更換警示" >
 			<{else}>
-			<td class="span1 " >
+			<td class="col-md-1 " >
 			<{/if}>
 
 				<{if $week[$d].boot}>
