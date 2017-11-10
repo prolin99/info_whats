@@ -42,7 +42,7 @@ $all_list['notworkday']=$notworkday_list ;
 //愈七日未開機
 $sql = " select  i.* , max(on_day) as maxd from " . $xoopsDB->prefix("mac_up_sysinfo") . " as  u , " . $xoopsDB->prefix("mac_info") ." as i  " .
 " where u.id= i.id      group by u.id   " .
-"  having maxd < ( DATE_ADD(now() ,INTERVAL -2 DAY )) "
+"  having maxd < ( DATE_ADD(now() ,INTERVAL -7 DAY )) "
 ;
 
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
