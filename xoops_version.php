@@ -62,6 +62,9 @@ $modversion['templates'][$i]['description'] = 'info_danger_tpl.html';
 $i++ ;
 $modversion['templates'][$i]['file'] = 'info_hardware_tpl.html';
 $modversion['templates'][$i]['description'] = 'info_hardware_tpl.html';
+$i++ ;
+$modversion['templates'][$i]['file'] = 'info_ext_tpl.html';
+$modversion['templates'][$i]['description'] = 'info_ext_tpl.html';
 
 $i=0 ;
 //偏好設定

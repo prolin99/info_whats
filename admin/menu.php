@@ -34,6 +34,13 @@ $adminmenu[$i]['desc'] = '未登記設備' ;
 $adminmenu[$i]['icon'] = 'images/admin/tips.png' ;
 
 $i++ ;
+$adminmenu[$i]['title'] = 'AP內';
+$adminmenu[$i]['link'] = "admin/ext_in.php";
+$adminmenu[$i]['desc'] = '在 AP 後' ;
+$adminmenu[$i]['icon'] = 'images/admin/messagebox_warning.png' ;
+
+
+$i++ ;
 $adminmenu[$i]['title'] = '警示';
 $adminmenu[$i]['link'] = "admin/danger.php";
 $adminmenu[$i]['desc'] = '可能有狀況的設備' ;

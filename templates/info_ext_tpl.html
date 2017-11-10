@@ -1,0 +1,176 @@
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+
+<div class="row-fluid">
+
+<div class="alert  alert-info">
+	<div class="row-fluid">
+	<div class="span1"><a href="?do=<{$point}>&sort=1">處室</a> / <a href="?do=<{$point}>&sort=2">分機</a></div>
+	<div class="span2"><a href="?do=<{$point}>&sort=3">IP</a></div>
+	<div class="span2"><a href="?do=<{$point}>&sort=4">MAC</a></div>
+	<div class="span2"><a href="?do=<{$point}>&sort=5">name</a> / <a href="?do=<{$point}>&sort=6">修改日</a></div>
+	<div class="span1"><a href="?do=<{$point}>&sort=7">id↑</a> - <a href="?do=<{$point}>&sort=10">id↓</a></div>
+
+	<div class="span2"><a href="?do=<{$point}>&sort=8">上線時間</a>/ <a href="?do=<{$point}>&sort=9">建錄日</a></div>
+	<div class="span2">填報記錄</div>
+	</div>
+</div>
+<{ $ii++ }>
+<{foreach from=$comp_list item=comp key=cid}>
+<{ if (($point=='input') and ($comp.input)) or ($point<>'input') }>
+<{if ($comp.now==1 ) }>
+	<!--  現在存活  -->
+	<{ if ($comp.dhcp) }>
+		<div class="alert  alert-error">
+		<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+	<{else}>
+		<div class="alert  alert-success">
+		<div class="row-fluid"    id="div_<{$comp.id}>" data='<{ $ii }>'  >
+	<{/if}>
+<{elseif ($comp.now==2 )}>
+	<!--  本日存活  -->
+
+	<div class="alert  alert-info">
+	<div class="row-fluid"    id="div_<{$comp.id}>" data='<{ $ii }>'  >
+
+<{else}>
+ 	<!--  一日前  -->
+	<div class="alert">
+	<div class="row-fluid " id="div_<{$comp.id}>" data='<{ $ii }>'  >
+<{/if}>
+
+	<div class="span1">
+	<{if ($comp.point==2) }>
+	<!---- 重要標記  -->
+	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_2' title='重要標記-離線警告'><i class="icon-bell"></i></span>
+	<{/if }>
+    <{if ($comp.point==1) }>
+	<!---- 重要標記  -->
+	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_1' title='重要標記-離線警告'><i class="icon-star"></i></span>
+	<{/if }>
+    <{if ($comp.point==0) }>
+	<span class="point" id='point_<{$comp.id}>'  data='<{$comp.id}>_0'  title='重要標記-離線警告'><i class="icon-star-empty"></i></span>
+	<{/if}>
+	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
+	<div class="span2">
+    <span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span><br />
+      <{if ($comp.dhcpserver) }>
+      ├d:<{$comp.dhcpserver}>
+      <{/if}>
+
+		<span class="ip" alt="<{$comp.ip_v6}>"><{$comp.ipv6_last}></span>
+    <{if ($comp.ipv4_ext<>"") }>
+    <br>├e:<{$comp.ipv4_ext}>  ├<{$comp.ipv4_in}>
+    <{/if}>
+	</div>
+	<!---- 填報資料也加入  -->
+	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
+	<div class="span2">
+        <span class="label label-info"><{$comp.comp}> </span><{$comp.ps}>
+        <{if ($comp.modify_day) }>
+        <apan class="label " title="<{$comp.modify_day}>"><{$comp.modify_day|substr:2:8}></span>
+        <{/if}>
+    </div>
+	  <div class="span1"><a href="hardware.php?id=<{$comp.id}>" title="查看客戶端上傳記錄"><span class="badge badge-inverse">#<{$comp.id}></span></a>
+	    <span class="edit"><i class="icon-pencil"></i></span>
+	  </div>
+	  <div class="span2"><{$comp.recode_time}><span class="del"><i class="icon-trash"></i></span>   <br /><span class="label"><{$comp.creat_day}></span></div>
+	  <div class="span2">
+      <{if ($comp.dangerFG)}><a href="hardware.php?id=<{$comp.id}>"><i class="icon-exclamation-sign" title="硬體更換警示"></i></a><{/if}>
+      <{if ($comp.input)}><span class='alert alert-error'><{$comp.input}><i class="icon-trash del_input" data_ref="<{$comp.input_id}>"></i></span><{/if}>
+    </div>
+
+    </div>
+</div>
+<{/if}>
+<{/foreach}>
+<{if (! $point) }>
+共 <{$all_rec}> 筆 , 現在開機數 <{$open_mode.now}>  ,  本日開機數<{$open_mode.today}><br />
+
+ <{/if}>
+
+<script type="text/javascript">
+
+
+//----------------ip 搜尋登錄記錄
+$(document).on("click", "span.ip" ,  function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
+          		var ip = $(this).attr("alt")  ;
+ 		//alert(ip) ;
+          		ajax_ip( ip) ;  // 動作
+	}
+ );
+function ajax_ip(ip) {
+	$.ajax({
+		url: 'comp_ip_search.php',
+		type: 'GET',
+		dataType: 'html',
+		data: {sip: ip},
+	})
+	.done(function(data) {
+		console.log("success");
+		alert(data) ;
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});
+
+}
+
+
+
+
+
+//------- 標記為重要 ，圖示切換---
+$(document).on("click", "span.point" ,  function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
+          	var div_id = $(this).attr("data")  ;
+          	//alert(div_id) ;
+          	var splits = div_id.split('_') ;		//id _ mode
+          	//alert(splits[1]==0) ;
+          	if (splits[1] == 0){
+          		$('#point_'  + splits[0]).attr('data',splits[0] +'_'+'1') ;
+          		$('#point_'  + splits[0]).html('<i class="icon-star"></i>') ;
+                data_val= 1 ;
+          	}
+            if (splits[1] == 1){
+          		$('#point_'  + splits[0]).attr('data',splits[0] +'_'+'2') ;
+          		$('#point_'  + splits[0]).html('<i class="icon-bell"></i>') ;
+                data_val= 2 ;
+          	}
+            if (splits[1] == 2){
+          		$('#point_'  + splits[0]).attr('data',splits[0] +'_'+'0') ;
+          		$('#point_'  + splits[0]).html('<i class="icon-star-empty"></i>') ;
+                data_val= 0 ;
+          	}
+            //alert(data_val) ;
+          	ajax_point( div_id ,data_val) ;  // 動作
+	}
+ );
+function ajax_point(div_id ,data_val) {
+	$.ajax({
+		url: 'comp_point.php',
+		type: 'GET',
+		dataType: 'html',
+		data: {id: div_id , gv : data_val },
+	})
+	.done(function(data) {
+		console.log("success");
+		//alert(data) ;
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+        //alert(data) ;
+	});
+
+}
+
+
+</script>
