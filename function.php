@@ -135,7 +135,7 @@ function get_id_online_rec($id , $days=30 ,$prei =10)
 {
     global $xoopsDB , $xoopsModuleConfig;
     $prei= $xoopsModuleConfig['iw_ip_scan_time'] ;
-    
+
     //上線記錄
     $days = $days * -1 ;
     $sql = " select id, on_day , max(online_day) as max_d ,min(online_day) as min_d  ,  count(*) as cc from  " . $xoopsDB->prefix("mac_online") .
@@ -182,4 +182,92 @@ function get_id_online_rec($id , $days=30 ,$prei =10)
     $open_week['list']=$open_list ;
     return $open_week ;
 
+}
+
+
+function get_dhcp_lease($dhcp_log){
+  global $xoopsDB ;
+  /*
+  lease 120.116.25.48 {
+  starts 5 2017/11/10 00:33:41;
+  ends 6 2017/11/11 00:33:41;
+  cltt 5 2017/11/10 00:33:41;
+  binding state active;
+  next binding state free;
+  hardware ethernet bc:5f:f4:d5:da:db;
+  uid "\001\274_\364\325\332\333";
+  client-hostname "library01-PC";
+  }
+  */
+  if ($dhcp_log) {
+      //$dhcp_lease = file_get_contents($dhcp_log, FILE_USE_INCLUDE_PATH);
+      $ch = curl_init();
+      $options = array(CURLOPT_URL => $dhcp_log,
+          CURLOPT_HEADER => false,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_FOLLOWLOCATION => true,
+      );
+      curl_setopt_array($ch, $options);
+      $dhcp_lease = curl_exec($ch);
+      curl_close($ch);
+
+      $dhcp_arr= preg_split('/[\n;]/', $dhcp_lease) ;
+
+      foreach ($dhcp_arr  as $k=>$v) {
+          //lease 120.116.25.40 {  ，取得 ip
+          $success = preg_match('/lease\b.+{/', trim($v));
+          if ($success) {
+              $keywords = preg_split("/[\s]+/", trim($v));
+              $gdip=$keywords[1] ;
+              //echo  $gdip ;
+              continue ;
+          }
+
+          //starts 5 2017/11/10 00:33:41;
+          $success = preg_match('/starts\b.+{/', trim($v));
+          if ($success) {
+              $keywords = preg_split("/[\s]+/", trim($v));
+              $gdip=$keywords[1] ;
+              //echo  $gdip ;
+              continue ;
+          }
+
+
+          // hardware ethernet 74:da:38:cd:4e:40;   取得 mac
+          $success = preg_match('/hardware ethernet.+/', trim($v));
+          if ($success) {
+              $keywords = preg_split("/[\s]+/", trim($v));
+              $mac=strtoupper($keywords[2]) ;
+              continue ;
+          }
+
+          //client-hostname "ta103-101";  取得名稱
+          $cl_name='' ;
+          $success = preg_match('/client-hostname.+/', trim($v));
+          if ($success) {
+              $keywords = preg_split("/[\s]+/", trim($v));
+              $cl_name=$keywords[1] ;
+              $cl_name= preg_replace('/"/', '', $cl_name);
+
+              $sql = "select  id ,comp from " . $xoopsDB->prefix("mac_info") .  "     where  mac = '$mac' " ;
+              $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
+              $srow = $xoopsDB->fetchArray($result) ;
+              if ( ($srow['id']) and ($srow['comp'] =='') ) {
+                $sql = " update  " . $xoopsDB->prefix("mac_info") .  "  set ip='$gdip'  , comp = '$cl_name'  where  mac = '$mac' " ;
+                $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
+              }
+
+              continue ;
+          }
+
+          //結束
+          $success = preg_match('/}$/', trim($v));
+          if ($success) {
+            $cl_name='' ;
+            $gdip='' ;
+          }
+
+      }
+      return $dhcp_lease ;
+  }
 }

@@ -63,62 +63,8 @@ if ($_POST['btn_clear']) {
 
     //----dhcp data mac to name ----------------
     //"/var/lib/dhcpd/dhcpd.leases"
-if ($dhcp_log) {
-    //$dhcp_lease = file_get_contents($dhcp_log, FILE_USE_INCLUDE_PATH);
-    $ch = curl_init();
-    $options = array(CURLOPT_URL => $dhcp_log,
-        CURLOPT_HEADER => false,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_FOLLOWLOCATION => true,
-    );
-    curl_setopt_array($ch, $options);
-    $dhcp_lease = curl_exec($ch);
-    curl_close($ch);
-
-    $dhcp_arr= preg_split('/[\n;]/', $dhcp_lease) ;
-
-    foreach ($dhcp_arr  as $k=>$v) {
-        //lease 120.116.25.40 {  ，取得 ip
-        $success = preg_match('/lease\b.+{/', trim($v));
-        if ($success) {
-            $keywords = preg_split("/[\s]+/", trim($v));
-            $gdip=$keywords[1] ;
-            //echo  $gdip ;
-        }
-
-        // hardware ethernet 74:da:38:cd:4e:40;   取得 mac
-        $success = preg_match('/hardware ethernet.+/', trim($v));
-        if ($success) {
-            $keywords = preg_split("/[\s]+/", trim($v));
-            $mac=strtoupper($keywords[2]) ;
-
-            $dhcp_mac_list[$mac] = 1;
-            $dhcp_mac_ip[$mac] =$gdip ;
-            //echo   $mac . $gdip  .'<br>' ;
-        }
-
-        //client-hostname "ta103-101";  取得名稱
-        $cl_name='' ;
-        $success = preg_match('/client-hostname.+/', trim($v));
-        if ($success) {
-            $keywords = preg_split("/[\s]+/", trim($v));
-            $cl_name=$keywords[1] ;
-            //echo   $cl_name ."<br>" ;
-            //去除 ""
-            $cl_name= preg_replace('/"/', '', $cl_name);
-            $dhcp_List[$mac]= $cl_name  ;
-        }
-
-        //結束
-        $success = preg_match('/}$/', trim($v));
-        if ($success) {
-          $cl_name='' ;
-          $gdip='' ;
-
-        }
-
-    }
-}
+    //只改名稱
+    $dhcp_lease = get_dhcp_lease($dhcp_log) ;
 
     //取得登記資料 --------------------------------------
     $sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  order by mac "  ;
@@ -255,6 +201,7 @@ if ($dhcp_log) {
             }
         }
 
+        /*
         if ($dhcp_log) {
             //dhcp log 尚未放資料庫的
             foreach ($dhcp_mac_list as $mac =>$v) {
@@ -266,8 +213,8 @@ if ($dhcp_log) {
                     $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
                     $add_FG = true ;
                 }
-            }
         }
+        */
 
         if ($add_FG) { //有新增資料，重整一次
             redirect_header($_SERVER['PHP_SELF'], 3, '資料更新!');
