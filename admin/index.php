@@ -222,6 +222,9 @@ if ($_POST['btn_clear']) {
     }
 
 
+ 
+
+
     //檢查 IP 重覆，做提醒
     $sql = " SELECT ip, count( * ) AS cc     FROM " . $xoopsDB->prefix("mac_info") .
                     "  GROUP BY ip           HAVING cc >1 " ;

@@ -249,12 +249,14 @@ function get_dhcp_lease($dhcp_log){
               $cl_name=$keywords[1] ;
               $cl_name= preg_replace('/"/', '', $cl_name);
 
-              $sql = "select  id ,comp from " . $xoopsDB->prefix("mac_info") .  "     where  mac = '$mac' " ;
+              $sql = "select  id ,comp from " . $xoopsDB->prefix("mac_info") .  "     where  mac = '$mac' and comp=''   " ;
+ 
               $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
               $srow = $xoopsDB->fetchArray($result) ;
-              if ( ($srow['id']) and ($srow['comp'] =='') ) {
+              if ( $srow['id']  ) {
                 $sql = " update  " . $xoopsDB->prefix("mac_info") .  "  set ip='$gdip'  , comp = '$cl_name'  where  mac = '$mac' " ;
                 $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
+
               }
 
               continue ;
