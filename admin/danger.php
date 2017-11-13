@@ -10,6 +10,11 @@ $xoopsOption['template_main'] = "info_danger_tpl.html";
 include_once "header.php";
 include_once "../function.php";
 
+if ($_GET['setDay']>0)
+  $set_day = 0 - $_GET['setDay'] ;
+else
+  $set_day = -7;
+
 
 //取得硬體有問題部份
 $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where dangerFg<>0  order by  id    DESC " ;
@@ -31,7 +36,7 @@ $all_list['offline']=$import_list ;
 
 //在星期六、日開機  （一個月內）
 $sql = " select DISTINCT i.* from " . $xoopsDB->prefix("mac_up_sysinfo") . " as  u , " . $xoopsDB->prefix("mac_info") ." as i  " .
-" where u.id= i.id   and (u.on_day >= ( DATE_ADD(now() ,INTERVAL -30 DAY )) )  and  (  (DAYOFWEEK(u.on_day) =1) or (DAYOFWEEK(u.on_day) = 7)  )   order by  u.id     " ;
+" where u.id= i.id   and (u.on_day >= ( DATE_ADD(now() ,INTERVAL $set_day DAY )) )  and  (  (DAYOFWEEK(u.on_day) =1) or (DAYOFWEEK(u.on_day) = 7)  )   order by  u.id     " ;
 //echo $sql;
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 while ($row=$xoopsDB->fetchArray($result)) {
@@ -42,7 +47,7 @@ $all_list['notworkday']=$notworkday_list ;
 //愈七日未開機
 $sql = " select  i.* , max(on_day) as maxd from " . $xoopsDB->prefix("mac_up_sysinfo") . " as  u , " . $xoopsDB->prefix("mac_info") ." as i  " .
 " where u.id= i.id      group by u.id   " .
-"  having maxd < ( DATE_ADD(now() ,INTERVAL -7 DAY )) "
+"  having maxd < ( DATE_ADD(now() ,INTERVAL $set_day DAY )) "
 ;
 
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
@@ -56,7 +61,7 @@ $all_list['over7']=$over7_list;
 
 //非重要設備，在星期六、日上線  （一個月內）
 $sql = " select DISTINCT i.*   from ". $xoopsDB->prefix("mac_info") ." as i  , " .$xoopsDB->prefix("mac_online") . " as  o " .
-" where i.id= o.id  and i.point=0 and (o.on_day >= ( DATE_ADD(now() ,INTERVAL -30 DAY )) )  and  (  (DAYOFWEEK(o.on_day) =1) or (DAYOFWEEK(o.on_day) = 7)  )   order  by  i.id    " ;
+" where i.id= o.id  and i.point=0 and (o.on_day >= ( DATE_ADD(now() ,INTERVAL $set_day DAY )) )  and  (  (DAYOFWEEK(o.on_day) =1) or (DAYOFWEEK(o.on_day) = 7)  )   order  by  i.id    " ;
 //echo $sql;
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 while ($row=$xoopsDB->fetchArray($result)) {
@@ -69,9 +74,9 @@ $all_list['notworkday_online']=$notworkday_online_list;
 $cht_list= array(
   'hardware'=>'硬體配備有問題' ,
   'offline'=>'重要設備離線一小時以上' ,
-  'notworkday'=>'假日開機（30天內）' ,
-  'over7'=>'逾七日未開機' ,
-  'notworkday_online'=>'非重要設備假日上線（30天內）'
+  'notworkday'=>"假日開機（ $set_day 天內）" ,
+  'over7'=>"逾 $set_day 日未開機" ,
+  'notworkday_online'=>"非重要設備假日上線（ $set_day 天內）"
 ) ;
 
 /*-----------秀出結果區--------------*/

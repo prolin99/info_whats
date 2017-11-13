@@ -2,9 +2,11 @@
 <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
 <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
 
-
-
-
+條件日數設定：
+<a href='danger.php?setDay=7'><button type="button" class="btn btn-primary">7日</button></a>
+<a href='danger.php?setDay=14'><button type="button" class="btn btn-success">14日</button></a>
+<a href='danger.php?setDay=30'><button type="button" class="btn btn-info">30日</button></a>
+<{ $ii++ }>
 <{foreach from=$all_list item=this_list key=keyid}>
 <h3><{ $cht_list.$keyid }></h3>
 <div class="row-fluid">
