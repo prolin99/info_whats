@@ -8,21 +8,24 @@
 <a href='danger.php?setDay=30'><button type="button" class="btn btn-info">30日</button></a>
 <{ $ii++ }>
 <{foreach from=$all_list item=this_list key=keyid}>
-<h3><{ $cht_list.$keyid }></h3>
+<{if ($this_list)}>
+<div class='btn-primary'><{ $cht_list.$keyid }></div>
+<{/if}>
 <div class="row-fluid">
 
 <{foreach from=$this_list item=comp key=cid}>
 
 <div class="alert  alert-error">
-<a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
+
 <div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
 
 	<div class="span1">
 	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
-	<div class="span2"><span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span>
-		<span class="ip" alt="<{$comp.ip_v6}>"><{$comp.ipv6_last}></span>
+	<div class="span2"><span class="ip" alt="<{$comp.ip}>" title="ping"><{$comp.ip}></span>
+		<span class="ip" alt="<{$comp.ip_v6}>" title="ping" ><{$comp.ip_v6}></span>
 	</div>
 	<!---- 填報資料也加入  -->
+	<a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
 	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
 	<div class="span2">
         <span class="label label-info"><{$comp.comp}> </span><{$comp.ps}>
@@ -37,8 +40,9 @@
 	  </div>
 	  <div class="span2"><{$comp.recode_time}></span> <br /><span class="label"><{$comp.creat_day}></span>
 		</div>
+	</a>
 </div>
-</a>
+
 </div>
 
 <{/foreach}>
