@@ -75,9 +75,11 @@ $cht_list= array(
   'hardware'=>'硬體配備有問題' ,
   'offline'=>'重要設備離線一小時以上' ,
   'notworkday'=>"假日開機（ $set_day 天內）" ,
+  'times3'=>"一天內開機超過3次（ $set_day 天內）" ,
   'over7'=>"逾 $set_day 日未開機" ,
   'notworkday_online'=>"非重要設備假日上線（ $set_day 天內）"
 ) ;
+
 
 /*-----------秀出結果區--------------*/
 /*
