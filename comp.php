@@ -186,7 +186,7 @@ echo 'start--'.'<br/>' ;
         $msg .= $xoopsMailer->sendMail($email, $title, $content, $headers);
     }
 
-
+/*
     //----- ftp  systeminfo --------------------------------
 
     $use_ftp_fg =  $xoopsModuleConfig['iw_FtpFG'] ;
@@ -230,5 +230,5 @@ echo 'start--'.'<br/>' ;
         }//foreach
         ftp_close($conn_id);
     }
-
+*/
 echo 'end --' .'<br/>'  ;

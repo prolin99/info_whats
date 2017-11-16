@@ -19,7 +19,7 @@ $modversion['dirname'] = basename(dirname(__FILE__));		//模組目錄名稱
 
 //---模組狀態資訊---//
 //$modversion['status_version'] = '0.8';
-$modversion['release_date'] = '2016-06-01';
+$modversion['release_date'] = '2017-11-15';
 $modversion['module_website_url'] = 'https://github.com/prolin99/info_whats';
 $modversion['module_website_name'] = 'prolin';
 $modversion['module_status'] = 'release';
@@ -163,13 +163,7 @@ $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default'] ="" ;
 
-$i++ ;
-$modversion['config'][$i]['name'] = 'iw_FtpFG';
-$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f01';
-$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f01';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default'] ="0" ;
+
 
 $i++ ;
 $modversion['config'][$i]['name'] = 'iw_FtpClient';
@@ -179,35 +173,5 @@ $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default'] ="" ;
 
-$i++ ;
-$modversion['config'][$i]['name'] = 'iw_Ftpserver';
-$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f03';
-$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f03';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="192.168.1.1" ;
 
-$i++ ;
-$modversion['config'][$i]['name'] = 'iw_FtpPath';
-$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f04';
-$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f04';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="info_txt" ;
-
-$i++ ;
-$modversion['config'][$i]['name'] = 'iw_FtpUser';
-$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f05';
-$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f05';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="" ;
-
-$i++ ;
-$modversion['config'][$i]['name'] = 'iw_FtpPassWD';
-$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_f06';
-$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_f06';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="" ;
 ?>
