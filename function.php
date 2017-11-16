@@ -131,7 +131,7 @@ function get_from_rec($uid, $ip, $mac)
 
 
 //以周陣列 傳回上線時間
-function get_id_online_rec($id , $days=30 ,$prei =10)
+function get_id_online_rec($id, $days=30, $prei =10)
 {
     global $xoopsDB , $xoopsModuleConfig;
     $prei= $xoopsModuleConfig['iw_ip_scan_time'] ;
@@ -139,7 +139,7 @@ function get_id_online_rec($id , $days=30 ,$prei =10)
     //上線記錄
     $days = $days * -1 ;
     $sql = " select id, on_day , max(online_day) as max_d ,min(online_day) as min_d  ,  count(*) as cc from  " . $xoopsDB->prefix("mac_online") .
-    " where (id = '$id') and (online_day >= ( DATE_ADD(now() ,INTERVAL $days DAY )) )  " .
+    " where (id = '$id') and (online_day >= ( DATE_ADD(CURDATE() ,INTERVAL $days DAY )) )  " .
     " group by id,on_day "      ;
 
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
@@ -148,130 +148,131 @@ function get_id_online_rec($id , $days=30 ,$prei =10)
         $week = date('W', strtotime($row['on_day']))  ;
         $open_week[$week][$d_of_w]['on']= 'on' ;
         $open_week[$week][$d_of_w]['day']= $row['on_day'] ;
-        $open_week[$week][$d_of_w]['on_hour']= number_format(($row['cc'] * $prei / 60),1) ;
-        $open_week[$week][$d_of_w]['b'] = substr($row['min_d'],11,5) ;
-        $open_week[$week][$d_of_w]['e'] = substr($row['max_d'],11,5) ;
+        $open_week[$week][$d_of_w]['on_hour']= number_format(($row['cc'] * $prei / 60), 1) ;
+        $open_week[$week][$d_of_w]['b'] = substr($row['min_d'], 11, 5) ;
+        $open_week[$week][$d_of_w]['e'] = substr($row['max_d'], 11, 5) ;
     }
 
 
     //取得客戶端上傳硬體訊息，一個月內
     $sql = " select id, on_day , count(*) as cc from " . $xoopsDB->prefix("mac_up_sysinfo") .
-   " where (id = '$id') and (on_day >= ( DATE_ADD(now() ,INTERVAL $days DAY )) ) " .
-   " group by id,on_day "      ;
+    " where (id = '$id') and (on_day >= ( DATE_ADD(CURDATE() ,INTERVAL $days DAY )) ) " .
+    " group by id,on_day "      ;
 
 
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
-
         $d_of_w = date('w', strtotime($row['on_day']))  ;
         $week = date('W', strtotime($row['on_day']))  ;
         //$open_week[$week][$d_of_w]['data']= $row ;
         $open_week[$week][$d_of_w]['boot']= 'boot' ;
         $open_week[$week][$d_of_w]['times'] = $row['cc'];
-        $open_week[$week][$d_of_w]['D']= substr($row['on_day'],8,2) ;
+        $open_week[$week][$d_of_w]['D']= substr($row['on_day'], 8, 2) ;
     }
     $sql = " select * from " . $xoopsDB->prefix("mac_up_sysinfo") .
-     " where (id = '$id' ) and (on_day >= ( DATE_ADD(now() ,INTERVAL $days DAY )) ) " .
+     " where (id = '$id' ) and (on_day >= ( DATE_ADD(CURDATE() ,INTERVAL $days DAY )) ) " .
      " order by sysinfo_day "      ;
-     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
-     while ($row=$xoopsDB->fetchArray($result)) {
-         $row['w']= date('w', strtotime($row['on_day']))  ;
-         $open_list[] = $row ;
-     }
+    $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
+    while ($row=$xoopsDB->fetchArray($result)) {
+      $d_of_w = date('w', strtotime($row['on_day']))  ;
+      $week = date('W', strtotime($row['on_day']))  ;
+      $open_week[$week][$d_of_w]['turnon_list'] .= substr($row['sysinfo_day'],11,5) . ' , ';
+
+      $row['w']= $d_of_w ;
+      $open_list[] = $row ;
+    }
 
     $open_week['list']=$open_list ;
     return $open_week ;
-
 }
 
 
-function get_dhcp_lease($dhcp_log){
-  global $xoopsDB ;
-  /*
-  lease 120.116.25.48 {
-  starts 5 2017/11/10 00:33:41;
-  ends 6 2017/11/11 00:33:41;
-  cltt 5 2017/11/10 00:33:41;
-  binding state active;
-  next binding state free;
-  hardware ethernet bc:5f:f4:d5:da:db;
-  uid "\001\274_\364\325\332\333";
-  client-hostname "library01-PC";
-  }
-  */
-  if ($dhcp_log) {
-      //$dhcp_lease = file_get_contents($dhcp_log, FILE_USE_INCLUDE_PATH);
-      $ch = curl_init();
-      $options = array(CURLOPT_URL => $dhcp_log,
+function get_dhcp_lease($dhcp_log)
+{
+    global $xoopsDB ;
+    /*
+    lease 120.116.25.48 {
+    starts 5 2017/11/10 00:33:41;
+    ends 6 2017/11/11 00:33:41;
+    cltt 5 2017/11/10 00:33:41;
+    binding state active;
+    next binding state free;
+    hardware ethernet bc:5f:f4:d5:da:db;
+    uid "\001\274_\364\325\332\333";
+    client-hostname "library01-PC";
+    }
+    */
+    if ($dhcp_log) {
+        //$dhcp_lease = file_get_contents($dhcp_log, FILE_USE_INCLUDE_PATH);
+        $ch = curl_init();
+        $options = array(CURLOPT_URL => $dhcp_log,
           CURLOPT_HEADER => false,
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_FOLLOWLOCATION => true,
       );
-      curl_setopt_array($ch, $options);
-      $dhcp_lease = curl_exec($ch);
-      curl_close($ch);
+        curl_setopt_array($ch, $options);
+        $dhcp_lease = curl_exec($ch);
+        curl_close($ch);
 
-      $dhcp_arr= preg_split('/[\n;]/', $dhcp_lease) ;
+        $dhcp_arr= preg_split('/[\n;]/', $dhcp_lease) ;
 
-      foreach ($dhcp_arr  as $k=>$v) {
-          //lease 120.116.25.40 {  ，取得 ip
-          $success = preg_match('/lease\b.+{/', trim($v));
-          if ($success) {
-              $keywords = preg_split("/[\s]+/", trim($v));
-              $gdip=$keywords[1] ;
-              //echo  $gdip ;
-              continue ;
-          }
+        foreach ($dhcp_arr  as $k=>$v) {
+            //lease 120.116.25.40 {  ，取得 ip
+            $success = preg_match('/lease\b.+{/', trim($v));
+            if ($success) {
+                $keywords = preg_split("/[\s]+/", trim($v));
+                $gdip=$keywords[1] ;
+                //echo  $gdip ;
+                continue ;
+            }
 
-          //starts 5 2017/11/10 00:33:41;
-          $success = preg_match('/starts\b.+{/', trim($v));
-          if ($success) {
-              $keywords = preg_split("/[\s]+/", trim($v));
-              $gdip=$keywords[1] ;
-              //echo  $gdip ;
-              continue ;
-          }
+            //starts 5 2017/11/10 00:33:41;
+            $success = preg_match('/starts\b.+{/', trim($v));
+            if ($success) {
+                $keywords = preg_split("/[\s]+/", trim($v));
+                $gdip=$keywords[1] ;
+                //echo  $gdip ;
+                continue ;
+            }
 
 
-          // hardware ethernet 74:da:38:cd:4e:40;   取得 mac
-          $success = preg_match('/hardware ethernet.+/', trim($v));
-          if ($success) {
-              $keywords = preg_split("/[\s]+/", trim($v));
-              $mac=strtoupper($keywords[2]) ;
-              continue ;
-          }
+            // hardware ethernet 74:da:38:cd:4e:40;   取得 mac
+            $success = preg_match('/hardware ethernet.+/', trim($v));
+            if ($success) {
+                $keywords = preg_split("/[\s]+/", trim($v));
+                $mac=strtoupper($keywords[2]) ;
+                continue ;
+            }
 
-          //client-hostname "ta103-101";  取得名稱
-          $cl_name='' ;
-          $success = preg_match('/client-hostname.+/', trim($v));
-          if ($success) {
-              $keywords = preg_split("/[\s]+/", trim($v));
-              $cl_name=$keywords[1] ;
-              $cl_name= preg_replace('/"/', '', $cl_name);
-
-              $sql = "select  id ,comp from " . $xoopsDB->prefix("mac_info") .  "     where  mac = '$mac' and comp=''   " ;
-
-              $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
-              $srow = $xoopsDB->fetchArray($result) ;
-              if ( $srow['id']  ) {
-                $sql = " update  " . $xoopsDB->prefix("mac_info") .  "  set ip='$gdip'  , comp = '$cl_name'  where  mac = '$mac' " ;
-                $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
-
-              }
-
-              continue ;
-          }
-
-          //結束
-          $success = preg_match('/}$/', trim($v));
-          if ($success) {
+            //client-hostname "ta103-101";  取得名稱
             $cl_name='' ;
-            $gdip='' ;
-          }
+            $success = preg_match('/client-hostname.+/', trim($v));
+            if ($success) {
+                $keywords = preg_split("/[\s]+/", trim($v));
+                $cl_name=$keywords[1] ;
+                $cl_name= preg_replace('/"/', '', $cl_name);
 
-      }
-      return $dhcp_lease ;
-  }
+                $sql = "select  id ,comp from " . $xoopsDB->prefix("mac_info") .  "     where  mac = '$mac' and comp=''   " ;
+
+                $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
+                $srow = $xoopsDB->fetchArray($result) ;
+                if ($srow['id']) {
+                    $sql = " update  " . $xoopsDB->prefix("mac_info") .  "  set ip='$gdip'  , comp = '$cl_name'  where  mac = '$mac' " ;
+                    $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
+                }
+
+                continue ;
+            }
+
+            //結束
+            $success = preg_match('/}$/', trim($v));
+            if ($success) {
+                $cl_name='' ;
+                $gdip='' ;
+            }
+        }
+        return $dhcp_lease ;
+    }
 }
 
 
@@ -350,7 +351,7 @@ function get_system_info($file)
             continue ;
         }
 
-        $success = preg_match('/(YourIp:)(.+)/i', trim($v) ,$vpart);
+        $success = preg_match('/(YourIp:)(.+)/i', trim($v), $vpart);
         if ($success) {
             $info_data['ext_ip']= trim($vpart[2]) ;
             $key='' ;
@@ -362,26 +363,22 @@ function get_system_info($file)
         //非 key 行，前有指定 key ，內容不是空的
         if ((!$keyword_find) and  ($key<>'') and trim($v)) {
             //xp 版本
-            if ($key=='ip_mac'){
-              /*
-              $success = preg_match('/^([a-fA-F0-9]{2}[:|\-]){5}[a-fA-F0-9]{2}/', $v);
-              if ($success) {
-                  $info_data['mac'] = strtoupper($v) ;
-              }
-              */
+            if ($key=='ip_mac') {
+                /*
+                $success = preg_match('/^([a-fA-F0-9]{2}[:|\-]){5}[a-fA-F0-9]{2}/', $v);
+                if ($success) {
+                    $info_data['mac'] = strtoupper($v) ;
+                }
+                */
 
-              $success = preg_match('/^{"(.+)"}(.+)/', trim($v) ,$vpart);
-              if ($success) {
-                  $info_data['ip_mac'] = trim($v) ;
-
-              }
-
-
-            }else {
-              $info_data[$key]= trim($v) ;
-              $key='' ;
+                $success = preg_match('/^{"(.+)"}(.+)/', trim($v), $vpart);
+                if ($success) {
+                    $info_data['ip_mac'] = trim($v) ;
+                }
+            } else {
+                $info_data[$key]= trim($v) ;
+                $key='' ;
             }
-
         }
     }
 
@@ -446,10 +443,10 @@ YourIp: 120.116.25.134
         if ($success) {
             $info_data['mac'] = strtoupper($v) ;
         }
-
     }
-    if ($info_data['ip_v4'] == $info_data['ext_ip'])
-      $info_data['ext_ip']='' ;
+    if ($info_data['ip_v4'] == $info_data['ext_ip']) {
+        $info_data['ext_ip']='' ;
+    }
 
 
 
@@ -464,16 +461,14 @@ YourIp: 120.116.25.134
         $row['memory']+= 0 ;
         $row['realmemory']+= 0 ;
         $mac_info= $row;
-
     }
 
     $danger_fg = 0 ;
 
     //已有記錄
     if ($has_old_id) {
-
         if ($mac_info['uuid']) {
-            if (($mac_info['uuid']<> $info_data['uuid']) or ($mac_info['cpu']<> $info_data['cpu']) or ($mac_info['memory']<> $info_data['memory']) or ($mac_info['realmemory']<> $info_data['realmemory'])  ) {
+            if (($mac_info['uuid']<> $info_data['uuid']) or ($mac_info['cpu']<> $info_data['cpu']) or ($mac_info['memory']<> $info_data['memory']) or ($mac_info['realmemory']<> $info_data['realmemory'])) {
                 $danger_fg = 1 ;
             }
             $sql = ' update '.$xoopsDB->prefix('mac_info')."  set
@@ -486,9 +481,9 @@ YourIp: 120.116.25.134
            dangerFG ='$danger_fg'
            where id='$has_old_id'
            ";
-          //  echo $sql ."<br>"  ;
+            //  echo $sql ."<br>"  ;
         } else {
-          //第一次取得 client 檔案
+            //第一次取得 client 檔案
             $sql = ' update '.$xoopsDB->prefix('mac_info')."  set
            uuid='{$info_data['uuid']}' ,
            bios='{$info_data['bios']}' ,
@@ -504,7 +499,7 @@ YourIp: 120.116.25.134
            dangerFG ='$danger_fg'
            where id='$has_old_id'
            ";
-          //  echo $sql ."<br>"  ;
+            //  echo $sql ."<br>"  ;
         }
         $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
     } else {
@@ -515,13 +510,12 @@ YourIp: 120.116.25.134
         $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
         $has_old_id = $xoopsDB->getInsertId();
     }
-    online( $has_old_id ) ;
+    online($has_old_id) ;
     //開機 info 記錄
     $sql = ' insert into  '.$xoopsDB->prefix('mac_up_sysinfo')."
    (uid,id , uuid , bios , cpu , memory , realmemory,  dhcpserver , ipaddress , sysinfo_day , dangerFG ,on_day , baseboard )
      values ('0', '$has_old_id' , '{$info_data['uuid']}' ,'{$info_data['bios']}','{$info_data['cpu']}','{$info_data['memory']}' ,'{$info_data['realmemory']}','{$info_data['dhcpserver']}','{$info_data['ip_mac']}', now() ,'$danger_fg' , now() ,'{$info_data['baseboard']}' )";
     $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
-
 }
 
 
@@ -531,24 +525,23 @@ YourIp: 120.116.25.134
 
 
 //上線記錄
-function online($id){
+function online($id)
+{
     global $xoopsDB  , $this_on_array;
-    if ( ($id <=0) or  in_array($id, $this_on_array) ){
-      echo $id .'****<br>' ;
-      return 0 ;
-    }else {
-      $this_on_array[]= $id ;
-      echo $id .'<br>' ;
-      //上線記錄
-      $sql = ' insert into  '.$xoopsDB->prefix('mac_online').
+    if (($id <=0) or  in_array($id, $this_on_array)) {
+        echo $id .'****<br>' ;
+        return 0 ;
+    } else {
+        $this_on_array[]= $id ;
+        echo $id .'<br>' ;
+        //上線記錄
+        $sql = ' insert into  '.$xoopsDB->prefix('mac_online').
           "(oid ,id ,online_day , on_day )
           values ('0','$id',now() ,now()  ) ";
-      $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
+        $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
 
-      //本身連線更新
-      $sql = ' update '.$xoopsDB->prefix('mac_info')." set  recode_time=now()    where id='$id' ";
-      $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
-
-  }
-
+        //本身連線更新
+        $sql = ' update '.$xoopsDB->prefix('mac_info')." set  recode_time=now()    where id='$id' ";
+        $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
+    }
 }

@@ -56,9 +56,9 @@
 
 		<{if $week[$d].boot}>
 		<{if ($week[$d].times>3) }>
-		<i class="icon-off" title="開機<{$week[$d].times}>次"></i><span class='alert-danger'>*<{$week[$d].times}>(<{$week[$d].D}> 日)</span><br/>
+		<span class='alert-danger' title="開機:<{$week[$d].turnon_list}>" ><i class="icon-off" ></i>*<{$week[$d].times}>(<{$week[$d].D}> 日)</span><br/>
 		<{else}>
-		<i class="icon-off" title="開機<{$week[$d].times}>次"></i>*<{$week[$d].times}>(<{$week[$d].D}> 日)<br/>
+		<span title="開機:<{$week[$d].turnon_list}>"><i class="icon-off" ></i>*<{$week[$d].times}>(<{$week[$d].D}> 日)</span><br/>
 		<{/if}>
 		<{/if}>
 		<{if $week[$d].on}><i class="icon-random" title="<{$week[$d].b}> ~ <{$week[$d].e}>"></i><{$week[$d].b}> ~ <{$week[$d].e}>(<{$week[$d].on_hour}>h)<{/if}>

@@ -11,23 +11,22 @@ include_once "header.php";
 include_once "../function.php";
 
 if ($_GET['id']) {
-  //上線記錄
-  $open_week = get_id_online_rec($_GET['id'] ,30  ) ;
+    //上線記錄
+    $open_week = get_id_online_rec($_GET['id'], 30) ;
 
     //取得客戶端上傳硬體
     $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where id = '{$_GET['id']}'  " ;
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
-        $row['MaxGB']=number_format($row['memory']/(1024*1024),0) ;
-        $row['GB']=number_format($row['realmemory']/(1024*1024*1024),0) ;
+        $row['MaxGB']=number_format($row['memory']/(1024*1024), 0) ;
+        $row['GB']=number_format($row['realmemory']/(1024*1024*1024), 0) ;
         $now_comp = $row ;
     }
-
 } else {
     //今天開機的記錄
     $sql = " select a.* ,i.comp , i.workgroup  , i.comp_dec , i.ps from " .
     $xoopsDB->prefix("mac_up_sysinfo") ." as  a ," . $xoopsDB->prefix("mac_info")  ." as  i " .
-    "  where a.id=i.id  and a.sysinfo_day >= CURDATE()  order by  id  DESC,  sysinfo_day   DESC " ;
+    "  where a.id=i.id  and a.sysinfo_day >= CURDATE()  order by    sysinfo_day   DESC " ;
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
         $row['w']= date('w', strtotime($row['sysinfo_day']))  ;

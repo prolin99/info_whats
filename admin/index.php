@@ -38,16 +38,17 @@ if ($_POST['btn_clear']) {
     $data['ip_rang'] = $xoopsModuleConfig['iw_ip_rang'] ;                    //分配規劃
     $data['ipv4'] = $xoopsModuleConfig['iw_ip_v4'] ;                        //ipv4 網段
     $data['ipv6'] = $xoopsModuleConfig['iw_ip_v6'] ;                        //ipv6 網段
+    $data['dhcp_setup'] = $xoopsModuleConfig['iw_ip_v4_dhcp'] ;
 
     $ip4_array = preg_split('/,/', $data['ipv4']) ;
 
     $dhcp_log = $xoopsModuleConfig['iw_ip_dhcp_log'] ;    //動態分配區記錄檔
 
     //dhcp 範圍
-    //是否有多段
+    //是否有多段，把 ip 放入 $dhcp_list 陣列
     $dhcp_rang_list = preg_split('/,/', $xoopsModuleConfig['iw_ip_v4_dhcp']) ;
         for ($ri=0 ;$ri< count($dhcp_rang_list) ; $ri++) {
-            $dhcp_rang = preg_split('/~/', $dhcp_rang_list[$ri]) ;    //動態分配區
+            $dhcp_rang = preg_split('/~/', trim($dhcp_rang_list[$ri])  ) ;    //動態分配區
             $dhcp_begin = preg_split('/[\.]/', $dhcp_rang[0]) ;
             $dhcp_end = preg_split('/[\.]/', $dhcp_rang[1]) ;
             $dhcp_prefix= $dhcp_begin[0] . '.'  . $dhcp_begin[1] . '.'  . $dhcp_begin[2]   ;
@@ -63,10 +64,11 @@ if ($_POST['btn_clear']) {
 
     //----dhcp data mac to name ----------------
     //"/var/lib/dhcpd/dhcpd.leases"
-    //只改名稱
+    //只用來修改已有記錄中的名稱
     $dhcp_lease = get_dhcp_lease($dhcp_log) ;
 
-    //取得登記資料 --------------------------------------
+
+    //取得所有個人登記資料 --------------------------------------
     $sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  order by mac "  ;
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
@@ -100,47 +102,40 @@ if ($_POST['btn_clear']) {
 
 
     //排序方式
-  $sort_list= array('kind DESC', 'phid ' ,'ip_id' ,'mac' , 'comp' ,'modify_day DESC' , 'id DESC' ,'recode_time DESC'  ,'creat_day DESC' ,'id '  ) ;
+    $sort_list= array('kind DESC', 'phid ' ,'ip_id' ,'mac' , 'comp' ,'modify_day DESC' , 'id DESC' ,'recode_time DESC'  ,'creat_day DESC' ,'id '  ) ;
     if (($soid <=0) or ($soid > count($sort_list))) {
         $soid=7 ;
     }
 
     $sortby = $sort_list[$soid-1] ;
 
+    //重要資料、目前填表、未登記的分頁
     $where_list = array('point'=>' where point >=1 ' ,'mystery'=>' where  ps="" or ps is null '  )  ;
     $sp = $_GET['do'] ;
-  $where_str = $where_list[$sp] ;
+    $where_str = $where_list[$sp] ;
 
     //取得資料表全部
-  $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " $where_str  order by  $sortby   ,  recode_time DESC " ;
-
-
-
+    $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " $where_str  order by  $sortby   ,  recode_time DESC " ;
 
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 
     while ($row=$xoopsDB->fetchArray($result)) {
         $ipv4 = preg_split('/[:-]/', $row["mac"]) ;
-        $row['ipv6'] = ($ipv4[0]^2) .$ipv4[1] .':' . $ipv4[2]  .'ff:fe' .$ipv4[3].':' . $ipv4[4] . $ipv4[5] ;
+        //$row['ipv6'] = ($ipv4[0]^2) .$ipv4[1] .':' . $ipv4[2]  .'ff:fe' .$ipv4[3].':' . $ipv4[4] . $ipv4[5] ;
         //統一呈現大寫
         $row["mac"]=strtoupper($row["mac"]) ;
 
-        //dhcp log 記錄中，是否已在資料庫中
-        if ($dhcp_mac_list[$row["mac"]] ==1) {
-            $dhcp_mac_list[$row["mac"]]  =0 ;
-        }
-
+        //只顯示 yy-mm-dd
         $row['creat_day'] = substr($row['creat_day'], 2, 8) ;
         $row['ipv6_last'] = substr($row['ip_v6'], -19) ;
         $row['now'] =0 ;
         $row['recode_time']=substr($row['recode_time'], 0, -3)  ;
         if (substr($row['recode_time'], 0, 16)   == substr($last_recode_time, 0, 16)) {
-            //echo  $row['ip']. substr($row['recode_time'],0,16).'   ==' .  substr( $last_recode_time,0,16)  .'<br>' ;
-            //以分計，同時
+            //以分計，現在存活
             $row['now'] =1 ;
             $open_mode['now']++ ;
         } elseif (substr($row['recode_time'], 0, 10)  == substr($last_recode_time, 0, 10)) {
-            //以日計，同日
+            //以日計，當日存活
             $row['now']=2 ;
             $open_mode['today']++ ;
         }
@@ -157,12 +152,12 @@ if ($_POST['btn_clear']) {
         $input_data[$row['mac']]['in'] = true ;                //已在資料庫中
 
 
-        //動態 IP 不列入下方文字框
+        //動態 IP 不列入到 綁定 IP 記錄中
         if (in_array($row['ip'], $dhcp_list)) {
             $row['dhcp'] = true ;
         }
 
-        //IP 是否在本校網域中
+        //IP 是否在本校網域中 ，虚擬 IP 及特定網段視為 dhcp
         $ip_out_net = true ;
         foreach ($ip4_array as $k =>$my_ip_pre) {
             if (strpos($row['ip'], $my_ip_pre) !== false) {
@@ -180,6 +175,7 @@ if ($_POST['btn_clear']) {
     } //while
 
 
+/*
     //------輸入 mac 及 dhcpd release 取資料 --------------如在重要、未登記時，不處理這部份--------------------------------------------
     if (! $_GET['do']) {
         //登記資料，但不在掃描記錄中，加入資料中
@@ -201,14 +197,14 @@ if ($_POST['btn_clear']) {
             }
         }
 
- 
+
 
         if ($add_FG) { //有新增資料，重整一次
             redirect_header($_SERVER['PHP_SELF'], 3, '資料更新!');
         }
     }
 
-
+*/
 
 
 
@@ -217,7 +213,11 @@ if ($_POST['btn_clear']) {
                     "  GROUP BY ip           HAVING cc >1 " ;
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
+      //動態 IP 範圍不計算
+      if (!in_array($row['ip'], $dhcp_list)){
         $err_comp_list[] = $row ;
+      }
+
     }
 
     //總筆數
@@ -232,7 +232,7 @@ if ($_POST['btn_clear']) {
 
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
-        $comp_list_use[$row['ip']] = true ;
+        //$comp_list_use[$row['ip']] = true ;
         $use_ip[] = $row['ip'] ;
     }
 
@@ -243,17 +243,18 @@ if ($_POST['btn_clear']) {
         //空的 IP
         $empt_list .="<h3>$ipv</h3>" ;
 
-        for ($i=1 ; $i <=250 ; $i++) {
+        for ($i=0 ; $i <=255 ; $i++) {
             $ip = $ipv . '.'  . $i ;
             //if (is_null($comp_list_use[$ip])) {
-            if (! (in_array($ip, $use_ip))) {
+            if ( (! (in_array($ip, $use_ip)))  and    (! (in_array($ip, $dhcp_list)))                ) {
                 $empt_list .= $i . ' , ' ;
+                $empt_count ++ ;
             }
-            $empt_count ++ ;
+            if (($i % 32)==0) {
+                $empt_list .='<br />' ;
+            }
         }
-        if (($i % 32)==0) {
-            $empt_list .='<br />' ;
-        }
+
     }
 
 
@@ -276,6 +277,7 @@ $xoopsTpl->assign("input_data", $input_data);
 $xoopsTpl->assign("point", $_GET['do']);
 
 $xoopsTpl->assign("dhcp_List", $dhcp_List);
+
 //$xoopsTpl->assign("dhcp_mac_no_in_data",$dhcp_mac_no_in_data);
 
 $xoopsTpl->assign("data", $data);
