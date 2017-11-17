@@ -155,6 +155,7 @@ function get_id_online_rec($id, $days=30, $prei =10)
 
 
     //取得客戶端上傳硬體訊息，一個月內
+/*
     $sql = " select id, on_day , count(*) as cc from " . $xoopsDB->prefix("mac_up_sysinfo") .
     " where (id = '$id') and (on_day >= ( DATE_ADD(CURDATE() ,INTERVAL $days DAY )) ) " .
     " group by id,on_day "      ;
@@ -169,6 +170,7 @@ function get_id_online_rec($id, $days=30, $prei =10)
         $open_week[$week][$d_of_w]['times'] = $row['cc'];
         $open_week[$week][$d_of_w]['D']= substr($row['on_day'], 8, 2) ;
     }
+*/
     $sql = " select * from " . $xoopsDB->prefix("mac_up_sysinfo") .
      " where (id = '$id' ) and (on_day >= ( DATE_ADD(CURDATE() ,INTERVAL $days DAY )) ) " .
      " order by sysinfo_day "      ;
@@ -176,11 +178,55 @@ function get_id_online_rec($id, $days=30, $prei =10)
     while ($row=$xoopsDB->fetchArray($result)) {
       $d_of_w = date('w', strtotime($row['on_day']))  ;
       $week = date('W', strtotime($row['on_day']))  ;
+      $open_week[$week][$d_of_w]['boot']= 'boot' ;
+      $open_week[$week][$d_of_w]['times'] ++ ;
+      $open_week[$week][$d_of_w]['D']= substr($row['on_day'], 8, 2) ;
       $open_week[$week][$d_of_w]['turnon_list'] .= substr($row['sysinfo_day'],11,5) . ' , ';
 
       $row['w']= $d_of_w ;
       $open_list[] = $row ;
     }
+
+
+    //如果沒有開機訊息，再查看內部多台開機記錄
+    if ($open_week and  empty($open_list) ) {
+      $sql = " select ip  from " . $xoopsDB->prefix("mac_info") . " where id = '$id' "  ;
+      $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
+      while ($row=$xoopsDB->fetchArray($result)) {
+        $ext_ip = $row['ip'] ;
+      }
+      if ($ext_ip) {
+        //多台參數
+        $in_id =0 ;
+        //子查詢
+        $sql = " select * from " . $xoopsDB->prefix("mac_up_sysinfo") .
+         " where    (on_day >= ( DATE_ADD(CURDATE() ,INTERVAL $days DAY )) ) " .
+         " and (id  in  " .
+         " ( select id from " . $xoopsDB->prefix("mac_info") . " where ipv4_ext='$ext_ip'  ) ".
+         " )" .
+         " order by on_day ,id , sysinfo_day "      ;
+         //echo $sql ;
+         $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
+         while ($row=$xoopsDB->fetchArray($result)) {
+
+           $d_of_w = date('w', strtotime($row['on_day']))  ;
+           $week = date('W', strtotime($row['on_day']))  ;
+           $open_week[$week][$d_of_w]['boot']= 'boot' ;
+           $open_week[$week][$d_of_w]['times'] ++ ;
+           $open_week[$week][$d_of_w]['D']= substr($row['on_day'], 8, 2) ;
+
+           if ($in_id<>$row['id']) {
+             $in_id = $row['id'] ;
+             $open_week[$week][$d_of_w]['turnon_list'] .="(#$in_id)" ;
+           }
+
+           $open_week[$week][$d_of_w]['turnon_list'] .= substr($row['sysinfo_day'],11,5) . ' , ';
+           $row['w']= $d_of_w ;
+           $open_list[] = $row ;
+         }
+      }
+    }
+
 
     $open_week['list']=$open_list ;
     return $open_week ;
