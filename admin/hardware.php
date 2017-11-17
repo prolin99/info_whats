@@ -9,6 +9,15 @@
 $xoopsOption['template_main'] = "info_hardware_tpl.html";
 include_once "header.php";
 include_once "../function.php";
+if ($_POST['fix_id']){
+  $sql = " update  " . $xoopsDB->prefix("mac_info") .  " set uuid='' , dangerFG=0 where id = '{$_POST['fix_id']}'  " ;
+  $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
+
+  $sql = " update  " . $xoopsDB->prefix("mac_up_sysinfo") .  " set  dangerFG=0 where id = '{$_POST['fix_id']}'  " ;
+  $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
+
+  $_GET['id']=$_POST['fix_id'] ;
+}
 
 if ($_GET['id']) {
     //上線記錄
@@ -30,6 +39,7 @@ if ($_GET['id']) {
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
         $row['w']= date('w', strtotime($row['sysinfo_day']))  ;
+        $row['GB']=number_format($row['realmemory']/(1024*1024*1024), 0) ;
         $list[] = $row ;
     }
     //$mode = 'today_list' ;

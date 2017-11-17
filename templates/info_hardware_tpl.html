@@ -27,6 +27,12 @@
 	<span>max: <{$now_comp.MaxGB}> GB ,</span>
 	<span class="label label-info">memory: <{$now_comp.GB}> GB</span>
 	<{/if}>
+	<{if ($now_comp.dangerFG)}>
+	<form class="" action="hardware.php" method="post">
+		<input type="hidden" name="fix_id" value="<{$now_comp.id}>">
+		<button type="submit" name="button" class="btn btn-success" title='以目前重新開機資訊為主'>清除硬體錯誤標記</button>
+	</form>
+	<{/if}>
 </div>
 
 <!--              月曆方式統計                          -->
@@ -144,7 +150,7 @@
 	<span ><{$comp.comp_dec}></span>
 	<span ><{$comp.ps}></span>
 	<span class='label label-success' ><{$comp.baseboard}></span>
-
+	<span class='label label-info' ><{$comp.GB}>G</span>
 
 </div>
 <div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
