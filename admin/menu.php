@@ -31,7 +31,7 @@ $i++ ;
 $adminmenu[$i]['title'] = '未登記';
 $adminmenu[$i]['link'] = "admin/index.php?do=mystery";
 $adminmenu[$i]['desc'] = '未登記設備' ;
-$adminmenu[$i]['icon'] = 'images/admin/tips.png' ;
+$adminmenu[$i]['icon'] = 'images/admin/problem.png' ;
 
 $i++ ;
 $adminmenu[$i]['title'] = 'AP內';
@@ -50,7 +50,7 @@ $i++ ;
 $adminmenu[$i]['title'] = '開機記錄';
 $adminmenu[$i]['link'] = "admin/hardware.php";
 $adminmenu[$i]['desc'] = '開機上傳記錄' ;
-$adminmenu[$i]['icon'] = 'images/admin/log_48.png' ;
+$adminmenu[$i]['icon'] = 'images/admin/turn-on.png' ;
 
 $i++ ;
 $adminmenu[$i]['title'] = "關於";
