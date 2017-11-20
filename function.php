@@ -514,7 +514,7 @@ YourIp: 120.116.25.134
     //已有記錄
     if ($has_old_id) {
         if ($mac_info['uuid']) {
-            if (($mac_info['uuid']<> $info_data['uuid']) or ($mac_info['cpu']<> $info_data['cpu']) or ($mac_info['memory']<> $info_data['memory']) or ($mac_info['realmemory']<> $info_data['realmemory'])) {
+            if (($mac_info['uuid']<> $info_data['uuid']) or ($mac_info['cpu']<> $info_data['cpu']) or ($mac_info['memory']<> $info_data['memory']) or ($info_data['realmemory']>0  and ($mac_info['realmemory']<> $info_data['realmemory'] ) )       ) {
                 $danger_fg = 1 ;
             }
             $sql = ' update '.$xoopsDB->prefix('mac_info')."  set
