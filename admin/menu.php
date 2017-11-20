@@ -37,7 +37,7 @@ $i++ ;
 $adminmenu[$i]['title'] = 'AP內';
 $adminmenu[$i]['link'] = "admin/ext_in.php";
 $adminmenu[$i]['desc'] = '在 AP 後' ;
-$adminmenu[$i]['icon'] = 'images/admin/messagebox_warning.png' ;
+$adminmenu[$i]['icon'] = 'images/admin/router.png' ;
 
 
 $i++ ;
