@@ -21,8 +21,36 @@ function xoops_module_update_info_whats(&$module, $old_version)
         go_update_add_online();
     }
 
+    if (!chk_add_c_id()) {
+      //財產編號
+        go_update_add_c_id();
+    }
+
     return true;
 
+}
+
+//---------------------------------------------------
+function chk_add_c_id()
+{
+    global $xoopsDB;
+    $sql = 'select count(`c_id`)  from '.$xoopsDB->prefix('mac_input');
+    //echo $sql ;
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return false;
+    }
+
+    return true;
+}
+
+function go_update_add_c_id()
+{
+    global $xoopsDB;
+
+    $sql = ' ALTER TABLE  '.$xoopsDB->prefix('mac_input'). '    ADD `c_id` varchar(100) DEFAULT NULL ,  ADD `s_id` varchar(100) DEFAULT NULL   ;  ';
+    //echo $sql ;
+    $xoopsDB->queryF($sql);
 }
 //---------------------------------------------------
 

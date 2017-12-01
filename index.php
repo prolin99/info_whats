@@ -27,6 +27,8 @@ if ($_POST['act_add']  and $_POST['user']) {
     $_POST['mac']=$myts->addSlashes($_POST['mac']);
     $_POST['user']=$myts->addSlashes($_POST['user']);
     $_POST['place']=$myts->addSlashes($_POST['place']);
+    $_POST['c_id']=$myts->addSlashes($_POST['c_id']);
+    $_POST['s_id']=$myts->addSlashes($_POST['s_id']);
     /*
     if ($_POST['id'] )
         $sql = "UPDATE " . $xoopsDB->prefix("mac_input") .  " set  user ='{$_POST['user']}' , place='{$_POST['place']}' where id = '{$_POST['id']}' " ;
@@ -34,8 +36,8 @@ if ($_POST['act_add']  and $_POST['user']) {
     */
     $uid = $uid+0 ;
 
-    $sql = " insert into  " . $xoopsDB->prefix("mac_input") .  "  (id ,ip ,mac ,user,place,uid )
-				     values ('0','{$_POST['ip']}','{$_POST['mac']}','{$_POST['user']}' , '{$_POST['place']}' ,'$uid' ) " ;
+    $sql = " insert into  " . $xoopsDB->prefix("mac_input") .  "  (id ,ip ,mac ,user,place,uid ,c_id , s_id )
+				     values ('0','{$_POST['ip']}','{$_POST['mac']}','{$_POST['user']}' , '{$_POST['place']}' ,'$uid' ,'{$_POST['c_id']}' ,'{$_POST['s_id']}'  ) " ;
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 
     $have_input ='記錄已寫入' ;

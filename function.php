@@ -98,9 +98,9 @@ function get_from_data($uid, $ip, $mac)
     if ($ip) {
         //$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip' and $uid='$uid'  " ;
         if ($mac) {
-            $sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where mac ='$mac'  order by id DESC  " ;
+            $sql = " select * from " . $xoopsDB->prefix("mac_input")  ." where mac ='$mac'  order by id DESC  " ;
         } else {
-            $sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip'  order by id DESC  " ;
+            $sql = " select *  from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip'  order by id DESC  " ;
         }
         $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
         $data_list=$xoopsDB->fetchArray($result) ;
@@ -303,7 +303,8 @@ function get_dhcp_lease($dhcp_log)
                 $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
                 $srow = $xoopsDB->fetchArray($result) ;
                 if ($srow['id']) {
-                    $sql = " update  " . $xoopsDB->prefix("mac_info") .  "  set ip='$gdip'  , comp = '$cl_name'  where  mac = '$mac' " ;
+                    $sql = " update  " . $xoopsDB->prefix("mac_info") .  "  set  comp = '$cl_name'  where  mac = '$mac' " ;
+                    //echo 'qqqq' . $sql ;
                     $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
                 }
 
@@ -331,7 +332,7 @@ function get_system_info($file)
 {
     global $xoopsModuleConfig ,$xoopsDB ;
 
-    echo "<p>$file</p>" ;
+    //echo "<p>$file</p>" ;
 
     $output = file_get_contents($file, FILE_USE_INCLUDE_PATH);
     //utf 16 to utf8
@@ -590,4 +591,20 @@ function online($id)
         $sql = ' update '.$xoopsDB->prefix('mac_info')." set  recode_time=now()    where id='$id' ";
         $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
     }
+}
+
+
+//加強顯示 ，財產編號加樣式
+function disp_impact($v){
+  if (trim($v)){
+    $success = preg_match('/(.+)(@[0-9]+)(.*)/', trim($v) ,$v_part);
+    if ($success ){
+      $v_part[2]='<span class="label label-success">'. $v_part[2] .'</span>' ;
+      for ($i=1 ; $i <= count($v_part) ; $i++)
+        $new_str .= $v_part[$i] ;
+      return $new_str ;
+    }else
+    return $v ;
+  }
+
 }

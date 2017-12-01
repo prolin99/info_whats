@@ -12,13 +12,18 @@
     <legend>機器登記</legend>
     <label>你的IP ： <{ $data.ip }></label><br/>
     <label>你的網卡序號 ： <{ $data.mac }></label><br/>
-    <label ><button type="button" class="btn btn-primary">已知的舊記錄 ： <{ $data_rec.comp }>- <{ $data_rec.ps }></button></label><br/>
+    <label >已知的舊記錄 ：<span   class="label label-primary"> <{ $data_rec.comp }>- <{ $data_rec.ps }></span></label><br/>
 	如果出現 AP 名，代表在無線基地台下，不是電腦的實際 IP。<br/>
     <label>---------------以下填報-------------------</label><br/>
     <label>保管人</label>
     <input type="text" name='user' value='<{ $data_get.user }>' class='form-control'  placeholder="使用人姓名…"><br/>
     <label>機器地點</label>
     <input type="text" name='place' value='<{ $data_get.place }>' class='form-control'  placeholder="地點(多台請加編號)…">
+    <br/>
+		<label>電腦財產編號（最後一組數字，例 3000165）</label>
+    <input type="text" name='c_id' value='<{ $data_get.c_id }>' class='form-control'  placeholder="電腦財產條碼編號…"><br/>
+    <label>連接螢幕財產編號（最後一組數字，例 3000448）或其它說明</label>
+    <input type="text" name='s_id' value='<{ $data_get.s_id }>' class='form-control'  placeholder="螢幕財產條碼編號或其它單槍、電視編號…">
     <br/>
     <{if ($input_mode) }>
     <input name='ip' type='hidden' class='form-control' value='<{ $data.ip }>' />

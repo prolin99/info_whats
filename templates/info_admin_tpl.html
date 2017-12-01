@@ -114,12 +114,14 @@
 <textarea name="dhcp" class="span10" rows="20"  >
  <{foreach from=$comp_list item=comp key=cid}>
  <{if ! ($comp.dhcp) }>
+ <{ if (($point=='input') and ($comp.input)) or ($point<>'input') }>
   #<{$comp.id}> ---
   host <{$comp.id}>_<{$comp.comp}> {
   # <{$comp.comp}>
   hardware ethernet <{$comp.mac}>;
   fixed-address <{$comp.ip}>;
   }
+  <{/if}>
   <{/if}>
  <{/foreach}>
 </textarea>

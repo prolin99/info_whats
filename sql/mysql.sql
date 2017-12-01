@@ -39,6 +39,8 @@ CREATE TABLE `mac_info` (
   `mac` varchar(100) DEFAULT NULL,
   `user` varchar(100) DEFAULT NULL,
   `place` varchar(100) DEFAULT NULL,
+  `c_id` varchar(100) DEFAULT NULL,
+  `s_id` varchar(100) DEFAULT NULL,
   `uid` int(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  ;

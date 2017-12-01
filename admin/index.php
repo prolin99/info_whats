@@ -74,12 +74,16 @@ if ($_POST['btn_clear']) {
     while ($row=$xoopsDB->fetchArray($result)) {
         if ($row["mac"]) {
             $row["mac"]=strtoupper($row["mac"]) ;
-            $input_data[$row['mac']]['ps'] .= $row['user']  .'-' . $row['place'];
+            $input_data[$row['mac']]['ps'] .= $row['user']  .'-' . $row['place'] ;
+            $input_data[$row['mac']]['ps'] .=  $row['c_id'] ? '<span class="label"> @' . $row['c_id'].'</span>':'' ;
+            $input_data[$row['mac']]['ps'] .=  $row['s_id'] ? '<span class="label"> +' . $row['s_id'].'</span>':'' ;
             $input_data[$row['mac']]['ip'] .= $row['ip'] ;
             $input_data[$row['mac']]['id'] = $row['id'] ;
         } else {
             $row["mac"]=strtoupper($row["mac"]) ;
-            $input_data[$row['ip']]['ps'] .= $row['user']  .'-' . $row['place'];
+            $input_data[$row['ip']]['ps'] .= $row['user']  .'-' . $row['place']  ;
+            $input_data[$row['ip']]['ps'] .=  $row['c_id'] ? '<span class="label"> @' . $row['c_id'].'</span>' :'' ;
+            $input_data[$row['ip']]['ps'] .=  $row['s_id'] ? '<span class="label"> +' . $row['s_id'].'</span>':'' ;
             $input_data[$row['ip']]['ip'] .= $row['ip'] ;
             $input_data[$row['ip']]['id'] = $row['id'] ;
         }
@@ -124,6 +128,10 @@ if ($_POST['btn_clear']) {
         //$row['ipv6'] = ($ipv4[0]^2) .$ipv4[1] .':' . $ipv4[2]  .'ff:fe' .$ipv4[3].':' . $ipv4[4] . $ipv4[5] ;
         //統一呈現大寫
         $row["mac"]=strtoupper($row["mac"]) ;
+
+        //財產編碼加 樣式
+        $row["ps"]=disp_impact($row["ps"]) ;
+
 
         //只顯示 yy-mm-dd
         $row['creat_day'] = substr($row['creat_day'], 2, 8) ;
