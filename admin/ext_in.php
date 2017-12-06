@@ -29,7 +29,7 @@ include_once "../function.php";
         $row['ipv6'] = ($ipv4[0]^2) .$ipv4[1] .':' . $ipv4[2]  .'ff:fe' .$ipv4[3].':' . $ipv4[4] . $ipv4[5] ;
         //統一呈現大寫
         $row["mac"]=strtoupper($row["mac"]) ;
-
+        $row["ps"]=disp_impact($row["ps"]) ;
 
 
         $row['creat_day'] = substr($row['creat_day'], 2, 8) ;
@@ -60,7 +60,7 @@ $xoopsTpl->assign("comp_list", $comp_list);
 
 $xoopsTpl->assign("open_mode", $open_mode);
 
- 
+
 
 
 include_once 'footer.php';

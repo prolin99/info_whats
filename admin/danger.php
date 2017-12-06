@@ -20,6 +20,7 @@ else
 $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where dangerFg<>0  order by  id    DESC " ;
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 while ($row=$xoopsDB->fetchArray($result)) {
+  $row["ps"]=disp_impact($row["ps"]) ;
   $danger_list[] = $row ;
 
 }
@@ -30,6 +31,7 @@ $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where recode_time <
 //echo $sql;
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 while ($row=$xoopsDB->fetchArray($result)) {
+  $row["ps"]=disp_impact($row["ps"]) ;
   $import_list[] = $row ;
 }
 $all_list['offline']=$import_list ;
@@ -45,6 +47,7 @@ $sql = " select  i.* , count(*) as cc  from " . $xoopsDB->prefix("mac_up_sysinfo
 
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 while ($row=$xoopsDB->fetchArray($result)) {
+  $row["ps"]=disp_impact($row["ps"]) ;
   $over3_list[] = $row ;
 }
 $all_list['times3']=$over3_list;
@@ -56,6 +59,7 @@ $sql = " select DISTINCT i.* from " . $xoopsDB->prefix("mac_up_sysinfo") . " as 
 //echo $sql;
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 while ($row=$xoopsDB->fetchArray($result)) {
+  $row["ps"]=disp_impact($row["ps"]) ;
   $notworkday_list[] = $row ;
 }
 $all_list['notworkday']=$notworkday_list ;
@@ -68,6 +72,7 @@ $sql = " select  i.* , max(on_day) as maxd from " . $xoopsDB->prefix("mac_up_sys
 
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 while ($row=$xoopsDB->fetchArray($result)) {
+  $row["ps"]=disp_impact($row["ps"]) ;
   $over7_list[] = $row ;
 }
 $all_list['over7']=$over7_list;
@@ -79,6 +84,7 @@ $sql = " select DISTINCT i.*    ,o.on_day   from ". $xoopsDB->prefix("mac_info")
 //echo $sql;
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 while ($row=$xoopsDB->fetchArray($result)) {
+  $row["ps"]=disp_impact($row["ps"]) ;
   $mylist[] = $row ;
 }
 $all_list['tooLate']=$mylist;
@@ -91,6 +97,7 @@ $sql = " select DISTINCT i.*   from ". $xoopsDB->prefix("mac_info") ." as i  , "
 //echo $sql;
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 while ($row=$xoopsDB->fetchArray($result)) {
+  $row["ps"]=disp_impact($row["ps"]) ;
   $notworkday_online_list[] = $row ;
 }
 $all_list['notworkday_online']=$notworkday_online_list;

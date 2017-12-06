@@ -29,6 +29,7 @@ if ($_GET['id']) {
     while ($row=$xoopsDB->fetchArray($result)) {
         $row['MaxGB']=number_format($row['memory']/(1024*1024), 0) ;
         $row['GB']=number_format($row['realmemory']/(1024*1024*1024), 0) ;
+        $row["ps"]=disp_impact($row["ps"]) ;
         $now_comp = $row ;
     }
 } else {

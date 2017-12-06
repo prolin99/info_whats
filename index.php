@@ -52,6 +52,9 @@ $data = get_mac() ;
 $data_get = get_from_data($uid, $data['ip'], $data['mac']) ;
 //已寫入 mac_info 中的資料。
 $data_rec = get_from_rec($uid, $data['ip'], $data['mac']) ;
+//財產編碼加 樣式
+$data_rec["ps"]=disp_impact($data_rec["ps"]) ;
+
 //取得上線記錄 3天，10分 間隔
 $online = get_id_online_rec($data_rec['id'] ,7   ) ;
 
