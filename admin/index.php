@@ -39,6 +39,8 @@ if ($_POST['btn_clear']) {
     $data['ipv4'] = $xoopsModuleConfig['iw_ip_v4'] ;                        //ipv4 網段
     $data['ipv6'] = $xoopsModuleConfig['iw_ip_v6'] ;                        //ipv6 網段
     $data['dhcp_setup'] = $xoopsModuleConfig['iw_ip_v4_dhcp'] ;
+    $data['link_days'] = $xoopsModuleConfig['iw_link_data_days'] ;          //保留連線記錄日數
+
 
     $ip4_array = preg_split('/,/', $data['ipv4']) ;
 
@@ -89,6 +91,19 @@ if ($_POST['btn_clear']) {
         }
     }
 
+
+    //清除太舊的連線記錄表
+    $days= $data['link_days'] * -1 ;
+    $sql = " delete    from  " . $xoopsDB->prefix("mac_online") .
+    " where    on_day < ( DATE_ADD(CURDATE() ,INTERVAL $days DAY ))   "   ;
+    $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
+
+    $sql = " delete   from  " . $xoopsDB->prefix("mac_up_sysinfo") .
+    " where    on_day < ( DATE_ADD(CURDATE() ,INTERVAL $days DAY ))   "   ;
+    $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
+
+
+
  //取得最近時間
     $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " order by recode_time DESC  " ;
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
@@ -129,9 +144,20 @@ if ($_POST['btn_clear']) {
         //統一呈現大寫
         $row["mac"]=strtoupper($row["mac"]) ;
 
+        //dhcpd.conf 中名稱不可有空白
+        $row["comp_dhcp"]=preg_replace('/\s/' ,'_' , $row["comp"]) ;
         //財產編碼加 樣式
         $row["ps"]=disp_impact($row["ps"]) ;
 
+        //@電腦財產編號
+        $success = preg_match('/(.+)(@[0-9]+)(.*)/', trim($row["ps"]) ,$v_part);
+        if ($success ){
+          //財產編號重覆
+          if  (in_array($v_part[2] , $school_id_list ) )
+            $duble_school_id .= $row["ps"] .'<br>' ;
+          else
+            $school_id_list[] = $v_part[2] ;
+        }
 
         //只顯示 yy-mm-dd
         $row['creat_day'] = substr($row['creat_day'], 2, 8) ;
@@ -285,6 +311,8 @@ $xoopsTpl->assign("input_data", $input_data);
 $xoopsTpl->assign("point", $_GET['do']);
 
 $xoopsTpl->assign("dhcp_List", $dhcp_List);
+
+$xoopsTpl->assign("duble_school_id", $duble_school_id);
 
 //$xoopsTpl->assign("dhcp_mac_no_in_data",$dhcp_mac_no_in_data);
 

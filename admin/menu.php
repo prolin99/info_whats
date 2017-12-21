@@ -16,6 +16,12 @@ $adminmenu[$i]['desc'] = '設備記錄' ;
 $adminmenu[$i]['icon'] = 'images/admin/home.png' ;
 
 $i++ ;
+$adminmenu[$i]['title'] = '警示';
+$adminmenu[$i]['link'] = "admin/danger.php";
+$adminmenu[$i]['desc'] = '可能有狀況的設備' ;
+$adminmenu[$i]['icon'] = 'images/admin/messagebox_warning.png' ;
+
+$i++ ;
 $adminmenu[$i]['title'] = '重要設備';
 $adminmenu[$i]['link'] = "admin/index.php?do=point";
 $adminmenu[$i]['desc'] = '重要設備' ;
@@ -40,11 +46,7 @@ $adminmenu[$i]['desc'] = '在 AP 後' ;
 $adminmenu[$i]['icon'] = 'images/admin/router.png' ;
 
 
-$i++ ;
-$adminmenu[$i]['title'] = '警示';
-$adminmenu[$i]['link'] = "admin/danger.php";
-$adminmenu[$i]['desc'] = '可能有狀況的設備' ;
-$adminmenu[$i]['icon'] = 'images/admin/messagebox_warning.png' ;
+
 
 $i++ ;
 $adminmenu[$i]['title'] = '開機記錄';

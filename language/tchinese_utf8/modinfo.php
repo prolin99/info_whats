@@ -66,4 +66,7 @@ define("_MI_INFOWHOS_CONFIG_D_f05","登入 ftp 帳號名稱");
 define("_MI_INFOWHOS_CONFIG_T_f06","登入 ftp 密碼");
 define("_MI_INFOWHOS_CONFIG_D_f06","登入 ftp 密碼");
 
+define("_MI_INFOWHOS_CONFIG_T_Ldays","連線記錄保留天數");
+define("_MI_INFOWHOS_CONFIG_D_Ldays","每天的連線記錄、開機上傳記錄，超過天數的資料會被清除，預設 60 天。");
+
 ?>

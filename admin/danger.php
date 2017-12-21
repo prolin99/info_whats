@@ -64,10 +64,10 @@ while ($row=$xoopsDB->fetchArray($result)) {
 }
 $all_list['notworkday']=$notworkday_list ;
 
-//愈七日未開機
+//愈七日未開機 ，限 45 日內
 $sql = " select  i.* , max(on_day) as maxd from " . $xoopsDB->prefix("mac_up_sysinfo") . " as  u , " . $xoopsDB->prefix("mac_info") ." as i  " .
 " where u.id= i.id      group by u.id   " .
-"  having maxd < ( DATE_ADD(CURDATE()  ,INTERVAL $set_day DAY )) "
+"  having ( maxd < ( DATE_ADD(CURDATE()  ,INTERVAL $set_day DAY )) )  "
 ;
 
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
@@ -112,11 +112,11 @@ $all_list['notworkday_online']=$notworkday_online_list;
 $cht_list= array(
   'hardware'=>'硬體配備有問題' ,
   'offline'=>'重要設備離線一小時以上' ,
-  'tooLate'=>'非重要設備昨晚上線' ,
-  'notworkday'=>"假日開機（ $set_day 天內）" ,
   'times3'=>"一天內開機超過3次（ $set_day 天內）" ,
-  'over7'=>"逾 $set_day 日未開機" ,
-  'notworkday_online'=>"非重要設備假日上線（ $set_day 天內）"
+  'notworkday'=>"假日開機（ $set_day 天內）" ,
+  'tooLate'=>'非重要設備昨晚上線' ,
+  'notworkday_online'=>"非重要設備假日上線（ $set_day 天內）" ,
+  'over7'=>"逾 $set_day 日未上傳開機記錄檔" ,
 ) ;
 
 

@@ -98,6 +98,8 @@
   <{foreach from=$err_comp_list item=comp key=cid}>
   錯誤：<{$comp.ip}> ---<{$comp.cc}> <br/>
   <{/foreach}>
+
+  財產編號重覆：<{$duble_school_id}>
  <{/if}>
 <pre>
        <{$data.ip_rang}>
@@ -116,7 +118,7 @@
  <{if ! ($comp.dhcp) }>
  <{ if (($point=='input') and ($comp.input)) or ($point<>'input') }>
   #<{$comp.id}> ---
-  host <{$comp.id}>_<{$comp.comp}> {
+  host <{$comp.id}>_<{$comp.comp_dhcp}> {
   # <{$comp.comp}>
   hardware ethernet <{$comp.mac}>;
   fixed-address <{$comp.ip}>;
@@ -138,7 +140,7 @@
 <div>/etc/dhcpd/dhcpd-eth0-static.conf</div>
 <textarea name="dhcp" class="span10" rows="20"  >
 <{foreach from=$comp_list item=comp key=cid}>
-<{if ! ($comp.dhcp) }>dhcp-host=<{$comp.mac}>,<{$comp.id}>_<{$comp.comp}>,<{$comp.ip}>,86400
+<{if ! ($comp.dhcp) }>dhcp-host=<{$comp.mac}>,<{$comp.id}>_<{$comp.comp_dhcp}>,<{$comp.ip}>,86400
 <{/if}>
 <{/foreach}>
 </textarea>

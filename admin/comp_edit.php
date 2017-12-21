@@ -17,8 +17,10 @@ if ($_GET['edit_id'] ) {
 		$sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  where mac ='{$row['mac']}'  or ip='{$row['ip']}' "  ;
  		$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
  		while($row2=$xoopsDB->fetchArray($result)){
-   			$input_data .= $row2['user']  .'-' . $row2['place'];
- 		}
+   			$input_data .= $row2['user']  .'-' . $row2['place'] ;
+        $input_data .= $row2['c_id'] ?' @' . $row2['c_id']  :'' ;
+        $input_data .= $row2['s_id'] ?' +' . $row2['s_id']  :'' ;
+  		}
 
      		echo "
      		<form method='post' name='editForm' id='editForm_{$row['id']}' action='comp_submit'  >

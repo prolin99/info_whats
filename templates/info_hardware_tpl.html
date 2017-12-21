@@ -36,7 +36,7 @@
 </div>
 
 <!--              月曆方式統計                          -->
-<h2>近30天開機、連線統計</h2>
+<h2>近<{$show_days}>天開機、連線統計</h2>
 <table class="table-bordered">
 <tr>
 	<th class="span1">week</th>
@@ -131,6 +131,7 @@
 <div class="alert alert-success">
 <{/if}>
 <div class="row-fluid">
+ <span class="badge badge-info"><{ $ii++ }></span>
  <span class="badge badge-inverse">#<{$comp.id}></span>
  <{if (($comp.w==0) or  ($comp.w==6) )}>
  	<span class='label label-warning'><{$comp.sysinfo_day}></span>(<{$week_name[$comp.w]}>)

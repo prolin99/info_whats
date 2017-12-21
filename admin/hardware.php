@@ -21,7 +21,7 @@ if ($_POST['fix_id']){
 
 if ($_GET['id']) {
     //上線記錄
-    $open_week = get_id_online_rec($_GET['id'], 30) ;
+    $open_week = get_id_online_rec($_GET['id'], $xoopsModuleConfig['iw_link_data_days']  ) ;
 
     //取得客戶端上傳硬體
     $sql = " select * from " . $xoopsDB->prefix("mac_info") .  " where id = '{$_GET['id']}'  " ;
@@ -39,6 +39,7 @@ if ($_GET['id']) {
     "  where a.id=i.id  and a.sysinfo_day >= CURDATE()  order by    sysinfo_day   DESC " ;
     $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
     while ($row=$xoopsDB->fetchArray($result)) {
+        $row["ps"]=disp_impact($row["ps"]) ;
         $row['w']= date('w', strtotime($row['sysinfo_day']))  ;
         $row['GB']=number_format($row['realmemory']/(1024*1024*1024), 0) ;
         $list[] = $row ;
@@ -56,6 +57,6 @@ $xoopsTpl->assign("open_list", $open_list);
 $xoopsTpl->assign("list", $list);
 //$xoopsTpl->assign("mode", $mode);
 $xoopsTpl->assign("week_name", $week_name);
-
+$xoopsTpl->assign("show_days", $xoopsModuleConfig['iw_link_data_days'] );
 
 include_once 'footer.php';

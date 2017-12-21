@@ -173,5 +173,11 @@ $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default'] ="" ;
 
-
+$i++ ;
+$modversion['config'][$i]['name'] = 'iw_link_data_days';
+$modversion['config'][$i]['title']   = '_MI_INFOWHOS_CONFIG_T_Ldays';
+$modversion['config'][$i]['description'] = '_MI_INFOWHOS_CONFIG_D_Ldays';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'int';
+$modversion['config'][$i]['default'] ="60" ;
 ?>
