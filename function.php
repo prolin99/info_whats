@@ -94,6 +94,7 @@ function get_mac()
 
 function get_from_data($uid, $ip, $mac)
 {
+    //取得已填報的資料
     global $xoopsDB;
     if ($ip) {
         //$sql = " select id , ip , user ,  place   from " . $xoopsDB->prefix("mac_input")  ." where ip ='$ip' and $uid='$uid'  " ;
@@ -112,6 +113,7 @@ function get_from_data($uid, $ip, $mac)
 
 function get_from_rec($uid, $ip, $mac)
 {
+    //取得已記錄在 mac_info 表中的資料
     global $xoopsDB;
     if ($ip or $mac) {
         if ($mac) {

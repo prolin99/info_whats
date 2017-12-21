@@ -48,7 +48,7 @@ function go_update_add_c_id()
 {
     global $xoopsDB;
 
-    $sql = ' ALTER TABLE  '.$xoopsDB->prefix('mac_input'). '    ADD `c_id` varchar(100) DEFAULT NULL ,  ADD `s_id` varchar(100) DEFAULT NULL   ;  ';
+    $sql = ' ALTER TABLE  '.$xoopsDB->prefix('mac_input'). "  ADD `uid` int(11) NOT NULL DEFAULT '0' ,   ADD `c_id` varchar(100) DEFAULT NULL ,  ADD `s_id` varchar(100) DEFAULT NULL   ;  " ;
     //echo $sql ;
     $xoopsDB->queryF($sql);
 }
@@ -110,10 +110,10 @@ function go_update_add_sysinfo()
     `uuid` VARCHAR(80) NOT NULL ,
     `bios` VARCHAR(80) NULL ,
     `cpu` VARCHAR(80) NULL ,
-    `memory` BIGINT NULL ,
+    `memory` bigint(20) NULL ,
     `realmemory` bigint(20) NOT NULL,
     `dhcpserver` VARCHAR(80) NULL ,
-    `ipaddress` VARCHAR(100) NULL ,
+    `ipaddress` VARCHAR(200) NULL ,
     `sysinfo_day` DATETIME NULL ,
     `on_day` date NULL ,
     `dangerFG` int(11)  NOT NULL DEFAULT '0' ,
@@ -154,7 +154,7 @@ function go_update_add_uuid()
      ADD `memory` BIGINT NOT NULL ,
      ADD `realmemory` bigint(20) NOT NULL,
      ADD `dhcpserver` VARCHAR(80) NULL ,
-     ADD `ipaddress` VARCHAR(100) NULL ,
+     ADD `ipaddress` VARCHAR(200) NULL ,
      ADD `sysinfo_day` DATETIME    NULL  ,
      ADD `dangerFG` int(11)  NOT NULL DEFAULT '0' ,
      ADD `ipv4_ext` varchar(20) DEFAULT NULL,

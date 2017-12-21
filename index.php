@@ -29,6 +29,7 @@ if ($_POST['act_add']  and $_POST['user']) {
     $_POST['place']=$myts->addSlashes($_POST['place']);
     $_POST['c_id']=$myts->addSlashes($_POST['c_id']);
     $_POST['s_id']=$myts->addSlashes($_POST['s_id']);
+    $uid = $myts->addSlashes($_POST['uid']);
     /*
     if ($_POST['id'] )
         $sql = "UPDATE " . $xoopsDB->prefix("mac_input") .  " set  user ='{$_POST['user']}' , place='{$_POST['place']}' where id = '{$_POST['id']}' " ;
@@ -50,8 +51,10 @@ $data = get_mac() ;
 
 //取得填報資料
 $data_get = get_from_data($uid, $data['ip'], $data['mac']) ;
-//已寫入 mac_info 中的資料。
+
+//取得已在 mac_info 記錄中的資料。
 $data_rec = get_from_rec($uid, $data['ip'], $data['mac']) ;
+
 //財產編碼加 樣式
 $data_rec["ps"]=disp_impact($data_rec["ps"]) ;
 
