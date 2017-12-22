@@ -149,8 +149,9 @@
 <script type="text/javascript">
 
 //---------------刪除------------------------
-$("span.del").bind(
-	"click", function(){
+//$("span.del").bind(	"click", function(){
+$(document).on("click", "span.del" ,  function(){
+ 
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
 		var div_id = $(this).parent().parent().attr("id")  ;
 		if(confirm('是否確定要刪除？')) {
@@ -183,8 +184,8 @@ function ajax_del(div_id ) {
 }
 
 //---------------刪除------------------------
-$("i.del_input").bind(
-	"click", function(){
+//$("i.del_input").bind(	"click", function(){
+$(document).on("click", "i.del_input" ,  function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
 		var div_id = $(this).attr("data_ref")  ;
 		//if(confirm('是否確定要刪除？')) {
