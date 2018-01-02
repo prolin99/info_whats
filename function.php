@@ -499,9 +499,16 @@ YourIp: 120.116.25.134
 
 
 
+    //無資料離開
+    if ($info_data['uuid']=='')
+      return ;
+
     //找原始資料
     $has_old_id = 0 ;
-    $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '{$info_data['mac']}'  ";
+    if ($info_data['uuid']<>'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF' and $info_data['uuid']<>'' ){
+      $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '{$info_data['mac']}'  or uuid ='{$info_data['uuid']}' ";
+    }else
+      $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '{$info_data['mac']}'  ";
 
 
     $result = $xoopsDB->query($sql) or die($sql.'<br>'.$xoopsDB->error());
