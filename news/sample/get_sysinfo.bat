@@ -95,11 +95,11 @@ REM  auto DownLoad new version get_sysinfo.bat
 
 REM compare_txt
 
-%now_path%curl.exe  --fail -O  %NewVersion%compare_txt.vbs   --silent
+REM %now_path%curl.exe  --fail -O  %NewVersion%compare_txt.vbs   --silent
 
 
 
-%now_path%curl.exe  --fail  -O  %NewVersion%get_sysinfo.bat   --silent
+REM %now_path%curl.exe  --fail  -O  %NewVersion%get_sysinfo.bat   --silent
 
 
 
