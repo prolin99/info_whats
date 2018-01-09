@@ -76,6 +76,8 @@
 
 	wget -O /dev/null http://你的網址/modules/info_whats/comp.php?do=info_whats   2> /dev/null
 
+  如果使用 https 連線則改為
+  wget --no-check-certificate -O /dev/null http://你的網址/modules/info_whats/comp.php?do=info_whats   2> /dev/null
 
 3.偏好設定，要和 ip-scan.sh 做配合。
 
