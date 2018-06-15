@@ -275,17 +275,19 @@ if ($_POST['btn_clear']) {
     foreach ($ip4_array as $k => $ipv) {
 
         //空的 IP
-        $empt_list .="<h3>$ipv</h3>" ;
+        $empt_list .="<h3>$ipv</h3>\n" ;
 
         for ($i=0 ; $i <=255 ; $i++) {
             $ip = $ipv . '.'  . $i ;
             //if (is_null($comp_list_use[$ip])) {
             if ( (! (in_array($ip, $use_ip)))  and    (! (in_array($ip, $dhcp_list)))                ) {
-                $empt_list .= $i . ' , ' ;
+                $empt_list .= '<span class="label label-success">'.$i .'</span>'    ;
                 $empt_count ++ ;
+            }else{
+                $empt_list .= '<span class="badge">' .$i . '</span>' ;
             }
-            if (($i % 32)==0) {
-                $empt_list .='<br />' ;
+            if ((($i+1) % 32)==0) {
+                $empt_list .="<br />\n" ;
             }
         }
 
