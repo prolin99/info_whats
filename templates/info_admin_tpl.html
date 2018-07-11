@@ -150,7 +150,7 @@
 
 <textarea name="dhcp5a88" class="span10" rows="20"  >
 <{foreach from=$comp_list item=comp key=cid}>
-<{if ! ($comp.dhcp) }><{$comp.ip}> <{$comp.mac|replace:':':'-'}> <{$comp.comp_dhcp}> <{$comp.ps|truncate}>
+<{if ! ($comp.dhcp) }><{$comp.ip}> <{$comp.mac|replace:':':'-'}> <{$comp.comp_dhcp}> <{$comp.ps|strip_tags}>
 <{/if}>
 <{/foreach}>
 </textarea>
