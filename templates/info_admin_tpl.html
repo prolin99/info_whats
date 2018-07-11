@@ -140,18 +140,28 @@
 <div>/etc/dhcpd/dhcpd-eth0-static.conf</div>
 <textarea name="dhcp" class="span10" rows="20"  >
 <{foreach from=$comp_list item=comp key=cid}>
-<{if ! ($comp.dhcp) }>dhcp-host=<{$comp.mac}>,<{$comp.id}>_<{$comp.comp_dhcp}>,<{$comp.ip}>,86400
+<{if ! ($comp.dhcp) }>dhcp-host=<{$comp.mac|lower}>,<{$comp.id}>-<{$comp.comp_dhcp}>,<{$comp.ip}>,86400
 <{/if}>
 <{/foreach}>
 </textarea>
 </div>
 
+<h3>給 5a88 mac-list    分配表(注意：只呈現目前所在頁資料)</h3>
+
+<textarea name="dhcp5a88" class="span10" rows="20"  >
+<{foreach from=$comp_list item=comp key=cid}>
+<{if ! ($comp.dhcp) }><{$comp.ip}> <{$comp.mac|replace:':':'-'}> <{$comp.comp_dhcp}> <{$comp.ps|truncate}>
+<{/if}>
+<{/foreach}>
+</textarea>
+</div>
+
+
 <script type="text/javascript">
 
 //---------------刪除------------------------
-//$("span.del").bind(	"click", function(){
-$(document).on("click", "span.del" ,  function(){
- 
+$("span.del").bind(
+	"click", function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
 		var div_id = $(this).parent().parent().attr("id")  ;
 		if(confirm('是否確定要刪除？')) {
@@ -184,8 +194,8 @@ function ajax_del(div_id ) {
 }
 
 //---------------刪除------------------------
-//$("i.del_input").bind(	"click", function(){
-$(document).on("click", "i.del_input" ,  function(){
+$("i.del_input").bind(
+	"click", function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)
 		var div_id = $(this).attr("data_ref")  ;
 		//if(confirm('是否確定要刪除？')) {
