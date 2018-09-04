@@ -29,7 +29,7 @@ $adminmenu[$i]['icon'] = 'images/admin/success.png' ;
 
 $i++ ;
 $adminmenu[$i]['title'] = '目前填表';
-$adminmenu[$i]['link'] = "admin/index.php?do=input";
+$adminmenu[$i]['link'] = "admin/index.php?do=input&sort=6";
 $adminmenu[$i]['desc'] = '目前登記設備' ;
 $adminmenu[$i]['icon'] = 'images/admin/main.png' ;
 
