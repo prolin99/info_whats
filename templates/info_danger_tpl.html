@@ -24,13 +24,25 @@
 	<div class="span1">
 	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
 	<div class="span2"><span class="ip" alt="<{$comp.ip}>" title="ping"><{$comp.ip}></span>
-		<span class="ip" alt="<{$comp.ip_v6}>" title="ping" ><{$comp.ip_v6}></span>
+		<{if $comp.ip_v6 }>
+		<span class="ip" alt="<{$comp.ip_v6}>" title="<{$comp.ip_v6}>" >ipv6</span>
+		<{/if}>
 	</div>
 	<!---- 填報資料也加入  -->
 	<a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
-	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}></div>
+	<div class="span2"><{$comp.mac}> <{$dhcp_List[$comp.mac]}>
+		<br/>
+		<{$comp.class_place}>
+		<{if ($comp.scM_id) }>
+		<span class="label label-success">@<{$comp.scM_id}></span>
+		<{/if}>
+		<{if ($comp.scM_id2) }>
+		<br/>
+		<span class="label label-success">+<{$comp.scM_id2}></span>
+		<{/if}>
+	</div>
 	<div class="span2">
-        <span class="label label-info"><{$comp.comp}> </span><{$comp.ps}>
+        <span class="label label-info"><{$comp.comp}> </span><{$comp.ps}> <{$comp.baseboard}>
         <{if ($comp.modify_day) }>
         <apan class="label " title="<{$comp.modify_day}>"><{$comp.modify_day|substr:2:8}></span>
         <{/if}>

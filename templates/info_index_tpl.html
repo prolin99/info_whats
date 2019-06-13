@@ -15,6 +15,8 @@
     <label>你的網卡序號 ： <{ $data.mac }></label><br/>
     <label >已知的舊記錄 ：<span   class="label label-primary"> <{ $data_rec.comp }>- <{ $data_rec.ps }></span></label><br/>
 	如果出現 AP 名，代表在無線基地台下，不是電腦的實際 IP。<br/>
+	地點：<{$data_rec.class_place}> <br />
+	編號：<{$data_rec.scM_id}> <br />
     <label>---------------以下填報-------------------</label><br/>
     <label>保管人</label>
     <input type="text" name='user' value='<{ $data_get.user }>' class='form-control'  placeholder="使用人姓名…"><br/>

@@ -1,13 +1,13 @@
 @echo off
-REM 20171114 0835
+REM 20171114 0930
 REM utf8
 
 
 REM ===========================
 REM ftp setting
 set UploadFG=1
-set Web=http://120.116.25.31:8080/x259/modules/info_whats/
-set key=info_whats
+set Web=http://120.116.24.6/xoops/modules/info_whats/
+set key=whatsup
 REM ===========================
 
 set UploadPage=%Web%comp_on.php
@@ -95,11 +95,11 @@ REM  auto DownLoad new version get_sysinfo.bat
 
 REM compare_txt
 
-%now_path%curl.exe  --fail -O  %NewVersion%compare_txt.vbs   --silent
+REM %now_path%curl.exe  --fail -O   %NewVersion%compare_txt.vbs   --silent
 
 
 
-%now_path%curl.exe  --fail  -O  %NewVersion%get_sysinfo.bat   --silent
+REM %now_path%curl.exe  --fail  -O   %NewVersion%get_sysinfo.bat   --silent
 
 
 

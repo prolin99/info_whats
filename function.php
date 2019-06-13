@@ -4,13 +4,7 @@
 // 製作日期：2014-02-16
 // $Id:$
 // ------------------------------------------------------------------------- //
-//引入TadTools的函式庫
-if (!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/tad_function.php")) {
-    redirect_header("http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50", 3, _TAD_NEED_TADTOOLS);
-}
-include_once XOOPS_ROOT_PATH."/modules/tadtools/tad_function.php";
-
-
+ 
 /********************* 自訂函數 *********************/
 
 /********************* 預設函數 *********************/
@@ -117,9 +111,9 @@ function get_from_rec($uid, $ip, $mac)
     global $xoopsDB;
     if ($ip or $mac) {
         if ($mac) {
-            $sql = " select id ,comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where   mac ='$mac'   " ;
+            $sql = " select * from " . $xoopsDB->prefix("mac_info")  ." where   mac ='$mac'   " ;
         } else {
-            $sql = " select id, comp, ps  from " . $xoopsDB->prefix("mac_info")  ." where  ip ='$ip'      " ;
+            $sql = " select *  from " . $xoopsDB->prefix("mac_info")  ." where  ip ='$ip'      " ;
         }
         $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
         $data_list=$xoopsDB->fetchArray($result) ;
@@ -499,16 +493,9 @@ YourIp: 120.116.25.134
 
 
 
-    //無資料離開
-    if ($info_data['uuid']=='')
-      return ;
-
     //找原始資料
     $has_old_id = 0 ;
-    if ($info_data['uuid']<>'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF' and $info_data['uuid']<>'' ){
-      $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '{$info_data['mac']}'  or uuid ='{$info_data['uuid']}' ";
-    }else
-      $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '{$info_data['mac']}'  ";
+    $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '{$info_data['mac']}'  ";
 
 
     $result = $xoopsDB->query($sql) or die($sql.'<br>'.$xoopsDB->error());

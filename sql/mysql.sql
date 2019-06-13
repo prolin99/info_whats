@@ -27,6 +27,9 @@ CREATE TABLE `mac_info` (
   ipv4_ext varchar(20) DEFAULT NULL,
   ipv4_in varchar(20) DEFAULT NULL,
   `baseboard` varchar(80) DEFAULT NULL,
+  `scM_id` varchar(100) DEFAULT NULL,
+  `scM_id2` varchar(100) DEFAULT NULL,
+  `class_place` varchar(100) DEFAULT NULL
   PRIMARY KEY (`id`),
   UNIQUE KEY `mac` (`mac`),
   KEY `ip` (`ip`),
@@ -42,6 +45,7 @@ CREATE TABLE `mac_info` (
   `c_id` varchar(100) DEFAULT NULL,
   `s_id` varchar(100) DEFAULT NULL,
   `uid` int(11) NOT NULL DEFAULT '0' ,
+  `m_t` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  ;
 

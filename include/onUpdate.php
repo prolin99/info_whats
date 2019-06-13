@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 
 function xoops_module_update_info_whats(&$module, $old_version)
 {
@@ -6,7 +7,7 @@ function xoops_module_update_info_whats(&$module, $old_version)
         go_update_add_modify();
     }
     //增加目錄
-    mk_dir(XOOPS_ROOT_PATH."/uploads/info_whats");
+    Utility::mk_dir(XOOPS_ROOT_PATH."/uploads/info_whats");
 
     //增加上傳部份的資料
     if (!chk_add_uuid()) {
@@ -26,8 +27,43 @@ function xoops_module_update_info_whats(&$module, $old_version)
         go_update_add_c_id();
     }
 
+
+    if (!chk_add_school_id()) {
+      //財產編號 及 附帶螢幕等財產號
+        go_update_add_school_id();
+    }
+
+
     return true;
 
+}
+
+//ALTER TABLE `xx_mac_input` ADD `m_t` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `s_id`;
+//---------------------------------------------------
+function chk_add_school_id()
+{
+    global $xoopsDB;
+    $sql = 'select count(`scM_id`)  from '.$xoopsDB->prefix('mac_info');
+    //echo $sql ;
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return false;
+    }
+
+    return true;
+}
+
+function go_update_add_school_id()
+{
+    global $xoopsDB;
+
+    $sql = ' ALTER TABLE  '.$xoopsDB->prefix('mac_info'). " ADD `class_place` varchar(100) DEFAULT NULL , ADD `scM_id` varchar(100) DEFAULT NULL ,  ADD `scM_id2` varchar(100) DEFAULT NULL   ;  " ;
+    //echo $sql ;
+    $xoopsDB->queryF($sql);
+
+    $sql = ' ALTER TABLE '.$xoopsDB->prefix('mac_input') ."  ADD `m_t` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP  ; ";
+
+    $xoopsDB->queryF($sql);
 }
 
 //---------------------------------------------------
@@ -167,17 +203,6 @@ function go_update_add_uuid()
 
 
 //-------------------------------------------------------
-//建立目錄
-function mk_dir($dir=""){
-    //若無目錄名稱秀出警告訊息
-    if(empty($dir))return;
-    //若目錄不存在的話建立目錄
-    if (!is_dir($dir)) {
-        umask(000);
-        //若建立失敗秀出警告訊息
-        mkdir($dir, 0777);
-    }
-}
 
 //-------------------------------------------------------
 function chk_add_modify()

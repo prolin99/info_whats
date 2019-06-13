@@ -5,6 +5,7 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
+use XoopsModules\Tadtools\Utility;
 
 $xoopsOption['template_main'] = "info_index_tpl.html";
 include_once "header.php";
@@ -64,9 +65,9 @@ $online = get_id_online_rec($data_rec['id'] ,7   ) ;
 $week_name=array(1=>'一',2=>'二',3=>'三',4=>'四',5=>'五',6=>'六', 0=>'日') ;
 /*-----------秀出結果區--------------*/
 
-$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu)) ;
-//$xoopsTpl->assign("bootstrap", get_bootstrap()) ;
-//$xoopsTpl->assign("jquery", get_jquery(true)) ;
+$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu)) ;
+//$xoopsTpl->assign("bootstrap", Utility::get_bootstrap()) ;
+//$xoopsTpl->assign("jquery", Utility::get_jquery(true)) ;
 $xoopsTpl->assign("data", $data) ;
 $xoopsTpl->assign("data_get", $data_get) ;
 $xoopsTpl->assign("data_rec", $data_rec) ;
