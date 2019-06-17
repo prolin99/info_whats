@@ -27,8 +27,58 @@
 【更新說明】
 =================================================
 1.3版
-  符合 2.5.10 模組架構。
-  
+  1.符合 2.5.10 模組架構。
+  2.原用 nmap 掃描，增改 ip_scan.py ，原 nmap 仍有保留。
+    建立定時執行機制 (10分鐘執行一次) ，注意其中需要配合偏好設定中的變數做調整。( 目錄中有 ip-scan.sh 檔案)
+     crontab -e -u root
+     */10 * * * * /root/sh/ip-scan.sh
+
+     ip-scan.sh  (內容)
+  	#!/bin/bash
+
+  	PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+  	export PATH
+
+  	#nmap 掃描網載，產生記錄文字檔，要放在網頁可以存區處 (以下為範例，要修改網域，及要存放的位置)，
+  	#在偏好設定，nmap掃描結果檔   http://網址/tmp/nmap.txt
+  	/usr/bin/python3  /root/sh/ip_arp_mt.py >  /var/www/html/tmp/nmap.txt 2> /dev/null
+
+
+  	#其中代碼為偏好設定--定時連線的代號 (現預設 info_whats )
+  	wget -O /dev/null http://你的網址/modules/info_whats/comp.php?do=info_whats   2> /dev/null
+
+    3.ip_arp_mt.py 內容：
+#!/usr/bin/env python3
+#使用 arp 方式取得 ip 和 mac
+#採多核多緒模式執行
+#sudo python3 ip_arp_mt.py
+
+from scapy.all import *
+import sys,getopt
+from multiprocessing.dummy import Pool as ThreadPool
+
+def get_it(ip):
+    #arp
+    arpPkt = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=ip, hwdst="ff:ff:ff:ff:ff:ff")
+    res = srp1(arpPkt, timeout=1, verbose=0)
+    if res:
+        print ("IP= " + res.psrc + "    , MAC= " + res.hwsrc )
+
+
+if __name__ == '__main__':
+    ip_list=[]
+    #注意 120.116.24 及 120.116.25 兩個 C 網址是新營國小的 IP ，你需要自行修改。
+    for i in range(256):
+        ip_list.append("120.116.24.%s" % i)
+    for i in range(254):
+        ip_list.append("120.116.25.%s" % i)
+
+    pool = ThreadPool(4)
+    res=pool.map(get_it,ip_list)
+    pool.close()
+    pool.join()
+
+
 1.2版
   增加財產編號的登記，獨立欄位。
 
@@ -107,3 +157,4 @@
 8.開機上傳資訊檔的批次檔，可能會被防毒軟體阻擋造成無法上傳的情形。
 
 *已知問題，在台南虛擬主機 VM 下 nmap 掃描，無法正確的掃描是否開機狀態。建議配合另外主機做 ip-scan 工作。
+*需要在同網域才能取得客戶端的 MAC ，所以在台南市集中網頁中，使用登記電腦時，無法判斷使用。

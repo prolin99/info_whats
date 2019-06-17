@@ -38,6 +38,56 @@ echo 'start--'.'<br/>' ;
     $output = curl_exec($ch);
     curl_close($ch);
 
+
+    //python3 ip_scan.py
+    $lines = preg_split('/\n/', $output);
+    foreach ($lines as $line_num => $line) {
+        $line_arr = preg_split("/[=,]/" ,trim($line)) ;
+        $mac=strtoupper( trim($line_arr[3]) ) ;
+        if ($mac <>'') {
+            $find_id=0 ;
+            $ip=trim($line_arr[1]) ;
+            $ip_k = preg_split('/[.]/', $ip);
+            $ip_id = $ip_k[2] * 1000 + $ip_k[3];
+
+
+            $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '$mac'  ";
+            $err_comp_list[] = "$ip -- $sql <br >";
+            echo "$ip -- $sql <br >" ;
+            echo $mac . '---<br>' ;
+            $result = $xoopsDB->query($sql) ;
+            while ($row = $xoopsDB->fetchArray($result)) {
+                $find_id = $row['id'];
+                $nip = $row['mac'];
+                //上線中 ，寫入 mac_online
+                online( $find_id ) ;
+                echo $row['mac'] .'---id ' .$find_id . '<br />' ;
+            }
+
+
+            if ( ($find_id+0)==0) {
+
+                $sql = ' insert into  '.$xoopsDB->prefix('mac_info')."  (id ,ip ,mac ,recode_time ,creat_day ,ip_id ,comp ,phid ,kind)
+                           values ('0','$ip','$mac',now() , now() ,'$ip_id' ,'','','' ) ";
+                $result = $xoopsDB->queryF($sql)  ;
+
+                $find_id = $xoopsDB->getInsertId();
+                //上線中 ，寫入 mac_online
+                online( $find_id ) ;
+            } else {
+                $sql = ' update '.$xoopsDB->prefix('mac_info')."  set  ip='$ip' ,recode_time=now()  ,ip_id ='$ip_id'  where mac='$mac' ";
+
+                $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
+                //echo "$sql <br >" ;
+            }
+
+        }
+
+
+    } //foreach
+
+
+    //nmap 不再使用  ------------------------------------
     $lines = preg_split('/\n/', $output);
     //var_dump( $lines)  ;
     foreach ($lines as $line_num => $line) {
