@@ -572,11 +572,11 @@ function online($id)
 {
     global $xoopsDB  , $this_on_array;
     if (($id <=0) or  in_array($id, $this_on_array)) {
-        echo $id .'****<br>' ;
+        //echo $id .'****<br>' ;
         return 0 ;
     } else {
         $this_on_array[]= $id ;
-        echo $id .'<br>' ;
+        //echo $id .'<br>' ;
         //上線記錄
         $sql = ' insert into  '.$xoopsDB->prefix('mac_online').
           "(oid ,id ,online_day , on_day )
@@ -652,13 +652,13 @@ function import_nmap($output){
                     $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '$mac'  ";
                     $err_comp_list[] = "$ip -- $sqlstr <br >";
                     //echo "$ip -- $sqlstr <br >" ;
-                    echo $mac . '---<br>' ;
+                    //echo $mac . '---<br>' ;
                     $result = $xoopsDB->query($sql) or die($sql.'<br>'.$xoopsDB->error());
                     while ($row = $xoopsDB->fetchArray($result)) {
                         $find_id = $row['id'];
                         $nip = $row['mac'];
                         //上線中 ，寫入 mac_online
-                        online( $find_id ) ;
+                        //online( $find_id ) ;
                         //echo $row['mac'] .'<br />' ;
                     }
     
@@ -666,10 +666,10 @@ function import_nmap($output){
                         $sql = ' insert into  '.$xoopsDB->prefix('mac_info')."  (id ,ip ,mac ,recode_time ,creat_day ,ip_id ,comp ,phid ,kind)
                                    values ('0','$ip','$mac',now() , now() ,'$ip_id' ,'','','' ) ";
                         $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
-                        echo "$sqlstr <br >" ;
+                        //echo "$sqlstr <br >" ;
                         $find_id = $xoopsDB->getInsertId();
                         //上線中 ，寫入 mac_online
-                        online( $find_id ) ;
+                        //online( $find_id ) ;
                     } else {
                         //更新
     
