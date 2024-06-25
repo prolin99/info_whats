@@ -32,6 +32,7 @@
       安裝 nmap (https://nmap.org/download)
       在 cmd 命令列中： nmap -sP 120.116.24.0/24 > nmap_scan.txt 
       會掃描網域中的目前已開機的機器資料，再上傳到模組。
+    2.有關 nas 配合掃描，可以查看： https://stud.syps.tn.edu.tw/modules/tad_book3/page.php?tbsn=11&tbdsn=58
 
 1.3版
   1.符合 2.5.10 模組架構。
