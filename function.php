@@ -615,4 +615,72 @@ function disp_impact($v){
 
   }
 
+
+}
+
+function import_nmap($output){
+    global $xoopsDB ;
+        //nmap 不再使用  ------------------------------------
+        $lines = preg_split('/\n/', $output);
+        //var_dump( $lines)  ;
+        foreach ($lines as $line_num => $line) {
+            //echo " $line <br />"   ;
+            $ip_0 = '';
+            list($mark, $is, $mac, $ifor, $ip1, $ip_0) = preg_split("/[\s]+/", $line);
+            if ($mark == 'Nmap') {
+                //Nmap scan report for dns.syps.tn.edu.tw (120.116.24.1)
+                //Nmap scan report for 120.116.24.18
+                //echo " $mark , $is,  $mac , $ifor ,  $ip1 , $ip_0 <br />"   ;
+                $up_ip = $ip1;
+    
+                if (substr($ip_0, 0, 1) == '(') {
+                    $up_ip = substr($ip_0, 1, -1);
+                }
+            }
+    
+            if (($mark == 'MAC') and ($up_ip != '') and ($mac != 'FF:FF:FF:FF:FF:FF')) {
+                //MAC Address: 00:D0:E9:40:59:C0 (Advantage Century Telecommunication)
+                //MAC Address: EC:A8:6B:A5:F0:85 (Unknown)
+                $nip = '';
+                $ip = trim($up_ip);
+                $mac = trim($mac);
+                $up_ip = '';
+                $ip_k = preg_split('/[.]/', $ip);
+                $ip_id = $ip_k[2] * 1000 + $ip_k[3];
+                $find_id = 0 ;
+                if ($mac) {
+                    $sql = ' select * from '.$xoopsDB->prefix('mac_info')." where   mac = '$mac'  ";
+                    $err_comp_list[] = "$ip -- $sqlstr <br >";
+                    //echo "$ip -- $sqlstr <br >" ;
+                    echo $mac . '---<br>' ;
+                    $result = $xoopsDB->query($sql) or die($sql.'<br>'.$xoopsDB->error());
+                    while ($row = $xoopsDB->fetchArray($result)) {
+                        $find_id = $row['id'];
+                        $nip = $row['mac'];
+                        //上線中 ，寫入 mac_online
+                        online( $find_id ) ;
+                        //echo $row['mac'] .'<br />' ;
+                    }
+    
+                    if (!$nip) {
+                        $sql = ' insert into  '.$xoopsDB->prefix('mac_info')."  (id ,ip ,mac ,recode_time ,creat_day ,ip_id ,comp ,phid ,kind)
+                                   values ('0','$ip','$mac',now() , now() ,'$ip_id' ,'','','' ) ";
+                        $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
+                        echo "$sqlstr <br >" ;
+                        $find_id = $xoopsDB->getInsertId();
+                        //上線中 ，寫入 mac_online
+                        online( $find_id ) ;
+                    } else {
+                        //更新
+    
+                        $sql = ' update '.$xoopsDB->prefix('mac_info')."  set  ip='$ip' ,recode_time=now()  ,ip_id ='$ip_id'  where mac='$mac' ";
+    
+                        $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
+                        //echo "$sql <br >" ;
+                    }
+    
+    
+                }
+            }
+        } //foreach
 }

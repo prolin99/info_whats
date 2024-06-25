@@ -33,6 +33,22 @@ if ($_POST['btn_clear']) {
     $result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
 }
 
+if ($_POST['Submit_import']) {
+    #上傳檔案寫到 $local_file = XOOPS_ROOT_PATH."/uploads/info_whats/"  .$fname ;
+    $nmapFile = XOOPS_ROOT_PATH."/uploads/info_whats/nmap_file.txt" ;
+
+    # upload nmap_file
+
+    move_uploaded_file($_FILES['nmap_file']['tmp_name'] ,  $nmapFile);
+
+    #readfile to putput 
+    $output = file_get_contents($nmapFile);
+    import_nmap($output) ;
+    #del file 
+    unlink($nmapFile) ;
+
+}
+
  //=======================================================================
     //取得偏好設定
     $data['ip_rang'] = $xoopsModuleConfig['iw_ip_rang'] ;                    //分配規劃

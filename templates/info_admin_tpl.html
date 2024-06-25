@@ -5,11 +5,15 @@
 <div class="row-fluid">
 <{if (! $point) }>
 共 <{$all_rec}> 筆
-<form id="form1" name="form1" method="post" action="index.php">
+<form id="form1" name="form1" method="post" enctype="multipart/form-data"  action="main.php">
   新MAC<input name="new_mac" type="text" id="new_mac" value="" class="span4" />
   <input type="submit" name="Submit_add" value="新增" id="Submit2" />
   <button type="submit" class="btn btn-danger" name='btn_clear' value='btn_clear' onclick="return confirm('確定要清除嗎?')" >清除登記資料</button>
-
+  <!- 上傳nmap掃描紀錄檔 ->
+  <br />
+  上傳nmap掃描紀錄檔：
+  <input  id="file" name="nmap_file"    type="file" size=40  >
+  <button type="submit" class="btn btn-primary" name="Submit_import" value="匯入紀錄檔" id="Submit_import" >匯入紀錄檔</button>
 </form>
 <{/if}>
 <div class="alert  alert-info">
