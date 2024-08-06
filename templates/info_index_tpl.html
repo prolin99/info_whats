@@ -1,37 +1,38 @@
-<{$bootstrap}>
+
 <{$jquery}>
 <{$toolbar}>
 
 <{if ($data.ip)}>
 	<{if $have_input }>
-    		<div class='alert alert-success'><{ $have_input  }></div>
+    		<div class='alert alert-success'><{$have_input  }></div>
               <{else}>
 
     <form action="index.php"  method='post'>
     <fieldset>
+
     <legend>機器登記</legend>
-    <label>你的IP ： <{ $data.ip }></label><br/>
-		<label>記錄編號 ： #<{ $data_rec.id }></label><br/>
-    <label>你的網卡序號 ： <{ $data.mac }></label><br/>
-    <label >已知的舊記錄 ：<span   class="label label-primary"> <{ $data_rec.comp }>- <{ $data_rec.ps }></span></label><br/>
+    <label>你的IP ： <{$data.ip }></label><br/>
+		<label>記錄編號 ： #<{$data_rec.id }></label><br/>
+    <label>你的網卡序號 ： <{$data.mac }></label><br/>
+    <label >已知的舊記錄 ：<span   class="label label-primary"> <{$data_rec.comp }>- <{$data_rec.ps }></span></label><br/>
 	如果出現 AP 名，代表在無線基地台下，不是電腦的實際 IP。<br/>
 	地點：<{$data_rec.class_place}> <br />
 	編號：<{$data_rec.scM_id}> <br />
     <label>---------------以下填報-------------------</label><br/>
     <label>保管人</label>
-    <input type="text" name='user' value='<{ $data_get.user }>' class='form-control'  placeholder="使用人姓名…"><br/>
+    <input type="text" name='user' value='<{$data_get.user }>' class='form-control'  placeholder="使用人姓名…"><br/>
     <label>機器地點</label>
-    <input type="text" name='place' value='<{ $data_get.place }>' class='form-control'  placeholder="地點(多台請加編號)…">
+    <input type="text" name='place' value='<{$data_get.place }>' class='form-control'  placeholder="地點(多台請加編號)…">
     <br/>
 		<label>電腦財產編號（最後一組數字，例 3000165）</label>
-    <input type="text" name='c_id' value='<{ $data_get.c_id }>' class='form-control'  placeholder="電腦財產條碼編號…"><br/>
+    <input type="text" name='c_id' value='<{$data_get.c_id }>' class='form-control'  placeholder="電腦財產條碼編號…"><br/>
     <label>連接螢幕財產編號（最後一組數字，例 3000448）或其它說明</label>
-    <input type="text" name='s_id' value='<{ $data_get.s_id }>' class='form-control'  placeholder="螢幕財產條碼編號或其它單槍、電視編號…">
+    <input type="text" name='s_id' value='<{$data_get.s_id }>' class='form-control'  placeholder="螢幕財產條碼編號或其它單槍、電視編號…">
     <br/>
     <{if ($input_mode) }>
-    <input name='ip' type='hidden' class='form-control' value='<{ $data.ip }>' />
-    <input name='mac' type='hidden' value='<{ $data.mac }>' />
-    <input name='id' type='hidden'  class='form-control' value='<{ $data_get.id }>' />
+    <input name='ip' type='hidden' class='form-control' value='<{$data.ip }>' />
+    <input name='mac' type='hidden' value='<{$data.mac }>' />
+    <input name='id' type='hidden'  class='form-control' value='<{$data_get.id }>' />
     <button type="submit" class="btn btn-success" name='act_add' value='act_add' >儲存</button>
     <div class='alert alert-info'>如果以上資料不正確，請修改再儲存。</div>
     <{else}>
@@ -39,10 +40,12 @@
     <{/if}>
     </fieldset>
     </form>
+		<{if ($client_file)}>
 			<a href="<{$client_file}>"><button type="button" class="btn btn-success">
 			  下載硬體檢查工具</button></a><br />
 				解壓縮後，選擇 setup.bat 點滑鼠右鍵，以系統管理員身份執行。<br>
 				以後電腦開機就會自行執行，並上傳資料到主機中。
+		<{/if}>
     <{/if}>
 
 

@@ -8,6 +8,6 @@ function xoops_module_install_info_whats(&$module) {
 	return true;
 }
 
- 
+
 
 ?>

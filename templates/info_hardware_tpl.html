@@ -122,7 +122,7 @@
 <!--              今日開機的記錄                          -->
 <h1>本日 Client 開機記錄</h1>
 
-<{ $ii++ }>
+<{$ii++ }>
 <{foreach from=$list item=comp key=cid}>
 <a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
 <{if ($comp.dangerFG)}>
@@ -131,7 +131,7 @@
 <div class="alert alert-success">
 <{/if}>
 <div class="row-fluid">
- <span class="badge badge-info"><{ $ii++ }></span>
+ <span class="badge badge-info"><{$ii++ }></span>
  <span class="badge badge-inverse">#<{$comp.id}></span>
  <{if (($comp.w==0) or  ($comp.w==6) )}>
  	<span class='label label-warning'><{$comp.sysinfo_day}></span>(<{$week_name[$comp.w]}>)
@@ -154,7 +154,7 @@
 	<span class='label label-info' ><{$comp.GB}>G</span>
 
 </div>
-<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+<div class="row-fluid" id="div_<{$comp.id}>"  data='<{$ii }>' >
 	<div class='span2'><{$comp.bios}></div>
 	<div class='span2'><{$comp.cpu}></div>
 	<div class='span5'><{$comp.ipaddress}></div>

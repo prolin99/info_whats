@@ -8,7 +8,8 @@
 //---基本設定---//
 
 $modversion['name'] ='網路設備記錄';				//模組名稱
-$modversion['version']	= '1.4';				//模組版次
+//$modversion['version']	= '1.4';				//模組版次
+$modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '1.5.0-Stable' : '1.5';
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';		//模組作者
 $modversion['description'] ='網路設備記錄';			//模組說明
 $modversion['credits']	= 'prolin';				//模組授權者
@@ -19,11 +20,11 @@ $modversion['dirname'] = basename(dirname(__FILE__));		//模組目錄名稱
 
 //---模組狀態資訊---//
 //$modversion['status_version'] = '0.8';
-$modversion['release_date'] = '2017-11-15';
+$modversion['release_date'] = '2024-08-07';
 $modversion['module_website_url'] = 'https://github.com/prolin99/info_whats';
 $modversion['module_website_name'] = 'prolin';
 $modversion['module_status'] = 'release';
-$modversion['author_website_url'] = 'http://www.syps.tn.edu.tw';
+$modversion['author_website_url'] = 'https://github.com/prolin99';
 $modversion['author_website_name'] = 'prolin';
 $modversion['min_php']= 5.2;
 
@@ -46,6 +47,8 @@ $modversion['adminmenu'] = "admin/menu.php";
 $modversion['hasMain'] = 1;
 
 //---安裝設定---//
+$modversion['onInstall'] = 'include/onInstall.php';
+$modversion['onUninstall'] = 'include/onUninstall.php';
 $modversion['onUpdate'] = "include/onUpdate.php";
 
 //---樣板設定---要有指定，才會編譯動作，//

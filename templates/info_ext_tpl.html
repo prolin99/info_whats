@@ -16,33 +16,33 @@
 	<div class="span2">填報記錄</div>
 	</div>
 </div>
-<{ $ii++ }>
+<{$ii++ }>
 <{foreach from=$comp_list item=comp key=cid}>
-<{ if (($point=='input') and ($comp.input)) or ($point<>'input') }>
+<{if (($point=='input') and ($comp.input)) or ($point<>'input') }>
 <{if ($comp.now==1 ) }>
 	<!--  現在存活  -->
-	<{ if ($comp.dhcp) }>
+	<{if ($comp.dhcp) }>
 		<div class="alert  alert-error">
-		<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+		<div class="row-fluid" id="div_<{$comp.id}>"  data='<{$ii }>' >
 	<{else}>
 		<div class="alert  alert-success">
-		<div class="row-fluid"    id="div_<{$comp.id}>" data='<{ $ii }>'  >
+		<div class="row-fluid"    id="div_<{$comp.id}>" data='<{$ii }>'  >
 	<{/if}>
 <{elseif ($comp.now==2 )}>
 	<!--  本日存活  -->
 
 	<div class="alert  alert-info">
-	<div class="row-fluid"    id="div_<{$comp.id}>" data='<{ $ii }>'  >
+	<div class="row-fluid"    id="div_<{$comp.id}>" data='<{$ii }>'  >
 
 <{else}>
  	<!--  一日前  -->
 	<div class="alert">
-	<div class="row-fluid " id="div_<{$comp.id}>" data='<{ $ii }>'  >
+	<div class="row-fluid " id="div_<{$comp.id}>" data='<{$ii }>'  >
 <{/if}>
 
 	<div class="span1">
 
-	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
+	<span class="badge badge-info"><{$ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
 	<div class="span2">
     <span class="ip" alt="<{$comp.ip}>"><{$comp.ip}></span><br />
       <{if ($comp.dhcpserver) }>

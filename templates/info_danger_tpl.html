@@ -7,11 +7,11 @@
 <a href='danger.php?setDay=14'><button type="button" class="btn btn-success">14日</button></a>
 <a href='danger.php?setDay=30'><button type="button" class="btn btn-info">30日</button></a>
 
-<{foreach from=$cht_list item=cht_title key=keyid}>
+<{foreach from=$cht_list item=cht_title_item key=keyid}>
 
 <{if ($all_list.$keyid)}>
-<div class='btn-primary'><{ $cht_list.$keyid }></div>
-<{ assign var="ii" value="1"  }>
+<div class='btn-primary'><{$cht_list.$keyid }></div>
+<{assign var="ii" value="1"  }>
 <{/if}>
 <div class="row-fluid">
 
@@ -19,10 +19,10 @@
 
 <div class="alert  alert-error">
 
-<div class="row-fluid" id="div_<{$comp.id}>"  data='<{ $ii }>' >
+<div class="row-fluid" id="div_<{$comp.id}>"  data='<{$ii }>' >
 
 	<div class="span1">
-	<span class="badge badge-info"><{ $ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
+	<span class="badge badge-info"><{$ii++ }></span><{$comp.kind}>-<{$comp.phid}></div>
 	<div class="span2"><span class="ip" alt="<{$comp.ip}>" title="ping"><{$comp.ip}></span>
 		<{if $comp.ip_v6 }>
 		<span class="ip" alt="<{$comp.ip_v6}>" title="<{$comp.ip_v6}>" >ipv6</span>

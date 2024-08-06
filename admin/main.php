@@ -42,10 +42,13 @@ if ($_POST['Submit_import']) {
     move_uploaded_file($_FILES['nmap_file']['tmp_name'] ,  $nmapFile);
 
     #readfile to putput 
+    echo $nmapFile ;
     $output = file_get_contents($nmapFile);
+    echo $output ;
     import_nmap($output) ;
     #del file 
     unlink($nmapFile) ;
+    echo 'aaaa' ;
 
 }
 

@@ -24,13 +24,13 @@ include_once XOOPS_ROOT_PATH."/header.php";
 
 if ($_POST['act_add']  and $_POST['user']) {
     $myts =& MyTextSanitizer::getInstance();
-    $_POST['ip']=$myts->addSlashes($_POST['ip']);
-    $_POST['mac']=$myts->addSlashes($_POST['mac']);
-    $_POST['user']=$myts->addSlashes($_POST['user']);
-    $_POST['place']=$myts->addSlashes($_POST['place']);
-    $_POST['c_id']=$myts->addSlashes($_POST['c_id']);
-    $_POST['s_id']=$myts->addSlashes($_POST['s_id']);
-    $uid = $myts->addSlashes($_POST['uid']);
+    $_POST['ip']=$xoopsDB->escape($_POST['ip']);
+    $_POST['mac']=$xoopsDB->escape($_POST['mac']);
+    $_POST['user']=$xoopsDB->escape($_POST['user']);
+    $_POST['place']=$xoopsDB->escape($_POST['place']);
+    $_POST['c_id']=$xoopsDB->escape($_POST['c_id']);
+    $_POST['s_id']=$xoopsDB->escape($_POST['s_id']);
+    $uid = $xoopsDB->escape($_POST['uid']);
     /*
     if ($_POST['id'] )
         $sql = "UPDATE " . $xoopsDB->prefix("mac_input") .  " set  user ='{$_POST['user']}' , place='{$_POST['place']}' where id = '{$_POST['id']}' " ;
