@@ -16,7 +16,7 @@
 	<div class="span2">填報記錄</div>
 	</div>
 </div>
-<{$ii++ }>
+<{assign var="ii" value=1 }>
 <{foreach from=$comp_list item=comp key=cid}>
 <{if (($point=='input') and ($comp.input)) or ($point<>'input') }>
 <{if ($comp.now==1 ) }>

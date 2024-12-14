@@ -122,7 +122,7 @@
 <!--              今日開機的記錄                          -->
 <h1>本日 Client 開機記錄</h1>
 
-<{$ii++ }>
+<{assign var="ii" value=1 }>
 <{foreach from=$list item=comp key=cid}>
 <a href="hardware.php?id=<{$comp.id}>" title="查看記錄">
 <{if ($comp.dangerFG)}>
