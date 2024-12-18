@@ -68,7 +68,7 @@ if ($_POST['Submit_import']) {
     //dhcp 範圍
     //是否有多段，把 ip 放入 $dhcp_list 陣列
     $dhcp_rang_list = preg_split('/,/', $xoopsModuleConfig['iw_ip_v4_dhcp']) ;
-        for ($ri=0 ;$ri< count($dhcp_rang_list) ; $ri++) {
+        for ($ri=0 ;$ri< count($dhcp_rang_list  ?? []) ; $ri++) {
             $dhcp_rang = preg_split('/~/', trim($dhcp_rang_list[$ri])  ) ;    //動態分配區
             $dhcp_begin = preg_split('/[\.]/', $dhcp_rang[0]) ;
             $dhcp_end = preg_split('/[\.]/', $dhcp_rang[1]) ;
@@ -142,7 +142,7 @@ if ($_POST['Submit_import']) {
 
     //排序方式
     $sort_list= array('kind DESC', 'phid ' ,'ip_id' ,'mac' , 'comp' ,'modify_day DESC' , 'id DESC' ,'recode_time DESC'  ,'creat_day DESC' ,'id '  ) ;
-    if (($soid <=0) or ($soid > count($sort_list))) {
+    if (($soid <=0) or ($soid > count($sort_list  ?? []))) {
         $soid=7 ;
     }
 

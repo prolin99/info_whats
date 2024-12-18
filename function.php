@@ -598,7 +598,7 @@ function disp_impact($v){
     if ($success ){
       $v_part[2]='<span class="label label-success">'. $v_part[2] .'</span>' ;
       $v_part[4]='<span class="label label-success">'. $v_part[4] .'</span>' ;
-      for ($i=1 ; $i <= count($v_part) ; $i++)
+      for ($i=1 ; $i <= count($v_part ?? [] ) ; $i++)
         $new_str .= $v_part[$i] ;
       return $new_str ;
     }else {
@@ -606,7 +606,7 @@ function disp_impact($v){
       $success = preg_match('/(.+)(@[0-9]+)(.*)/', trim($v) ,$v_part);
       if ($success ){
         $v_part[2]='<span class="label label-success">'. $v_part[2] .'</span>' ;
-        for ($i=1 ; $i <= count($v_part) ; $i++)
+        for ($i=1 ; $i <= count($v_part ?? []) ; $i++)
           $new_str .= $v_part[$i] ;
         return $new_str ;
       }else
