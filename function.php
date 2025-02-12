@@ -571,6 +571,8 @@ YourIp: 120.116.25.134
 function online($id)
 {
     global $xoopsDB  , $this_on_array;
+    $this_on_array = $this_on_array ?? [];  // 預設為空陣列
+
     if (($id <=0) or  in_array($id, $this_on_array)) {
         //echo $id .'****<br>' ;
         return 0 ;

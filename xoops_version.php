@@ -9,7 +9,7 @@
 
 $modversion['name'] ='網路設備記錄';				//模組名稱
 //$modversion['version']	= '1.4';				//模組版次
-$modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '1.6.0-Stable' : '1.6';
+$modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '1.7.0-Stable' : '1.7';
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';		//模組作者
 $modversion['description'] ='網路設備記錄';			//模組說明
 $modversion['credits']	= 'prolin';				//模組授權者

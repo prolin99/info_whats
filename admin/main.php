@@ -87,7 +87,7 @@ if ($_POST['Submit_import']) {
     //"/var/lib/dhcpd/dhcpd.leases"
     //只用來修改已有記錄中的名稱
     $dhcp_lease = get_dhcp_lease($dhcp_log) ;
-
+    $dhcp_list = $dhcp_list ?? [];  // 預設為空陣列
 
     //取得所有個人登記資料 --------------------------------------
     $sql = " select *  from " . $xoopsDB->prefix("mac_input") . "  order by mac "  ;
@@ -173,7 +173,7 @@ if ($_POST['Submit_import']) {
         $success = preg_match('/(.+)(@[0-9]+)(.*)/', trim($row["ps"]) ,$v_part);
         if ($success ){
           //財產編號重覆
-          if  (in_array($v_part[2] , $school_id_list ) )
+          if  (is_array($school_id_list) && in_array($v_part[2] , $school_id_list ) )
             $duble_school_id .= $row["ps"] .'<br>' ;
           else
             $school_id_list[] = $v_part[2] ;
@@ -207,7 +207,7 @@ if ($_POST['Submit_import']) {
 
 
         //動態 IP 不列入到 綁定 IP 記錄中
-        if (in_array($row['ip'], $dhcp_list)) {
+        if (is_array($dhcp_list) && in_array($row['ip'], $dhcp_list)) {
             $row['dhcp'] = true ;
         }
 
