@@ -15,11 +15,13 @@ $adminmenu[$i]['link'] = "admin/main.php";
 $adminmenu[$i]['desc'] = '設備記錄' ;
 $adminmenu[$i]['icon'] = 'images/admin/home.png' ;
 
+/*
 $i++ ;
 $adminmenu[$i]['title'] = '警示';
 $adminmenu[$i]['link'] = "admin/danger.php";
 $adminmenu[$i]['desc'] = '可能有狀況的設備' ;
 $adminmenu[$i]['icon'] = 'images/admin/messagebox_warning.png' ;
+*/
 
 $i++ ;
 $adminmenu[$i]['title'] = '重要設備';
@@ -38,7 +40,7 @@ $adminmenu[$i]['title'] = '未登記';
 $adminmenu[$i]['link'] = "admin/main.php?do=mystery";
 $adminmenu[$i]['desc'] = '未登記設備' ;
 $adminmenu[$i]['icon'] = 'images/admin/problem.png' ;
-
+/*
 $i++ ;
 $adminmenu[$i]['title'] = 'AP內';
 $adminmenu[$i]['link'] = "admin/ext_in.php";
@@ -47,12 +49,13 @@ $adminmenu[$i]['icon'] = 'images/admin/router.png' ;
 
 
 
-
 $i++ ;
 $adminmenu[$i]['title'] = '開機記錄';
 $adminmenu[$i]['link'] = "admin/hardware.php";
 $adminmenu[$i]['desc'] = '開機上傳記錄' ;
 $adminmenu[$i]['icon'] = 'images/admin/turn-on.png' ;
+*/
+
 
 $i++ ;
 $adminmenu[$i]['title'] = "關於";
