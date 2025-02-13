@@ -15,13 +15,13 @@ $adminmenu[$i]['link'] = "admin/main.php";
 $adminmenu[$i]['desc'] = '設備記錄' ;
 $adminmenu[$i]['icon'] = 'images/admin/home.png' ;
 
-/*
+
 $i++ ;
 $adminmenu[$i]['title'] = '警示';
 $adminmenu[$i]['link'] = "admin/danger.php";
 $adminmenu[$i]['desc'] = '可能有狀況的設備' ;
 $adminmenu[$i]['icon'] = 'images/admin/messagebox_warning.png' ;
-*/
+
 
 $i++ ;
 $adminmenu[$i]['title'] = '重要設備';
